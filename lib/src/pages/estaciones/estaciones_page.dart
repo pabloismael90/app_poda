@@ -3,7 +3,7 @@ import 'package:app_poda/src/models/decisiones_model.dart';
 import 'package:app_poda/src/models/finca_model.dart';
 import 'package:app_poda/src/models/parcela_model.dart';
 import 'package:app_poda/src/models/planta_model.dart';
-import 'package:app_poda/src/models/testplaga_model.dart';
+import 'package:app_poda/src/models/testpoda_model.dart';
 import 'package:app_poda/src/providers/db_provider.dart';
 import 'package:app_poda/src/utils/constants.dart';
 import 'package:app_poda/src/utils/widget/titulos.dart';
@@ -21,7 +21,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
 
     final fincasBloc = new FincasBloc();
 
-    Future _getdataFinca(Testplaga textPlaga) async{
+    Future _getdataFinca(TestPoda textPlaga) async{
         Finca finca = await DBProvider.db.getFincaId(textPlaga.idFinca);
         Parcela parcela = await DBProvider.db.getParcelaId(textPlaga.idLote);
         List<Decisiones> desiciones = await DBProvider.db.getDecisionesIdTest(textPlaga.id);
@@ -32,8 +32,8 @@ class _EstacionesPageState extends State<EstacionesPage> {
     @override
     Widget build(BuildContext context) {
         
-        Testplaga plaga = ModalRoute.of(context).settings.arguments;
-        fincasBloc.obtenerPlantas(plaga.id);
+        TestPoda poda = ModalRoute.of(context).settings.arguments;
+        fincasBloc.obtenerPlantas(poda.id);
         
 
        return StreamBuilder<List<Planta>>(
@@ -44,7 +44,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
                 }
                 List<Planta> plantas= snapshot.data;
                 //print(plantas.length);
-                fincasBloc.obtenerDecisiones(plaga.id);
+                fincasBloc.obtenerDecisiones(poda.id);
                 int estacion1 = 0;
                 int estacion2 = 0;
                 int estacion3 = 0;
@@ -65,18 +65,18 @@ class _EstacionesPageState extends State<EstacionesPage> {
                     appBar: AppBar(),
                     body: Column(
                         children: [
-                            escabezadoEstacion( context, plaga ),
+                            escabezadoEstacion( context, poda ),
                             TitulosPages(titulo: 'Estaciones'),
                             Divider(),
                             Expanded(
                                 child: SingleChildScrollView(
-                                    child: _listaDeEstaciones( context, plaga, countEstaciones ),
+                                    child: _listaDeEstaciones( context, poda, countEstaciones ),
                                 ),
                             ),
                         ],
                     ),
                     bottomNavigationBar: BottomAppBar(
-                        child: _tomarDecisiones(countEstaciones, plaga)
+                        child: _tomarDecisiones(countEstaciones, poda)
                     ),
                 );
             },
@@ -85,11 +85,11 @@ class _EstacionesPageState extends State<EstacionesPage> {
 
 
 
-    Widget escabezadoEstacion( BuildContext context, Testplaga plaga ){
+    Widget escabezadoEstacion( BuildContext context, TestPoda poda ){
 
 
         return FutureBuilder(
-            future: _getdataFinca(plaga),
+            future: _getdataFinca(poda),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (!snapshot.hasData) {
                     return Center(child: CircularProgressIndicator());
@@ -149,7 +149,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
         );        
     }
 
-    Widget  _listaDeEstaciones( BuildContext context, Testplaga plaga, List countEstaciones){
+    Widget  _listaDeEstaciones( BuildContext context, TestPoda poda, List countEstaciones){
         return ListView.builder(
             itemBuilder: (context, index) {
                 String estadoConteo;
@@ -161,13 +161,13 @@ class _EstacionesPageState extends State<EstacionesPage> {
                 return GestureDetector(
                     
                     child: _cardTest(index+1,countEstaciones[index], estadoConteo),
-                    onTap: () => Navigator.pushNamed(context, 'plantas', arguments: [plaga, index]),
+                    onTap: () => Navigator.pushNamed(context, 'plantas', arguments: [poda, index]),
                 );
                 
                
             },
             shrinkWrap: true,
-            itemCount:  plaga.estaciones,
+            itemCount:  poda.estaciones,
             padding: EdgeInsets.only(bottom: 30.0),
             controller: ScrollController(keepScrollOffset: false),
         );
@@ -241,7 +241,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
     }
    
 
-    Widget  _tomarDecisiones(List countEstaciones, Testplaga plaga){
+    Widget  _tomarDecisiones(List countEstaciones, TestPoda poda){
         
         if(countEstaciones[0] >= 10 && countEstaciones[1] >= 10 && countEstaciones[2] >= 10){
             
@@ -270,7 +270,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
                                             .copyWith(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 14)
                                     ),
                                     padding:EdgeInsets.all(13),
-                                    onPressed: () => Navigator.pushNamed(context, 'decisiones', arguments: plaga),
+                                    onPressed: () => Navigator.pushNamed(context, 'decisiones', arguments: poda),
                                 )
                             ),
                         );
@@ -291,7 +291,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
                                         .copyWith(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 14)
                                 ),
                                 padding:EdgeInsets.all(13),
-                                onPressed: () => Navigator.pushNamed(context, 'reporte', arguments: plaga.id),
+                                onPressed: () => Navigator.pushNamed(context, 'reporte', arguments: poda.id),
                             )
                         ),
                     );

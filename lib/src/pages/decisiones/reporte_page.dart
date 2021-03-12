@@ -1,8 +1,5 @@
-import 'dart:convert';
-
-import 'package:app_poda/src/models/acciones_model.dart';
 import 'package:app_poda/src/models/decisiones_model.dart';
-import 'package:app_poda/src/models/testplaga_model.dart';
+import 'package:app_poda/src/models/testpoda_model.dart';
 //import 'package:app_poda/src/pages/decisiones/pdf_view.dart';
 import 'package:app_poda/src/providers/db_provider.dart';
 import 'package:app_poda/src/models/selectValue.dart' as selectMap;
@@ -20,15 +17,16 @@ class ReportePage extends StatefulWidget {
 
 class _ReportePageState extends State<ReportePage> {
     final List<Map<String, dynamic>>  itemPoda = selectMap.podaCacao();
-    final List<Map<String, dynamic>>  itemSituacion = selectMap.situacionPlaga();
-    final List<Map<String, dynamic>>  itemProbSuelo = selectMap.problemasPlagaSuelo();
-    final List<Map<String, dynamic>>  itemProbSombra = selectMap.problemasPlagaSombra();
-    final List<Map<String, dynamic>>  itemProbManejo = selectMap.problemasPlagaManejo();
-    final List<Map<String, dynamic>>  _meses = selectMap.listMeses();
+    final List<Map<String, dynamic>>  itemPodaProblema = selectMap.podaProblemas();
+    final List<Map<String, dynamic>>  itemPodaAplicar = selectMap.podaAplicar();
+    final List<Map<String, dynamic>>  itemDondeAplicar = selectMap.dondeAplicar();
+    final List<Map<String, dynamic>>  itemVigorPlanta = selectMap.vigorPlanta();
+    final List<Map<String, dynamic>>  itemEntraLuz = selectMap.entraLuz();
+    final List<Map<String, dynamic>>  itemMeses = selectMap.listMeses();
     final List<Map<String, dynamic>>  listSoluciones = selectMap.solucionesXmes();
     
     Widget textFalse = Text('0.00%', textAlign: TextAlign.center);
-
+    Widget textmt= Text('0', textAlign: TextAlign.center);
     final Map checksPrincipales = {};
 
     
@@ -36,14 +34,13 @@ class _ReportePageState extends State<ReportePage> {
 
     Future getdata(String idTest) async{
 
-        List<Decisiones> listDecisiones = await DBProvider.db.getDecisionesIdTest(idTest);         
-        List<Acciones> listAcciones= await DBProvider.db.getAccionesIdTest(idTest);
-        Testplaga testplaga = await DBProvider.db.getTestId(idTest);
+        List<Decisiones> listDecisiones = await DBProvider.db.getDecisionesIdTest(idTest);
+        TestPoda testplaga = await DBProvider.db.getTestId(idTest);
 
         Finca finca = await DBProvider.db.getFincaId(testplaga.idFinca);
         Parcela parcela = await DBProvider.db.getParcelaId(testplaga.idLote);
 
-        return [listDecisiones, listAcciones, finca, parcela];
+        return [listDecisiones, finca, parcela];
     }
 
     Future<double> _countPercentPlaga(String idTest, int estacion, int idPlaga) async{
@@ -67,6 +64,33 @@ class _ReportePageState extends State<ReportePage> {
         return countProduccion*100;
     }
 
+    Future<double> _countAlturaEstacion(String idTest, int estacion) async{
+        double countAlturaestacion = await DBProvider.db.countAlturaEstacion(idTest, estacion);
+        return countAlturaestacion;
+    }
+    Future<double> _countAlturaTotal(String idTest) async{
+        double countAlturaTotal = await DBProvider.db.countAlturaTotal(idTest);
+        return countAlturaTotal;
+    }
+
+    Future<double> _countAnchoEstacion(String idTest, int estacion) async{
+        double countAnchoestacion = await DBProvider.db.countAnchoEstacion(idTest, estacion);
+        return countAnchoestacion;
+    }
+    Future<double> _countAnchoTotal(String idTest) async{
+        double countAnchoTotal = await DBProvider.db.countAnchoTotal(idTest);
+        return countAnchoTotal;
+    }
+
+    Future<double> _countLargoEstacion(String idTest, int estacion) async{
+        double countLargoestacion = await DBProvider.db.countLargoEstacion(idTest, estacion);
+        return countLargoestacion;
+    }
+    Future<double> _countLargoTotal(String idTest) async{
+        double countLargoTotal = await DBProvider.db.countLargoTotal(idTest);
+        return countLargoTotal;
+    }
+
     
 
     @override
@@ -82,18 +106,16 @@ class _ReportePageState extends State<ReportePage> {
                         return CircularProgressIndicator();
                     }
                     List<Widget> pageItem = List<Widget>();
-                    Finca finca = snapshot.data[2];
-                    Parcela parcela = snapshot.data[3];
+                    Finca finca = snapshot.data[1];
+                    Parcela parcela = snapshot.data[2];
 
                     pageItem.add(_principalData(idTest,context, finca, parcela));
                     
-                    pageItem.add( _plagasPrincipales(snapshot.data[0]));
+                    pageItem.add( _podaProblemas(snapshot.data[0]));
                     _plagasPDF(idTest,1);
-                    pageItem.add( _situacionPlaga(snapshot.data[0]));
-                    pageItem.add( _problemasSuelo(snapshot.data[0]));
-                    pageItem.add( _problemasSombra(snapshot.data[0]));
-                    pageItem.add( _problemasManejo(snapshot.data[0]));
-                    pageItem.add( _accionesMeses(snapshot.data[1]));
+                    pageItem.add( _podaAplicar(snapshot.data[0]));
+                    pageItem.add( _vigorPlanta(snapshot.data[0]));
+                    pageItem.add( _accionesMeses(snapshot.data[0]));
                     
                     
                     return Column(
@@ -170,7 +192,7 @@ class _ReportePageState extends State<ReportePage> {
                                             child: Padding(
                                                 padding: EdgeInsets.only(top: 20, bottom: 10),
                                                 child: Text(
-                                                    "Porcentaje de plantas afectadas",
+                                                    "Datos consolidados",
                                                     textAlign: TextAlign.center,
                                                     style: Theme.of(context).textTheme
                                                         .headline5
@@ -198,6 +220,9 @@ class _ReportePageState extends State<ReportePage> {
                                                 children: [
                                                     _encabezadoTabla(),
                                                     Divider(),
+                                                    _countAltura(plagaid),
+                                                    _countAncho(plagaid),
+                                                    _countLargo(plagaid),
                                                     _countPlagas(plagaid, 1),
                                                     _countProduccion(plagaid),
                                                 ],
@@ -214,6 +239,7 @@ class _ReportePageState extends State<ReportePage> {
 
             
     }
+    
     Widget _dataFincas( BuildContext context, Finca finca, Parcela parcela ){
         String labelMedidaFinca;
         String labelvariedad;
@@ -342,32 +368,247 @@ class _ReportePageState extends State<ReportePage> {
                                             .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
                 ),),
                 Container(
-                    width: 64,
+                    width: 45,
                     child: Text('1', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
                             .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
                 ),
                 Container(
-                    width: 64,
+                    width: 45,
                     child: Text('2', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
                             .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
                 ),
                 Container(
-                    width: 64,
+                    width: 45,
                     child: Text('3', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
                             .copyWith(fontSize: 16, fontWeight: FontWeight.w600))
                 ),
                 Container(
-                    width: 64,
+                    width: 45,
                     child: Text('Total', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
                             .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
                 ),
             ],
         );
-
-        
     }
 
-    
+    Widget _countAltura(String idTest){
+        List<Widget> lisItem = List<Widget>();
+
+
+            lisItem.add(
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                        Expanded(child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Text('Altura mt', textAlign: TextAlign.left, style:TextStyle(fontWeight: FontWeight.bold) ,),
+                        ),),
+                        Container(
+                            width: 45,
+                            child: FutureBuilder(
+                                future: _countAlturaEstacion(idTest, 1),
+                                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                    if (!snapshot.hasData) {
+                                        return textmt;
+                                    }
+
+                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                },
+                            ),
+                        ),
+                        Container(
+                            width: 45,
+                            child: FutureBuilder(
+                                future: _countAlturaEstacion(idTest, 2),
+                                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                    if (!snapshot.hasData) {
+                                        return textmt;
+                                    }
+
+                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                },
+                            ),
+                        ),
+                        Container(
+                            width: 45,
+                            child: FutureBuilder(
+                                future: _countAlturaEstacion(idTest, 3),
+                                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                    if (!snapshot.hasData) {
+                                        return textmt;
+                                    }
+
+                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                },
+                            ),
+                        ),
+                        Container(
+                            width: 45,
+                            child: FutureBuilder(
+                                future: _countAlturaTotal(idTest),
+                                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                    if (!snapshot.hasData) {
+                                        return textmt;
+                                    }
+
+                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                },
+                            ),
+                        ),
+                        
+                    ],
+                )
+            );
+            lisItem.add(Divider());
+        
+        return Column(children:lisItem,);
+    }
+
+    Widget _countAncho(String idTest){
+        List<Widget> lisItem = List<Widget>();
+
+
+            lisItem.add(
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                        Expanded(child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Text('Ancho mt', textAlign: TextAlign.left, style:TextStyle(fontWeight: FontWeight.bold) ,),
+                        ),),
+                        Container(
+                            width: 45,
+                            child: FutureBuilder(
+                                future: _countAnchoEstacion(idTest, 1),
+                                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                    if (!snapshot.hasData) {
+                                        return textmt;
+                                    }
+
+                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                },
+                            ),
+                        ),
+                        Container(
+                            width: 45,
+                            child: FutureBuilder(
+                                future: _countAnchoEstacion(idTest, 2),
+                                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                    if (!snapshot.hasData) {
+                                        return textmt;
+                                    }
+
+                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                },
+                            ),
+                        ),
+                        Container(
+                            width: 45,
+                            child: FutureBuilder(
+                                future: _countAnchoEstacion(idTest, 3),
+                                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                    if (!snapshot.hasData) {
+                                        return textmt;
+                                    }
+
+                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                },
+                            ),
+                        ),
+                        Container(
+                            width: 45,
+                            child: FutureBuilder(
+                                future: _countAnchoTotal(idTest),
+                                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                    if (!snapshot.hasData) {
+                                        return textmt;
+                                    }
+
+                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                },
+                            ),
+                        ),
+                        
+                    ],
+                )
+            );
+            lisItem.add(Divider());
+        
+        return Column(children:lisItem,);
+    }
+
+    Widget _countLargo(String idTest){
+        List<Widget> lisItem = List<Widget>();
+
+
+            lisItem.add(
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                        Expanded(child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Text('Largo mt', textAlign: TextAlign.left, style:TextStyle(fontWeight: FontWeight.bold) ,),
+                        ),),
+                        Container(
+                            width: 45,
+                            child: FutureBuilder(
+                                future: _countLargoEstacion(idTest, 1),
+                                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                    if (!snapshot.hasData) {
+                                        return textmt;
+                                    }
+
+                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                },
+                            ),
+                        ),
+                        Container(
+                            width: 45,
+                            child: FutureBuilder(
+                                future: _countLargoEstacion(idTest, 2),
+                                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                    if (!snapshot.hasData) {
+                                        return textmt;
+                                    }
+
+                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                },
+                            ),
+                        ),
+                        Container(
+                            width: 45,
+                            child: FutureBuilder(
+                                future: _countLargoEstacion(idTest, 3),
+                                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                    if (!snapshot.hasData) {
+                                        return textmt;
+                                    }
+
+                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                },
+                            ),
+                        ),
+                        Container(
+                            width: 45,
+                            child: FutureBuilder(
+                                future: _countLargoTotal(idTest),
+                                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                    if (!snapshot.hasData) {
+                                        return textmt;
+                                    }
+
+                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                },
+                            ),
+                        ),
+                        
+                    ],
+                )
+            );
+            lisItem.add(Divider());
+        
+        return Column(children:lisItem,);
+    }
 
     Widget _countPlagas(String idTest, int estacion){
         List<Widget> lisItem = List<Widget>();
@@ -384,7 +625,7 @@ class _ReportePageState extends State<ReportePage> {
                             child: Text('$labelPlaga', textAlign: TextAlign.left, style:TextStyle(fontWeight: FontWeight.bold) ,),
                         ),),
                         Container(
-                            width: 50,
+                            width: 45,
                             child: FutureBuilder(
                                 future: _countPercentPlaga(idTest, 1, idplga),
                                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -397,7 +638,7 @@ class _ReportePageState extends State<ReportePage> {
                             ),
                         ),
                         Container(
-                            width: 50,
+                            width: 45,
                             child: FutureBuilder(
                                 future: _countPercentPlaga(idTest, 2, idplga),
                                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -410,7 +651,7 @@ class _ReportePageState extends State<ReportePage> {
                             ),
                         ),
                         Container(
-                            width: 50,
+                            width: 45,
                             child: FutureBuilder(
                                 future: _countPercentPlaga(idTest, 3, idplga),
                                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -423,7 +664,7 @@ class _ReportePageState extends State<ReportePage> {
                             ),
                         ),
                         Container(
-                            width: 50,
+                            width: 45,
                             child: FutureBuilder(
                                 future: _countPercentTotal(idTest, idplga),
                                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -474,7 +715,7 @@ class _ReportePageState extends State<ReportePage> {
                             child: Text('%${nameProd[i]}', textAlign: TextAlign.left, style:TextStyle(fontWeight: FontWeight.bold) ,),
                         ),),
                         Container(
-                            width: 50,
+                            width: 45,
                             child: FutureBuilder(
                                 future: _countPercentProduccion(idTest, 1, i+1),
                                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -487,7 +728,7 @@ class _ReportePageState extends State<ReportePage> {
                             ),
                         ),
                         Container(
-                            width: 50,
+                            width: 45,
                             child: FutureBuilder(
                                 future: _countPercentProduccion(idTest, 2, i+1),
                                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -500,7 +741,7 @@ class _ReportePageState extends State<ReportePage> {
                             ),
                         ),
                         Container(
-                            width: 50,
+                            width: 45,
                             child: FutureBuilder(
                                 future: _countPercentProduccion(idTest, 3, i+1),
                                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -513,7 +754,7 @@ class _ReportePageState extends State<ReportePage> {
                             ),
                         ),
                         Container(
-                            width: 50,
+                            width: 45,
                             child: FutureBuilder(
                                 future: _countPercentTotalProduccion(idTest, i+1),
                                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -535,7 +776,7 @@ class _ReportePageState extends State<ReportePage> {
         return Column(children:lisProd,);
     }
 
-    Widget _plagasPrincipales(List<Decisiones> decisionesList){
+    Widget _podaProblemas(List<Decisiones> decisionesList){
         List<Widget> listPrincipales = List<Widget>();
 
         listPrincipales.add(
@@ -545,11 +786,11 @@ class _ReportePageState extends State<ReportePage> {
                         child: Padding(
                             padding: EdgeInsets.only(top: 20, bottom: 10),
                             child: Text(
-                                "Plagas principales del momento",
+                                "Problemas de poda",
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
                                     .headline5
-                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 20)
+                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 18)
                             ),
                         )
                     ),
@@ -563,7 +804,7 @@ class _ReportePageState extends State<ReportePage> {
         for (var item in decisionesList) {
 
             if (item.idPregunta == 1) {
-                String label = itemPoda.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
+                String label = itemPodaProblema.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
 
                 listPrincipales.add(
 
@@ -581,8 +822,6 @@ class _ReportePageState extends State<ReportePage> {
                 );
             }
             
-            
-            
         }
         
         return SingleChildScrollView(
@@ -607,7 +846,7 @@ class _ReportePageState extends State<ReportePage> {
         
     }
 
-    Widget _situacionPlaga(List<Decisiones> decisionesList){
+    Widget _podaAplicar(List<Decisiones> decisionesList){
         List<Widget> listPrincipales = List<Widget>();
 
         listPrincipales.add(
@@ -617,11 +856,11 @@ class _ReportePageState extends State<ReportePage> {
                         child: Padding(
                             padding: EdgeInsets.only(top: 20, bottom: 10),
                             child: Text(
-                                "Situación de las plagas en la parcela",
+                                "¿Qué tipo de poda debemos aplicar?",
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
                                     .headline5
-                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 20)
+                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 18)
                             ),
                         )
                     ),
@@ -635,7 +874,7 @@ class _ReportePageState extends State<ReportePage> {
         for (var item in decisionesList) {
 
             if (item.idPregunta == 2) {
-                String label= itemSituacion.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
+                String label= itemPodaAplicar.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
 
                 listPrincipales.add(
 
@@ -654,31 +893,6 @@ class _ReportePageState extends State<ReportePage> {
             }
             
         }
-        
-        return SingleChildScrollView(
-            child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                        BoxShadow(
-                                color: Color(0xFF3A5160)
-                                    .withOpacity(0.05),
-                                offset: const Offset(1.1, 1.1),
-                                blurRadius: 17.0),
-                        ],
-                ),
-                child: Column(children:listPrincipales,)
-            ),
-        );
-        
-    }
-
-    Widget _problemasSuelo(List<Decisiones> decisionesList){
-        List<Widget> listPrincipales = List<Widget>();
 
         listPrincipales.add(
             Column(
@@ -687,11 +901,11 @@ class _ReportePageState extends State<ReportePage> {
                         child: Padding(
                             padding: EdgeInsets.only(top: 20, bottom: 10),
                             child: Text(
-                                "¿Porqué hay problemas de plagas?  Suelo",
+                                "¿En qué parte vamos a aplicar las pod",
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
                                     .headline5
-                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 20)
+                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 18)
                             ),
                         )
                     ),
@@ -705,7 +919,7 @@ class _ReportePageState extends State<ReportePage> {
         for (var item in decisionesList) {
 
             if (item.idPregunta == 3) {
-                String label= itemProbSuelo.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
+                String label= itemDondeAplicar.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
 
                 listPrincipales.add(
 
@@ -722,8 +936,6 @@ class _ReportePageState extends State<ReportePage> {
                     
                 );
             }
-            
-            
             
         }
         
@@ -749,7 +961,7 @@ class _ReportePageState extends State<ReportePage> {
         
     }
 
-    Widget _problemasSombra(List<Decisiones> decisionesList){
+    Widget _vigorPlanta(List<Decisiones> decisionesList){
         List<Widget> listPrincipales = List<Widget>();
 
         listPrincipales.add(
@@ -759,11 +971,11 @@ class _ReportePageState extends State<ReportePage> {
                         child: Padding(
                             padding: EdgeInsets.only(top: 20, bottom: 10),
                             child: Text(
-                                "¿Porqué hay problemas de plagas?  Sombra",
+                                "¿Las plantas tiene suficiente vigor?",
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
                                     .headline5
-                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 20)
+                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 18)
                             ),
                         )
                     ),
@@ -777,7 +989,7 @@ class _ReportePageState extends State<ReportePage> {
         for (var item in decisionesList) {
 
             if (item.idPregunta == 4) {
-                String label= itemProbSombra.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
+                String label= itemVigorPlanta.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
 
                 listPrincipales.add(
 
@@ -794,49 +1006,20 @@ class _ReportePageState extends State<ReportePage> {
                     
                 );
             }
-            
-            
-            
         }
-        
-        return SingleChildScrollView(
-            child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                        BoxShadow(
-                                color: Color(0xFF3A5160)
-                                    .withOpacity(0.05),
-                                offset: const Offset(1.1, 1.1),
-                                blurRadius: 17.0),
-                        ],
-                ),
-                child: Column(children:listPrincipales,)
-            ),
-        );
-        
-    }
-
-    Widget _problemasManejo(List<Decisiones> decisionesList){
-        List<Widget> listPrincipales = List<Widget>();
 
         listPrincipales.add(
-            
             Column(
                 children: [
                     Container(
                         child: Padding(
                             padding: EdgeInsets.only(top: 20, bottom: 10),
                             child: Text(
-                                "¿Porqué hay problemas de plagas? Manejo",
+                                "¿Las plantas tiene suficiente vigor?",
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
                                     .headline5
-                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 20)
+                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 18)
                             ),
                         )
                     ),
@@ -850,7 +1033,7 @@ class _ReportePageState extends State<ReportePage> {
         for (var item in decisionesList) {
 
             if (item.idPregunta == 5) {
-                String label= itemProbManejo.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
+                String label= itemEntraLuz.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
 
                 listPrincipales.add(
 
@@ -858,7 +1041,7 @@ class _ReportePageState extends State<ReportePage> {
                         child: CheckboxListTile(
                         title: Text('$label'),
                             value: item.repuesta == 1 ? true : false ,
-                            activeColor: Colors.teal[900],
+                            activeColor: Colors.teal[900], 
                             onChanged: (value) {
                                 
                             },
@@ -867,9 +1050,6 @@ class _ReportePageState extends State<ReportePage> {
                     
                 );
             }
-            
-            
-            
         }
         
         return SingleChildScrollView(
@@ -893,8 +1073,8 @@ class _ReportePageState extends State<ReportePage> {
         );
         
     }
-
-    Widget _accionesMeses(List<Acciones> listAcciones){
+    
+    Widget _accionesMeses(List<Decisiones> decisionesList){
         List<Widget> listPrincipales = List<Widget>();
 
         listPrincipales.add(
@@ -904,11 +1084,11 @@ class _ReportePageState extends State<ReportePage> {
                         child: Padding(
                             padding: EdgeInsets.only(top: 20, bottom: 10),
                             child: Text(
-                                "¿Qué acciones vamos a realizar y cuando?",
+                                "¿Cúando vamos a realizar las podas?",
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
                                     .headline5
-                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 20)
+                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 18)
                             ),
                         )
                     ),
@@ -919,37 +1099,26 @@ class _ReportePageState extends State<ReportePage> {
         );
         
         
-        for (var item in listAcciones) {
+        for (var item in decisionesList) {
 
-                List<String> meses = [];
-                String label= listSoluciones.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
-                List listaMeses = jsonDecode(item.repuesta);
-                if (listaMeses.length==0) {
-                    meses.add('Sin aplicar');
-                }
-                for (var item in listaMeses) {
-                    String mes = _meses.firstWhere((e) => e['value'] == '$item', orElse: () => {"value": "1","label": "No data"})['label'];
-                    
-                    meses.add(mes);
-                }
-                
+            if (item.idPregunta == 6) {
+                String label= itemMeses.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
 
                 listPrincipales.add(
 
-                    ListTile(
-                        title: Text('$label',
-                            style: Theme.of(context).textTheme
-                                    .headline5
-                                    .copyWith(fontWeight: FontWeight.bold, fontSize: 16)
+                    Container(
+                        child: CheckboxListTile(
+                        title: Text('$label'),
+                            value: item.repuesta == 1 ? true : false ,
+                            activeColor: Colors.teal[900], 
+                            onChanged: (value) {
+                                
+                            },
                         ),
-                        subtitle: Text(meses.join(","+" ")),
-                    )                 
+                    )                  
                     
                 );
-            
-            
-            
-            
+            }
         }
         return SingleChildScrollView(
             child: Container(
@@ -988,7 +1157,7 @@ class _ReportePageState extends State<ReportePage> {
                             child: Text('$labelPlaga', textAlign: TextAlign.left, style:TextStyle(fontWeight: FontWeight.bold) ,),
                         ),),
                         Container(
-                            width: 50,
+                            width: 45,
                             child: FutureBuilder(
                                 future: _countPercentPlaga(idTest, 1, idplga),
                                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -1001,7 +1170,7 @@ class _ReportePageState extends State<ReportePage> {
                             ),
                         ),
                         Container(
-                            width: 50,
+                            width: 45,
                             child: FutureBuilder(
                                 future: _countPercentPlaga(idTest, 2, idplga),
                                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -1014,7 +1183,7 @@ class _ReportePageState extends State<ReportePage> {
                             ),
                         ),
                         Container(
-                            width: 50,
+                            width: 45,
                             child: FutureBuilder(
                                 future: _countPercentPlaga(idTest, 3, idplga),
                                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -1027,7 +1196,7 @@ class _ReportePageState extends State<ReportePage> {
                             ),
                         ),
                         Container(
-                            width: 50,
+                            width: 45,
                             child: FutureBuilder(
                                 future: _countPercentTotal(idTest, idplga),
                                 builder: (BuildContext context, AsyncSnapshot snapshot) {

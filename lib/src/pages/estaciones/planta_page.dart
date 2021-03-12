@@ -1,7 +1,7 @@
 //import 'package:app_poda/src/models/planta_model.dart';
 import 'package:app_poda/src/bloc/fincas_bloc.dart';
 import 'package:app_poda/src/models/planta_model.dart';
-import 'package:app_poda/src/models/testplaga_model.dart';
+import 'package:app_poda/src/models/testpoda_model.dart';
 import 'package:app_poda/src/utils/constants.dart';
 import 'package:app_poda/src/utils/widget/dialogDelete.dart';
 import 'package:app_poda/src/utils/widget/titulos.dart';
@@ -21,7 +21,7 @@ class _PlantaPageState extends State<PlantaPage> {
     @override
     Widget build(BuildContext context) {
         List dataEstaciones = ModalRoute.of(context).settings.arguments;
-        Testplaga plaga = dataEstaciones[0];
+        TestPoda plaga = dataEstaciones[0];
         int indiceEstacion = dataEstaciones[1]+1;
         fincasBloc.obtenerPlantaIdTest(plaga.id, indiceEstacion);
 
@@ -138,7 +138,7 @@ class _PlantaPageState extends State<PlantaPage> {
 
     
 
-    Widget  _countPlanta(String idPlaga,  int estacion, Testplaga plaga){
+    Widget  _countPlanta(String idPlaga,  int estacion, TestPoda plaga){
         return StreamBuilder<List<Planta>>(
             stream: fincasBloc.plantaStream,
             
@@ -218,7 +218,7 @@ class _PlantaPageState extends State<PlantaPage> {
     }
 
 
-    Widget  _addPlanta(BuildContext context,  int estacion, Testplaga plaga, int value){
+    Widget  _addPlanta(BuildContext context,  int estacion, TestPoda plaga, int value){
         return RaisedButton.icon(
             
             icon:Icon(Icons.add_circle_outline_outlined),

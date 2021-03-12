@@ -1,5 +1,5 @@
 import 'package:app_poda/src/bloc/fincas_bloc.dart';
-import 'package:app_poda/src/models/testplaga_model.dart';
+import 'package:app_poda/src/models/testpoda_model.dart';
 import 'package:app_poda/src/providers/db_provider.dart';
 import 'package:app_poda/src/utils/constants.dart';
 import 'package:app_poda/src/utils/widget/dialogDelete.dart';
@@ -22,7 +22,7 @@ class TestPage extends StatefulWidget {
 class _TestPageState extends State<TestPage> {
 
     
-    Future _getdataFinca(Testplaga textPlaga) async{
+    Future _getdataFinca(TestPoda textPlaga) async{
         Finca finca = await DBProvider.db.getFincaId(textPlaga.idFinca);
         Parcela parcela = await DBProvider.db.getParcelaId(textPlaga.idLote);
         return [finca, parcela];
@@ -31,12 +31,12 @@ class _TestPageState extends State<TestPage> {
     @override
     Widget build(BuildContext context) {
         var size = MediaQuery.of(context).size;
-        fincasBloc.obtenerPlagas();
+        fincasBloc.obtenerPodas();
 
         return Scaffold(
                 appBar: AppBar(),
-                body: StreamBuilder<List<Testplaga>>(
-                    stream: fincasBloc.plagaStream,
+                body: StreamBuilder<List<TestPoda>>(
+                    stream: fincasBloc.podaStream,
 
                     
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -45,7 +45,7 @@ class _TestPageState extends State<TestPage> {
 
                         }
 
-                        List<Testplaga> textPlagas= snapshot.data;
+                        List<TestPoda> textPlagas= snapshot.data;
                         if (textPlagas.length == 0) {
                             return Column(
                                 children: [
@@ -124,7 +124,7 @@ class _TestPageState extends State<TestPage> {
                     direction: DismissDirection.endToStart,
                     background: backgroundTrash(context),
                     movementDuration: Duration(milliseconds: 500),
-                    onDismissed: (direction) => fincasBloc.borrarTestPlaga(textPlagas[index].id),
+                    onDismissed: (direction) => fincasBloc.borrarTestPoda(textPlagas[index].id),
                 );
                
             },
@@ -136,7 +136,7 @@ class _TestPageState extends State<TestPage> {
 
     }
 
-    Widget _cardTest(Size size, Testplaga textPlaga, Finca finca, Parcela parcela){
+    Widget _cardTest(Size size, TestPoda textPlaga, Finca finca, Parcela parcela){
         
         return Container(
             margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),

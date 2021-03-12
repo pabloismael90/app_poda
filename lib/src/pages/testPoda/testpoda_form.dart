@@ -1,6 +1,6 @@
 //import 'dart:html';
 
-import 'package:app_poda/src/models/testplaga_model.dart';
+import 'package:app_poda/src/models/testpoda_model.dart';
 import 'package:app_poda/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +22,7 @@ class _AgregarTestState extends State<AgregarTest> {
 
 
 
-    Testplaga plaga = new Testplaga();
+    TestPoda plaga = new TestPoda();
     final fincasBloc = new FincasBloc();
 
     bool _guardando = false;
@@ -35,7 +35,7 @@ class _AgregarTestState extends State<AgregarTest> {
     String _fecha = '';
     TextEditingController _inputfecha = new TextEditingController();
 
-    List<Testplaga> mainlistplagas ;
+    List<TestPoda> mainlistplagas ;
 
     List mainparcela;
     TextEditingController _control;
@@ -237,9 +237,9 @@ class _AgregarTestState extends State<AgregarTest> {
 
 
     Widget  _botonsubmit(){
-        fincasBloc.obtenerPlagas();
+        fincasBloc.obtenerPodas();
         return StreamBuilder(
-            stream: fincasBloc.plagaStream ,
+            stream: fincasBloc.podaStream ,
             builder: (BuildContext context, AsyncSnapshot snapshot){
                 if (!snapshot.hasData) {
                     return Container();

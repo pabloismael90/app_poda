@@ -1,5 +1,6 @@
-import 'package:app_poda/src/models/acciones_model.dart';
-import 'package:app_poda/src/models/testplaga_model.dart';
+
+import 'package:app_poda/src/models/decisiones_model.dart';
+import 'package:app_poda/src/models/testpoda_model.dart';
 import 'package:app_poda/src/providers/db_provider.dart';
 import 'package:app_poda/src/utils/constants.dart';
 import 'package:app_poda/src/utils/widget/titulos.dart';
@@ -12,14 +13,14 @@ class DesicionesList extends StatelessWidget {
     
     Future getRegistros() async{
         
-        List<Acciones> listAcciones= await DBProvider.db.getTodasAcciones();
+        List<Decisiones> listAcciones= await DBProvider.db.getTodasDesiciones();
 
         return listAcciones;
     }
 
     Future getDatos(String id) async{
         
-        Testplaga testplaga= await DBProvider.db.getTestId(id);
+        TestPoda testplaga= await DBProvider.db.getTestId(id);
 
         Finca finca = await DBProvider.db.getFincaId(testplaga.idFinca);
         Parcela parcela = await DBProvider.db.getParcelaId(testplaga.idLote);
@@ -61,7 +62,7 @@ class DesicionesList extends StatelessWidget {
                             if (!snapshot.hasData) {
                                 return CircularProgressIndicator();
                             }
-                            Testplaga testplagadata = snapshot.data[0];
+                            TestPoda testplagadata = snapshot.data[0];
                             Finca fincadata = snapshot.data[1];
                             Parcela parceladata = snapshot.data[2];
 
@@ -82,7 +83,7 @@ class DesicionesList extends StatelessWidget {
 
     }
 
-    Widget _cardDesiciones(Testplaga textPlaga, Finca finca, Parcela parcela, BuildContext context){
+    Widget _cardDesiciones(TestPoda textPlaga, Finca finca, Parcela parcela, BuildContext context){
         return Container(
             margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             width: double.infinity,

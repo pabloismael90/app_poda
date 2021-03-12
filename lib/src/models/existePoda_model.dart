@@ -1,5 +1,5 @@
-class ExistePlaga {
-    ExistePlaga({
+class ExistePoda {
+    ExistePoda({
         this.id,
         this.idPlaga,
         this.idPlanta,
@@ -11,7 +11,7 @@ class ExistePlaga {
     String idPlanta;
     int existe;
 
-    factory ExistePlaga.fromJson(Map<String, dynamic> json) => ExistePlaga(
+    factory ExistePoda.fromJson(Map<String, dynamic> json) => ExistePoda(
         id: json["id"],
         idPlaga: json["idPlaga"],
         idPlanta: json["idPlanta"],

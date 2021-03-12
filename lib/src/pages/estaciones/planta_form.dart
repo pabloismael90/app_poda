@@ -1,5 +1,5 @@
 import 'package:app_poda/src/bloc/fincas_bloc.dart';
-import 'package:app_poda/src/models/existePlaga_model.dart';
+import 'package:app_poda/src/models/existePoda_model.dart';
 import 'package:app_poda/src/models/planta_model.dart';
 
 import 'package:app_poda/src/models/selectValue.dart' as selectMap;
@@ -24,8 +24,8 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
     var uuid = Uuid();
 
     Planta planta = Planta();
-    ExistePlaga existePlaga = ExistePlaga();
-    List<ExistePlaga> listaPodas = [];
+    ExistePoda existePodaExistePoda = ExistePoda();
+    List<ExistePoda> listaPodas = [];
 
     final fincasBloc = new FincasBloc();
     
@@ -140,7 +140,7 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
             children: <Widget>[
                 Flexible(
                     child: TextFormField(
-                        initialValue: 0.toString(),
+                        initialValue: planta.altura.toString(),
                         keyboardType: TextInputType.numberWithOptions(decimal: true),
                         decoration: InputDecoration(
                             labelText: 'Altura en mt'
@@ -149,16 +149,16 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                             if (double.parse(value) > 0) {
                                 return null;
                             } else {
-                                return 'Área mayor a cero';
+                                return 'Altura mayor a 0';
                             }
                         },
-                        //onSaved: (value) => parcela.areaLote = double.parse(value),
+                        onSaved: (value) => planta.altura = double.parse(value),
                     )
                 ),
                 SizedBox(width: 20.0,),
                 Flexible(
                     child: TextFormField(
-                        initialValue: 0.toString(),
+                        initialValue: planta.ancho.toString(),
                         keyboardType: TextInputType.numberWithOptions(decimal: true),
                         decoration: InputDecoration(
                             labelText: 'Ancho en mt'
@@ -167,10 +167,10 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                             if (double.parse(value) > 0) {
                                 return null;
                             } else {
-                                return 'Área mayor a cero';
+                                return 'Ancho mayor a cero';
                             }
                         },
-                        //onSaved: (value) => parcela.areaLote = double.parse(value),
+                        onSaved: (value) => planta.ancho = double.parse(value),
                     )
                 ),
             ],
@@ -181,7 +181,7 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
     Widget _largoMadera(){
 
         return TextFormField(
-            initialValue: 0.toString(),
+            initialValue: planta.largo.toString(),
             keyboardType: TextInputType.numberWithOptions(decimal: true),
             decoration: InputDecoration(
                 labelText: 'Largo de madera productiva'
@@ -190,10 +190,10 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                 if (double.parse(value) > 0) {
                     return null;
                 } else {
-                    return 'Área mayor a cero';
+                    return 'Largo de madera productiva mayor a cero';
                 }
             },
-            //onSaved: (value) => parcela.areaLote = double.parse(value),
+            onSaved: (value) => planta.largo = double.parse(value),
         );
         
     }
@@ -329,7 +329,7 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
     _listaPodas(){
 
         radios.forEach((key, value) {
-            final ExistePlaga itemPoda = ExistePlaga();
+            final ExistePoda itemPoda = ExistePoda();
             itemPoda.id = uuid.v1();
             itemPoda.idPlanta = planta.id;
             itemPoda.idPlaga = int.parse(key);
@@ -342,6 +342,12 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
     }
 
     void _submit(){
+
+        if  ( !formKey.currentState.validate() ){
+            //Cuendo el form no es valido
+            return null;
+        }
+
         variableVacias = 0;
         radios.forEach((key, value) {
             if (value == '-1') {
@@ -360,6 +366,12 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
             return null;
         }
 
+        formKey.currentState.save();
+        // print(planta.altura);
+        // print(planta.ancho);
+        // print(planta.largo);
+
+
         setState(() {_guardando = true;});
 
         
@@ -369,7 +381,7 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
             fincasBloc.addPlata(planta, planta.idTest, planta.estacion);
 
             listaPodas.forEach((item) {
-                DBProvider.db.nuevoExistePlagas(item);
+                DBProvider.db.nuevoExistePodas(item);
             });
 
         }

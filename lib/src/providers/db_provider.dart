@@ -1,10 +1,9 @@
 import 'dart:io';
 
-import 'package:app_poda/src/models/acciones_model.dart';
 import 'package:app_poda/src/models/decisiones_model.dart';
-import 'package:app_poda/src/models/existePlaga_model.dart';
+import 'package:app_poda/src/models/existePoda_model.dart';
 import 'package:app_poda/src/models/planta_model.dart';
-import 'package:app_poda/src/models/testplaga_model.dart';
+import 'package:app_poda/src/models/testpoda_model.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
@@ -34,9 +33,9 @@ class DBProvider {
 
         Directory documentsDirectory = await getApplicationDocumentsDirectory();
 
-        final path = join( documentsDirectory.path, 'herramienta.db' );
+        final path = join( documentsDirectory.path, 'poda.db' );
 
-        print(path);
+        //print(path);
 
         return await openDatabase(
             path,
@@ -69,7 +68,7 @@ class DBProvider {
                 );
 
                 await db.execute(
-                    'CREATE TABLE TestPlaga ('
+                    'CREATE TABLE TestPoda ('
                     ' id TEXT PRIMARY KEY,'
                     ' idFinca TEXT,'
                     ' idLote TEXT,'
@@ -84,19 +83,22 @@ class DBProvider {
                     'CREATE TABLE Planta ('
                     'id TEXT PRIMARY KEY,'
                     ' idTest TEXT,'
+                    ' altura REAL,'
+                    ' ancho REAL,'
+                    ' largo REAL,'
                     ' estacion INTEGER,'
                     ' produccion INTEGER,'
-                    ' CONSTRAINT fk_testPlaga FOREIGN KEY(idTest) REFERENCES TestPlaga(id) ON DELETE CASCADE'
+                    ' CONSTRAINT fk_TestPoda FOREIGN KEY(idTest) REFERENCES TestPoda(id) ON DELETE CASCADE'
                     ')'
                 );
 
                 await db.execute(
-                    'CREATE TABLE ExistePlaga ('
+                    'CREATE TABLE ExistePoda ('
                     'id TEXT PRIMARY KEY,'
                     ' idPlaga INTEGER,'
                     ' idPlanta INTEGER,'
                     ' existe INTEGER,'
-                    ' CONSTRAINT fk_existePlaga FOREIGN KEY(idPlanta) REFERENCES Planta(id) ON DELETE CASCADE'
+                    ' CONSTRAINT fk_existePoda FOREIGN KEY(idPlanta) REFERENCES Planta(id) ON DELETE CASCADE'
                     ')'
                 );
 
@@ -108,17 +110,7 @@ class DBProvider {
                     ' idItem INTEGER,'
                     ' repuesta INTEGER,'
                     ' idTest TEXT,'
-                    ' CONSTRAINT fk_decisiones FOREIGN KEY(idTest) REFERENCES TestPlaga(id) ON DELETE CASCADE'
-                    ')'
-                );
-
-                await db.execute(
-                    'CREATE TABLE Acciones ('
-                    'id TEXT PRIMARY KEY,'
-                    ' idItem INTEGER,'
-                    ' repuesta TEXT,'
-                    ' idTest TEXT,'
-                    ' CONSTRAINT fk_acciones FOREIGN KEY(idTest) REFERENCES TestPlaga(id) ON DELETE CASCADE'
+                    ' CONSTRAINT fk_decisiones FOREIGN KEY(idTest) REFERENCES TestPoda(id) ON DELETE CASCADE'
                     ')'
                 );
             }
@@ -146,9 +138,9 @@ class DBProvider {
         return res;
     }
 
-    nuevoTestPlaga( Testplaga nuevaPlaga ) async {
+    nuevoTestPoda( TestPoda nuevaPlaga ) async {
         final db  = await database;
-        final res = await db.insert('TestPlaga',  nuevaPlaga.toJson() );
+        final res = await db.insert('TestPoda',  nuevaPlaga.toJson() );
         return res;
     }
 
@@ -158,9 +150,9 @@ class DBProvider {
         return res;
     }
 
-    nuevoExistePlagas( ExistePlaga existePlaga ) async {
+    nuevoExistePodas( ExistePoda existePoda ) async {
         final db  = await database;
-        final res = await db.insert('ExistePlaga',  existePlaga.toJson() );
+        final res = await db.insert('ExistePoda',  existePoda.toJson() );
         return res;
     }
 
@@ -170,11 +162,7 @@ class DBProvider {
         return res;
     }
 
-    nuevaAccion( Acciones acciones ) async {
-        final db  = await database;
-        final res = await db.insert('Acciones',  acciones.toJson() );
-        return res;
-    }
+
 
     
     
@@ -201,13 +189,13 @@ class DBProvider {
         return list;
     }
 
-    Future<List<Testplaga>> getTodasTestPlaga() async {
+    Future<List<TestPoda>> getTodasTestPoda() async {
 
         final db  = await database;
-        final res = await db.query('TestPlaga');
+        final res = await db.query('TestPoda');
 
-        List<Testplaga> list = res.isNotEmpty 
-                                ? res.map( (c) => Testplaga.fromJson(c) ).toList()
+        List<TestPoda> list = res.isNotEmpty 
+                                ? res.map( (c) => TestPoda.fromJson(c) ).toList()
                                 : [];
         return list;
     }
@@ -235,7 +223,7 @@ class DBProvider {
     Future<List<Decisiones>> getTodasDesiciones() async {
 
         final db  = await database;
-        final res = await db.query('Decisiones');
+        final res = await db.rawQuery('SELECT DISTINCT idTest FROM Decisiones');
 
         List<Decisiones> list = res.isNotEmpty 
                                 ? res.map( (c) => Decisiones.fromJson(c) ).toList()
@@ -243,18 +231,7 @@ class DBProvider {
         return list;
     }
 
-    Future<List<Acciones>> getTodasAcciones() async {
 
-        final db  = await database;
-        final res = await db.rawQuery('SELECT DISTINCT idTest FROM Acciones');
-
-        List<Acciones> list = res.isNotEmpty 
-                                ? res.map( (c) => Acciones.fromJson(c) ).toList()
-                                : [];
-
-        
-        return list;
-    }
     
     
     //REgistros por id
@@ -270,10 +247,10 @@ class DBProvider {
         return res.isNotEmpty ? Parcela.fromJson(res.first) : null;
     }
 
-    Future<Testplaga> getTestId(String id) async{
+    Future<TestPoda> getTestId(String id) async{
         final db = await database;
-        final res = await db.query('Testplaga', where: 'id = ?', whereArgs: [id]);
-        return res.isNotEmpty ? Testplaga.fromJson(res.first) : null;
+        final res = await db.query('TestPoda', where: 'id = ?', whereArgs: [id]);
+        return res.isNotEmpty ? TestPoda.fromJson(res.first) : null;
     }
 
     Future<List<Parcela>> getTodasParcelasIdFinca(String idFinca) async{
@@ -307,13 +284,13 @@ class DBProvider {
         return list;           
     }
 
-    Future<List<ExistePlaga>> getTodasPlagasIdPlanta(String idPlanta) async {
+    Future<List<ExistePoda>> getTodasPlagasIdPlanta(String idPlanta) async {
 
         final db  = await database;
-        final res = await db.rawQuery("SELECT * FROM ExistePlaga WHERE idPlanta = '$idPlanta'");
+        final res = await db.rawQuery("SELECT * FROM ExistePoda WHERE idPlanta = '$idPlanta'");
 
-        List<ExistePlaga> list = res.isNotEmpty 
-                    ? res.map( (c) => ExistePlaga.fromJson(c) ).toList() 
+        List<ExistePoda> list = res.isNotEmpty 
+                    ? res.map( (c) => ExistePoda.fromJson(c) ).toList() 
                     : [];
         //print(list);
         return list;
@@ -322,7 +299,7 @@ class DBProvider {
     Future<int> getPlagasIdPlanta(String idPlanta, int idplaga) async {
         
         final db  = await database;
-        String query = "SELECT existe FROM ExistePlaga WHERE idPlanta = '$idPlanta' AND idPlaga = '$idplaga'";
+        String query = "SELECT existe FROM ExistePoda WHERE idPlanta = '$idPlanta' AND idPlaga = '$idplaga'";
         final  res = await db.rawQuery(query);
         int value = res.isNotEmpty ? res[0]['existe'] : -1;
         //print(value);
@@ -339,14 +316,7 @@ class DBProvider {
         return list;
     }
 
-    Future<List<Acciones>> getAccionesIdTest(String idTest) async{
-        final db = await database;
-        final res = await db.query('Acciones', where: 'idTest = ?', whereArgs: [idTest]);
-        List<Acciones> list = res.isNotEmpty 
-                                ? res.map( (c) => Acciones.fromJson(c) ).toList()
-                                : [];
-        return list;
-    }
+
 
 
     //List Select
@@ -392,10 +362,10 @@ class DBProvider {
 
     }
 
-    Future<int> updateTestPlaga( Testplaga nuevaPlaga ) async {
+    Future<int> updateTestPoda( TestPoda nuevaPlaga ) async {
 
         final db  = await database;
-        final res = await db.update('TestPlaga', nuevaPlaga.toJson(), where: 'id = ?', whereArgs: [nuevaPlaga.id] );
+        final res = await db.update('TestPoda', nuevaPlaga.toJson(), where: 'id = ?', whereArgs: [nuevaPlaga.id] );
         return res;
 
     }
@@ -405,9 +375,9 @@ class DBProvider {
     Future<double> countPlagaEstacion( String idTest, int estacion, int idPlaga) async {
 
         final db = await database;
-        String query =  "SELECT COUNT(*) FROM TestPlaga "+
-                        "INNER JOIN Planta ON TestPlaga.id = Planta.idTest " +
-                        "INNER JOIN ExistePlaga ON  Planta.id = ExistePlaga.idPlanta " +
+        String query =  "SELECT COUNT(*) FROM TestPoda "+
+                        "INNER JOIN Planta ON TestPoda.id = Planta.idTest " +
+                        "INNER JOIN ExistePoda ON  Planta.id = ExistePoda.idPlanta " +
                         "WHERE idTest = '$idTest' AND estacion = '$estacion' AND idPlaga = '$idPlaga' AND existe = 1";
         int res = Sqflite.firstIntValue(await db.rawQuery(query));
         double value = res/10;
@@ -418,9 +388,9 @@ class DBProvider {
     Future<double> countPlagaTotal( String idTest, int idPlaga) async {
 
         final db = await database;
-        String query =  "SELECT COUNT(*) FROM TestPlaga "+
-                        "INNER JOIN Planta ON TestPlaga.id = Planta.idTest " +
-                        "INNER JOIN ExistePlaga ON  Planta.id = ExistePlaga.idPlanta " +
+        String query =  "SELECT COUNT(*) FROM TestPoda "+
+                        "INNER JOIN Planta ON TestPoda.id = Planta.idTest " +
+                        "INNER JOIN ExistePoda ON  Planta.id = ExistePoda.idPlanta " +
                         "WHERE idTest = '$idTest' AND idPlaga = '$idPlaga' AND existe = 1";
         int res = Sqflite.firstIntValue(await db.rawQuery(query));
         double value = res/30;
@@ -428,22 +398,65 @@ class DBProvider {
 
     }
 
-    Future<double> countDeficiencia( String idTest, int estacion) async {
+    Future<double> countAlturaEstacion( String idTest, int estacion) async {
 
         final db = await database;
-        String query =  "SELECT COUNT(*) FROM Planta WHERE idTest = '$idTest' AND estacion = '$estacion' AND deficiencia = 1";
-        int res = Sqflite.firstIntValue(await db.rawQuery(query));
-        double value = res/10;
+        String query =  "SELECT SUM(altura) FROM Planta WHERE idTest = '$idTest' AND estacion = '$estacion'";
+        var res = await db.rawQuery(query);
+        double value = res[0]['SUM(altura)'];
         return value;
 
     }
 
-    Future<double> countTotalDeficiencia( String idTest ) async {
+    Future<double> countAlturaTotal( String idTest ) async {
 
         final db = await database;
-        String query =  "SELECT COUNT(*) FROM Planta WHERE idTest = '$idTest' AND deficiencia = 1";
-        int res = Sqflite.firstIntValue(await db.rawQuery(query));
-        double value = res/30;
+        String query =  "SELECT SUM(altura) FROM Planta WHERE idTest = '$idTest'";
+        var res = await db.rawQuery(query);
+        double value = res[0]['SUM(altura)'];
+        //print(value);
+        return value;
+
+    }
+
+    Future<double> countAnchoEstacion( String idTest, int estacion) async {
+
+        final db = await database;
+        String query =  "SELECT SUM(ancho) FROM Planta WHERE idTest = '$idTest' AND estacion = '$estacion'";
+        var res = await db.rawQuery(query);
+        double value = res[0]['SUM(ancho)'];
+        return value;
+
+    }
+
+    Future<double> countAnchoTotal( String idTest ) async {
+
+        final db = await database;
+        String query =  "SELECT SUM(ancho) FROM Planta WHERE idTest = '$idTest'";
+        var res = await db.rawQuery(query);
+        double value = res[0]['SUM(ancho)'];
+        //print(value);
+        return value;
+
+    }
+
+    Future<double> countLargoEstacion( String idTest, int estacion) async {
+
+        final db = await database;
+        String query =  "SELECT SUM(largo) FROM Planta WHERE idTest = '$idTest' AND estacion = '$estacion'";
+        var res = await db.rawQuery(query);
+        double value = res[0]['SUM(largo)'];
+        return value;
+
+    }
+
+    Future<double> countLargoTotal( String idTest ) async {
+
+        final db = await database;
+        String query =  "SELECT SUM(largo) FROM Planta WHERE idTest = '$idTest'";
+        var res = await db.rawQuery(query);
+        double value = res[0]['SUM(largo)'];
+        //print(value);
         return value;
 
     }
@@ -482,10 +495,10 @@ class DBProvider {
         return res;
     }
 
-    Future<int> deleteTestPlaga( String idTest ) async {
+    Future<int> deleteTestPoda( String idTest ) async {
 
         final db  = await database;
-        final res = await db.delete('TestPlaga', where: 'id = ?', whereArgs: [idTest]);
+        final res = await db.delete('TestPoda', where: 'id = ?', whereArgs: [idTest]);
         return res;
     }
 

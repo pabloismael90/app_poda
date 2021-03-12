@@ -21,51 +21,51 @@ List<Map<String, dynamic>> listMeses(){
     
     final List<Map<String, dynamic>> medidaItem = [
         {
-            'value': '1',
+            'value': '0',
             'label': 'Enero',
         },
         {
-            'value': '2',
+            'value': '1',
             'label': 'Febrero',
         },
         {
-            'value': '3',
+            'value': '2',
             'label': 'Marzo',
         },
         {
-            'value': '4',
+            'value': '3',
             'label': 'Abril',
         },
         {
-            'value': '5',
+            'value': '4',
             'label': 'Mayo',
         },
         {
-            'value': '6',
+            'value': '5',
             'label': 'Junio',
         },
         {
-            'value': '7',
+            'value': '6',
             'label': 'Julio',
         },
         {
-            'value': '8',
+            'value': '7',
             'label': 'Agosto',
         },
         {
-            'value': '9',
+            'value': '8',
             'label': 'Septiembre',
         },
         {
-            'value': '10',
+            'value': '9',
             'label': 'Octubre',
         },
         {
-            'value': '11',
+            'value': '10',
             'label': 'Noviembre',
         },
         {
-            'value': '12',
+            'value': '11',
             'label': 'Diciembre',
         },
     ];
@@ -144,146 +144,135 @@ List<Map<String, dynamic>> podaCacao(){
 
 
 
-List<Map<String, dynamic>> situacionPlaga(){
-    final List<Map<String, dynamic>>  situacionPlaga = [
+List<Map<String, dynamic>> podaProblemas(){
+    final List<Map<String, dynamic>>  podaProblemas = [
         {
             'value': '0',
-            'label': 'Varias plagas en todos los puntos'
+            'label': 'Altura',
         },
         {
             'value': '1',
-            'label': 'Varias plagas en algunos puntos'
+            'label': 'Ancho',
         },
         {
             'value': '2',
-            'label': 'Pocas plagas en todos los puntos'
+            'label': 'Ramas',
         },
         {
             'value': '3',
-            'label': 'Pocas plagas en algunos puntos'
+            'label': 'Arquitectura',
         },
         {
             'value': '4',
-            'label': 'Una plaga en todos los puntos'
+            'label': 'Chupones',
         },
         {
             'value': '5',
-            'label': 'Una plaga en algunos puntos'
-        }
-
-    ];
-
-    return situacionPlaga;
-}
-List<Map<String, dynamic>> problemasPlagaSuelo(){
-    final List<Map<String, dynamic>>  problemasSuelo = [
-        {
-            'value': '0',
-            'label': 'Suelo erosionado'
-        },
-        {
-            'value': '1',
-            'label': 'Suelo poco fértil'
-        },
-        {
-            'value': '2',
-            'label': 'Mucha competencia'
-        },
-        {
-            'value': '3',
-            'label': 'Mal drenaje'
-        },
-        {
-            'value': '4',
-            'label': 'Falta obras de conservación'
-        },
-        {
-            'value': '5',
-            'label': 'Suelo compacto'
+            'label': 'Poca entrada de luz',
         },
         {
             'value': '6',
-            'label': 'Suelo con poca MO'
+            'label': 'Baja productividad',
         },
         {
             'value': '7',
-            'label': 'No usa abono o fertilizante'
-        }
+            'label': 'Ninguno',
+        },
 
     ];
 
-    return problemasSuelo;
+    return podaProblemas;
 }
-List<Map<String, dynamic>> problemasPlagaSombra(){
-    final List<Map<String, dynamic>>  problemasSombra = [
+
+List<Map<String, dynamic>> podaAplicar(){
+    final List<Map<String, dynamic>>  podaAplicar = [
         {
             'value': '0',
-            'label': 'Sombra muy densa'
+            'label': 'Poda de altura'
         },
         {
             'value': '1',
-            'label': 'Sombra muy rala'
+            'label': 'Poda de ramas'
         },
         {
             'value': '2',
-            'label': 'Sombra mal distribuida'
+            'label': 'Poda de formación'
         },
         {
             'value': '3',
-            'label': 'Arboles de sombra no adecuada'
+            'label': 'Deschuponar'
         },
         {
             'value': '4',
-            'label': 'Mucha auto-sombra'
-        },
-        {
-            'value': '5',
-            'label': 'Mucho banano'
+            'label': 'Cambio de coronas'
         }
 
     ];
 
-    return problemasSombra;
+    return podaAplicar;
 }
-List<Map<String, dynamic>> problemasPlagaManejo(){
-    final List<Map<String, dynamic>>  problemasManejo = [
+
+List<Map<String, dynamic>> dondeAplicar(){
+    final List<Map<String, dynamic>>  dondeAplicar = [
         {
             'value': '0',
-            'label': 'Poda no adecuada'
+            'label': 'En toda la parcela'
         },
         {
             'value': '1',
-            'label': 'Piso no manejado'
+            'label': 'En varios partes'
         },
         {
             'value': '2',
-            'label': 'No eliminan mazorcas enfermas'
-        },
-        {
-            'value': '3',
-            'label': 'No hay manejo de plagas'
-        },
-        {
-            'value': '4',
-            'label': 'Plantas desnutridas'
-        },
-        {
-            'value': '5',
-            'label': 'Plantación vieja'
-        },
-        {
-            'value': '6',
-            'label': 'Variedades susceptibles'
-        },
-        {
-            'value': '7',
-            'label': 'Variedades no productivas'
+            'label': 'En algunas partes'
         }
 
     ];
 
-    return problemasManejo;
+    return dondeAplicar;
 }
+
+List<Map<String, dynamic>> vigorPlanta(){
+    final List<Map<String, dynamic>>  vigorPlanta = [
+        {
+            'value': '0',
+            'label': 'Todas las plantas'
+        },
+        {
+            'value': '1',
+            'label': 'Algunas de las plantas'
+        },
+        {
+            'value': '2',
+            'label': 'Ninguna de las planta'
+        }
+
+    ];
+
+    return vigorPlanta;
+}
+
+List<Map<String, dynamic>> entraLuz(){
+    final List<Map<String, dynamic>>  entraLuz = [
+        {
+            'value': '0',
+            'label': 'Poda de copa'
+        },
+        {
+            'value': '1',
+            'label': 'Poda de ramam entrecruzadas'
+        },
+        {
+            'value': '2',
+            'label': 'Arreglo de la sombra'
+        }
+
+    ];
+
+    return entraLuz;
+}
+
+
 List<Map<String, dynamic>> solucionesXmes(){
     final List<Map<String, dynamic>>  solucionesXmes = [
         {
@@ -327,7 +316,6 @@ List<Map<String, dynamic>> solucionesXmes(){
 
     return solucionesXmes;
 }
-
 
 
 

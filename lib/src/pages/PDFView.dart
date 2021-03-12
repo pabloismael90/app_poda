@@ -10,7 +10,7 @@ class PDFView extends StatelessWidget {
         return Scaffold(
             appBar: AppBar(),
             body: PDF.asset(
-            "assets/documentos/Instructivo Plagas.pdf",
+            "assets/documentos/Instructivo Poda.pdf",
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             placeHolder: Image.asset("assets/icons/icon.png",
