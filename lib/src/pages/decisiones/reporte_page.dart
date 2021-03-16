@@ -66,29 +66,29 @@ class _ReportePageState extends State<ReportePage> {
 
     Future<double> _countAlturaEstacion(String idTest, int estacion) async{
         double countAlturaestacion = await DBProvider.db.countAlturaEstacion(idTest, estacion);
-        return countAlturaestacion;
+        return countAlturaestacion/10;
     }
     Future<double> _countAlturaTotal(String idTest) async{
         double countAlturaTotal = await DBProvider.db.countAlturaTotal(idTest);
-        return countAlturaTotal;
+        return countAlturaTotal/30;
     }
 
     Future<double> _countAnchoEstacion(String idTest, int estacion) async{
         double countAnchoestacion = await DBProvider.db.countAnchoEstacion(idTest, estacion);
-        return countAnchoestacion;
+        return countAnchoestacion/10;
     }
     Future<double> _countAnchoTotal(String idTest) async{
         double countAnchoTotal = await DBProvider.db.countAnchoTotal(idTest);
-        return countAnchoTotal;
+        return countAnchoTotal/30;
     }
 
     Future<double> _countLargoEstacion(String idTest, int estacion) async{
         double countLargoestacion = await DBProvider.db.countLargoEstacion(idTest, estacion);
-        return countLargoestacion;
+        return countLargoestacion/10;
     }
     Future<double> _countLargoTotal(String idTest) async{
         double countLargoTotal = await DBProvider.db.countLargoTotal(idTest);
-        return countLargoTotal;
+        return countLargoTotal/30;
     }
 
     
@@ -412,7 +412,7 @@ class _ReportePageState extends State<ReportePage> {
                                         return textmt;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(2)}', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
@@ -425,7 +425,7 @@ class _ReportePageState extends State<ReportePage> {
                                         return textmt;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(2)}', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
@@ -438,7 +438,7 @@ class _ReportePageState extends State<ReportePage> {
                                         return textmt;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(2)}', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
@@ -451,7 +451,7 @@ class _ReportePageState extends State<ReportePage> {
                                         return textmt;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(2)}', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
@@ -485,7 +485,7 @@ class _ReportePageState extends State<ReportePage> {
                                         return textmt;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(2)}', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
@@ -498,7 +498,7 @@ class _ReportePageState extends State<ReportePage> {
                                         return textmt;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(2)}', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
@@ -511,7 +511,7 @@ class _ReportePageState extends State<ReportePage> {
                                         return textmt;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(2)}', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
@@ -524,7 +524,7 @@ class _ReportePageState extends State<ReportePage> {
                                         return textmt;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(2)}', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
@@ -558,7 +558,7 @@ class _ReportePageState extends State<ReportePage> {
                                         return textmt;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(2)}', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
@@ -571,7 +571,7 @@ class _ReportePageState extends State<ReportePage> {
                                         return textmt;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(2)}', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
@@ -584,7 +584,7 @@ class _ReportePageState extends State<ReportePage> {
                                         return textmt;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(2)}', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
@@ -597,7 +597,7 @@ class _ReportePageState extends State<ReportePage> {
                                         return textmt;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(2)}', textAlign: TextAlign.center);
                                 },
                             ),
                         ),

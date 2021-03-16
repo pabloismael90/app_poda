@@ -67,7 +67,6 @@ class _DesicionesPageState extends State<DesicionesPage> {
         
         for(int i = 0 ; i < itemMeses.length ; i ++){
            checksMesPoda[itemMeses[i]['value']] = false;
-           print(checksMesPoda[itemMeses[i]['value']]);
         }
     }
     
@@ -463,7 +462,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                         return textmt;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(2)}', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
@@ -476,7 +475,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                         return textmt;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(2)}', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
@@ -489,7 +488,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                         return textmt;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(2)}', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
@@ -502,7 +501,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                         return textmt;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(2)}', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
@@ -536,7 +535,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                         return textmt;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(2)}', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
@@ -549,7 +548,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                         return textmt;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(2)}', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
@@ -562,7 +561,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                         return textmt;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(2)}', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
@@ -575,7 +574,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                         return textmt;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(2)}', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
@@ -609,7 +608,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                         return textmt;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(2)}', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
@@ -622,7 +621,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                         return textmt;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(2)}', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
@@ -635,7 +634,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                         return textmt;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(2)}', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
@@ -648,7 +647,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                         return textmt;
                                     }
 
-                                    return Text('${snapshot.data.toStringAsFixed(0)}', textAlign: TextAlign.center);
+                                    return Text('${snapshot.data.toStringAsFixed(2)}', textAlign: TextAlign.center);
                                 },
                             ),
                         ),
@@ -968,6 +967,9 @@ class _DesicionesPageState extends State<DesicionesPage> {
                         value: checksDondeAplicar[itemDondeAplicar[i]['value']], 
                         onChanged: (value) {
                             setState(() {
+                                for(int i = 0 ; i < itemDondeAplicar.length ; i ++){
+                                    checksDondeAplicar[itemDondeAplicar[i]['value']] = false;
+                                }
                                 checksDondeAplicar[itemDondeAplicar[i]['value']] = value;
                                 //print(value);
                             });
@@ -1036,6 +1038,9 @@ class _DesicionesPageState extends State<DesicionesPage> {
                         value: checksVigorPlanta[itemVigorPlanta[i]['value']], 
                         onChanged: (value) {
                             setState(() {
+                                for(int i = 0 ; i < itemVigorPlanta.length ; i ++){
+                                    checksVigorPlanta[itemVigorPlanta[i]['value']] = false;
+                                }
                                 checksVigorPlanta[itemVigorPlanta[i]['value']] = value;
                                 //print(value);
                             });
@@ -1079,8 +1084,8 @@ class _DesicionesPageState extends State<DesicionesPage> {
                         value: checksEntraLuz[itemEntraLuz[i]['value']], 
                         onChanged: (value) {
                             setState(() {
+                                
                                 checksEntraLuz[itemEntraLuz[i]['value']] = value;
-                                //print(value);
                             });
                         },
                     ),

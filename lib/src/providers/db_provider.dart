@@ -35,7 +35,7 @@ class DBProvider {
 
         final path = join( documentsDirectory.path, 'poda.db' );
 
-        //print(path);
+        print(path);
 
         return await openDatabase(
             path,
@@ -404,7 +404,10 @@ class DBProvider {
         String query =  "SELECT SUM(altura) FROM Planta WHERE idTest = '$idTest' AND estacion = '$estacion'";
         var res = await db.rawQuery(query);
         double value = res[0]['SUM(altura)'];
-        return value;
+        if (value == null) {
+            return 0;
+        }
+        return value/10;
 
     }
 
@@ -414,8 +417,10 @@ class DBProvider {
         String query =  "SELECT SUM(altura) FROM Planta WHERE idTest = '$idTest'";
         var res = await db.rawQuery(query);
         double value = res[0]['SUM(altura)'];
-        //print(value);
-        return value;
+        if (value == null) {
+            return 0;
+        }
+        return value/30;
 
     }
 
@@ -425,7 +430,10 @@ class DBProvider {
         String query =  "SELECT SUM(ancho) FROM Planta WHERE idTest = '$idTest' AND estacion = '$estacion'";
         var res = await db.rawQuery(query);
         double value = res[0]['SUM(ancho)'];
-        return value;
+        if (value == null) {
+            return 0;
+        }
+        return value/10;
 
     }
 
@@ -435,8 +443,10 @@ class DBProvider {
         String query =  "SELECT SUM(ancho) FROM Planta WHERE idTest = '$idTest'";
         var res = await db.rawQuery(query);
         double value = res[0]['SUM(ancho)'];
-        //print(value);
-        return value;
+        if (value == null) {
+            return 0;
+        }
+        return value/30;
 
     }
 
@@ -446,7 +456,10 @@ class DBProvider {
         String query =  "SELECT SUM(largo) FROM Planta WHERE idTest = '$idTest' AND estacion = '$estacion'";
         var res = await db.rawQuery(query);
         double value = res[0]['SUM(largo)'];
-        return value;
+        if (value == null) {
+            return 0;
+        }
+        return value/10;
 
     }
 
@@ -456,8 +469,10 @@ class DBProvider {
         String query =  "SELECT SUM(largo) FROM Planta WHERE idTest = '$idTest'";
         var res = await db.rawQuery(query);
         double value = res[0]['SUM(largo)'];
-        //print(value);
-        return value;
+        if (value == null) {
+            return 0;
+        }
+        return value/30;
 
     }
 
