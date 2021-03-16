@@ -1015,7 +1015,7 @@ class _ReportePageState extends State<ReportePage> {
                         child: Padding(
                             padding: EdgeInsets.only(top: 20, bottom: 10),
                             child: Text(
-                                "¿Las plantas tiene suficiente vigor?",
+                                "¿Cómo podemos mejorar la entrada de luz?",
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
                                     .headline5
