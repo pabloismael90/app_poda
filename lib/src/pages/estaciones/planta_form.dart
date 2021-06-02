@@ -94,7 +94,6 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                                 ),
                                 Divider(),                                
                                 _podaList(),
-                                Divider(),
                                 Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
@@ -140,12 +139,16 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
             children: <Widget>[
                 Flexible(
                     child: TextFormField(
-                        initialValue: planta.altura.toString(),
+                        initialValue: planta.altura == null ? '' : planta.altura.toString(),
                         keyboardType: TextInputType.numberWithOptions(decimal: true),
                         decoration: InputDecoration(
                             labelText: 'Altura en mt'
                         ),
                         validator: (value) {
+                            if (value == '') {
+                                return 'Campo vacio';
+                            }
+                            
                             if (double.parse(value) > 0) {
                                 return null;
                             } else {
@@ -158,12 +161,16 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                 SizedBox(width: 20.0,),
                 Flexible(
                     child: TextFormField(
-                        initialValue: planta.ancho.toString(),
+                        initialValue: planta.ancho == null ? '' : planta.ancho.toString(),
                         keyboardType: TextInputType.numberWithOptions(decimal: true),
                         decoration: InputDecoration(
                             labelText: 'Ancho en mt'
                         ),
                         validator: (value) {
+                            if (value == '') {
+                                return 'Campo vacio';
+                            }
+
                             if (double.parse(value) > 0) {
                                 return null;
                             } else {
@@ -181,12 +188,15 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
     Widget _largoMadera(){
 
         return TextFormField(
-            initialValue: planta.largo.toString(),
+            initialValue: planta.largo == null ? '' : planta.largo.toString(),
             keyboardType: TextInputType.numberWithOptions(decimal: true),
             decoration: InputDecoration(
                 labelText: 'Largo de madera productiva'
             ),
             validator: (value) {
+                if (value == '') {
+                    return 'Campo vacio';
+                }
                 if (double.parse(value) > 0) {
                     return null;
                 } else {

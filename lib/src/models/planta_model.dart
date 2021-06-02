@@ -2,9 +2,9 @@ class Planta {
     Planta({
         this.id,
         this.idTest,
-        this.altura = 0.0,
-        this.ancho = 0.0,
-        this.largo = 0.0,
+        this.altura,
+        this.ancho,
+        this.largo,
         this.estacion,
         this.produccion = 0,
     });

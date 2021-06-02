@@ -131,6 +131,7 @@ class FincasBloc {
     borrarPlanta( Planta planta) async{
         await DBProvider.db.deletePlanta(planta.id);
         obtenerPlantaIdTest(planta.idTest, planta.estacion);
+        obtenerPlantas(planta.idTest);
     }
 
 
