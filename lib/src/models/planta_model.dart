@@ -9,13 +9,13 @@ class Planta {
         this.produccion = 0,
     });
 
-    String id;
-    String idTest;
-    double altura;
-    double ancho;
-    double largo;
-    int estacion;
-    int produccion;
+    String? id;
+    String? idTest;
+    double? altura;
+    double? ancho;
+    double? largo;
+    int? estacion;
+    int? produccion;
 
     factory Planta.fromJson(Map<String, dynamic> json) => Planta(
         id: json["id"],

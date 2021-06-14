@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0-0 <3.0.0"
 
 dependencies:
   flutter:
@@ -29,34 +29,35 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.0
+  cupertino_icons: any
   #Select y multiselect
-  select_form_field: "^1.0.1"
-  multiselect_formfield: ^0.1.5
+  select_form_field: any
+  multiselect_formfield: any
   #Slider page
-  flutter_swiper: ^1.1.6
+  flutter_swiper_null_safety: any
   #Crear PDF
-  pdf: ^2.1.0
-  pdf_flutter: ^1.1.4
+  #pdf: ^3.3.0
+  pdf_flutter: 
+    git: https://github.com/erluxman/pdf_flutter
   #flutter_full_pdf_viewer: ^1.0.6
   # Base de datos
-  uuid: ^2.2.2
-  sqflite: ^1.1.5
-  path_provider: ^1.6.7
+  uuid: any
+  sqflite: any
+  path_provider: any
   #Storage
   #ext_storage: ^1.0.3
   #imagenes
-  flutter_svg: ^0.19.1
+  flutter_svg: any
   #Indicador Circular o lineal
-  percent_indicator: ^2.1.9+1
+  percent_indicator: any
   #Visor img
-  photo_view: ^0.10.3
+  photo_view: any
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.8.1
+  flutter_launcher_icons: ^0.9.0
 
 flutter_icons:
   android: "launcher_icon"

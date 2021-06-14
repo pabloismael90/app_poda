@@ -34,7 +34,7 @@ class _AgregarFincaState extends State<AgregarFinca> {
     @override
     Widget build(BuildContext context) {
 
-        final fincaData = ModalRoute.of(context).settings.arguments;    
+        final fincaData = ModalRoute.of(context)!.settings.arguments;    
         String tituloForm;
         String tituloBtn;
         
@@ -42,7 +42,7 @@ class _AgregarFincaState extends State<AgregarFinca> {
         tituloBtn = 'Guardar';
 
         if (fincaData != null){
-            finca = fincaData;
+            finca = fincaData as Finca;
             tituloForm = 'Editar Finca';
             tituloBtn = 'Actualizar';
         }
@@ -98,7 +98,7 @@ class _AgregarFincaState extends State<AgregarFinca> {
                 labelText: 'Nombre de la finca',
             ),
             validator: (value){
-                if(value.length < 3){
+                if(value!.length < 3){
                     return 'Ingrese el nombre de la finca';
                 }else{
                     return null;
@@ -118,7 +118,7 @@ class _AgregarFincaState extends State<AgregarFinca> {
                 
             ),
             validator: (value){
-                if(value.length < 3){
+                if(value!.length < 3){
                     return 'Ingrese el nombre del Productor';
                 }else{
                     return null;
@@ -141,13 +141,13 @@ class _AgregarFincaState extends State<AgregarFinca> {
             ),
             validator: (value) {
                 
-                if (utils.isNumeric(value)){
+                if (utils.isNumeric(value!)){
                     return null;
                 }else{
                     return 'Solo números';
                 }
             },
-            onSaved: (value) => finca.areaFinca = double.parse(value),
+            onSaved: (value) => finca.areaFinca = double.parse(value!),
         );
 
     }
@@ -158,13 +158,13 @@ class _AgregarFincaState extends State<AgregarFinca> {
             labelText: 'Unidad',
             items: selectMap.dimenciones(),
             validator: (value){
-                if(value.length < 1){
+                if(value!.length < 1){
                     return 'Selecione un elemento';
                 }else{
                     return null;
                 } 
             },
-            onSaved: (value) => finca.tipoMedida = int.parse(value),
+            onSaved: (value) => finca.tipoMedida = int.parse(value!),
         );
     }
 
@@ -180,7 +180,7 @@ class _AgregarFincaState extends State<AgregarFinca> {
                 return null;  
             },
             onSaved: (value){
-                if(value.length < 1){
+                if(value!.length < 1){
                     finca.nombreTecnico = 'Sin Nombre';
                 }else{
                     finca.nombreTecnico = value;
@@ -197,7 +197,7 @@ class _AgregarFincaState extends State<AgregarFinca> {
             
             label: Text(tituloBtn,
                 style: Theme.of(context).textTheme
-                    .headline6
+                    .headline6!
                     .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
             ),
             padding:EdgeInsets.symmetric(vertical: 13, horizontal: 50),
@@ -211,12 +211,12 @@ class _AgregarFincaState extends State<AgregarFinca> {
 
     void _submit(){
 
-        if  ( !formKey.currentState.validate() ){
+        if  ( !formKey.currentState!.validate() ){
             //Cuendo el form no es valido
             return null;
         }
 
-        formKey.currentState.save();
+        formKey.currentState!.save();
 
         setState(() {_guardando = true;});
 
@@ -244,6 +244,6 @@ class _AgregarFincaState extends State<AgregarFinca> {
             duration: Duration(microseconds: 1500),
         );
 
-        scaffoldKey.currentState.showSnackBar(snackbar);
+        scaffoldKey.currentState!.showSnackBar(snackbar);
     }
 }

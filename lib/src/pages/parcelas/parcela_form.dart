@@ -14,7 +14,7 @@ import 'package:uuid/uuid.dart';
 
 
 class AgregarParcela extends StatefulWidget {
-  AgregarParcela({Key key}) : super(key: key);
+  AgregarParcela({Key? key}) : super(key: key);
 
   @override
   _AgregarParcelaState createState() => _AgregarParcelaState();
@@ -34,10 +34,10 @@ class _AgregarParcelaState extends State<AgregarParcela> {
     
 
 
-    Future getparcelas(String idFinca) async{
+    Future getparcelas(String? idFinca) async{
         List<Parcela> parcelas = await DBProvider.db.getTodasParcelasIdFinca(idFinca);
 
-        Finca finca = await DBProvider.db.getFincaId(idFinca);
+        Finca? finca = await DBProvider.db.getFincaId(idFinca);
 
         return [finca, parcelas];
     }
@@ -47,24 +47,24 @@ class _AgregarParcelaState extends State<AgregarParcela> {
     Widget build(BuildContext context) {
 
 
-        String fincaid ;
-        Finca finca = Finca();
-        var dataRoute = ModalRoute.of(context).settings.arguments;
+        String? fincaid ;
+        Finca? finca = Finca();
+        var dataRoute = ModalRoute.of(context)!.settings.arguments;
 
-        String tituloForm;
+        String? tituloForm;
         String tituloBtn;
         
         
         tituloBtn = 'Guardar';
 
         if (dataRoute.runtimeType == Finca) {
-            finca = dataRoute;
-            fincaid = finca.id;
+            finca = dataRoute as Finca?;
+            fincaid = finca!.id;
             tituloForm = 'Agregar nueva parcela';
             tituloBtn = 'Guardar';
         } else {
             if (dataRoute != null){
-                parcela = dataRoute;
+                parcela = dataRoute as Parcela;
                 fincaid = parcela.idFinca;
                 tituloForm = 'Actualizar parcela';
                 tituloBtn = 'Actualizar';
@@ -72,7 +72,7 @@ class _AgregarParcelaState extends State<AgregarParcela> {
             
         }
         
-        String labelMedida;
+        String? labelMedida;
         
         
         return Scaffold(
@@ -86,7 +86,7 @@ class _AgregarParcelaState extends State<AgregarParcela> {
 
                         finca = snapshot.data[0];
                         List<Parcela> listParcela = snapshot.data[1];
-                        labelMedida = selectMap.dimenciones().firstWhere((e) => e['value'] == '${finca.tipoMedida}')['label'];
+                        labelMedida = selectMap.dimenciones().firstWhere((e) => e['value'] == '${finca!.tipoMedida}')['label'];
                         return SingleChildScrollView(                
                             child: Column(
                                 children: [
@@ -127,7 +127,7 @@ class _AgregarParcelaState extends State<AgregarParcela> {
         );
     
     }
-    Widget _nombreParcela( String fincaid ){
+    Widget _nombreParcela( String? fincaid ){
         //print('id de finca: $fincaid');
         return TextFormField(
             initialValue: parcela.nombreLote,
@@ -136,7 +136,7 @@ class _AgregarParcelaState extends State<AgregarParcela> {
                 labelText: 'Nombre de la parcela'
             ),
             validator: (value){
-                if(value.length < 3){
+                if(value!.length < 3){
                     return 'Ingrese el nombre de la Parcela';
                 }else{
                     return null;
@@ -150,14 +150,14 @@ class _AgregarParcelaState extends State<AgregarParcela> {
         
     }
     
-    Widget _areaParcela(Finca finca, String labelMedida, List<Parcela> listParcela){
+    Widget _areaParcela(Finca? finca, String? labelMedida, List<Parcela> listParcela){
 
                 double sumaParcelas = 0.0;
                 double valorsuma = 0.0;             
-                double areaParcela = parcela.areaLote == null ? 0 : parcela.areaLote;         
+                double areaParcela = parcela.areaLote == null ? 0 : parcela.areaLote!;         
 
                 for (var item in listParcela) {
-                    sumaParcelas = sumaParcelas+item.areaLote;
+                    sumaParcelas = sumaParcelas+item.areaLote!;
                 }
                 
                 sumaParcelas = sumaParcelas - areaParcela;
@@ -170,10 +170,10 @@ class _AgregarParcelaState extends State<AgregarParcela> {
                     ),
                     validator: (value) {
                         
-                        if (utils.isNumeric(value)){
+                        if (utils.isNumeric(value!)){
 
 
-                            if (valorsuma <= finca.areaFinca) {
+                            if (valorsuma <= finca!.areaFinca!) {
                                 if (double.parse(value) > 0) {
                                     return null;
                                 } else {
@@ -186,7 +186,7 @@ class _AgregarParcelaState extends State<AgregarParcela> {
                             return 'Solo números';
                         }
                     },
-                    onSaved: (value) => parcela.areaLote = double.parse(value),
+                    onSaved: (value) => parcela.areaLote = double.parse(value!),
                 );
             
 
@@ -199,7 +199,7 @@ class _AgregarParcelaState extends State<AgregarParcela> {
             labelText: 'Variedad',
             items: selectMap.variedadCacao(),
             validator: (value){
-                if(value.length < 1){
+                if(value!.length < 1){
                     return 'Selecione variedad';
                 }else{
                     return null;
@@ -207,11 +207,11 @@ class _AgregarParcelaState extends State<AgregarParcela> {
             },
 
             //onChanged: (val) => print(val),
-            onSaved: (value) => parcela.variedadCacao = int.parse(value),
+            onSaved: (value) => parcela.variedadCacao = int.parse(value!),
         );
     }
 
-    Widget _numeroPlanta(String labelMedida){
+    Widget _numeroPlanta(String? labelMedida){
 
         return TextFormField(
             initialValue: parcela.numeroPlanta == null ? '' : parcela.numeroPlanta.toString(),
@@ -224,7 +224,7 @@ class _AgregarParcelaState extends State<AgregarParcela> {
             ),
             validator: (value) {
 
-                final isDigitsOnly = int.tryParse(value);
+                final isDigitsOnly = int.tryParse(value!);
                 if (isDigitsOnly == null) {
                     return 'Solo números enteros';
                 }
@@ -237,7 +237,7 @@ class _AgregarParcelaState extends State<AgregarParcela> {
                     
 
             },
-            onSaved: (value) => parcela.numeroPlanta = int.parse(value),
+            onSaved: (value) => parcela.numeroPlanta = int.parse(value!),
         );
 
     }
@@ -249,7 +249,7 @@ class _AgregarParcelaState extends State<AgregarParcela> {
             
             label: Text(tituloBtn,
                 style: Theme.of(context).textTheme
-                    .headline6
+                    .headline6!
                     .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
             ),
             padding:EdgeInsets.symmetric(vertical: 13, horizontal: 50),
@@ -263,14 +263,14 @@ class _AgregarParcelaState extends State<AgregarParcela> {
 
         
 
-        if  ( !formKey.currentState.validate() ){
+        if  ( !formKey.currentState!.validate() ){
             
             //Cuendo el form no es valido
             return null;
         }
         
 
-        formKey.currentState.save();
+        formKey.currentState!.save();
 
         setState(() {_guardando = true;});
 

@@ -58,7 +58,7 @@ class FincasBloc {
         obtenerFincas();
     }
 
-    borrarFinca( String id ) async {
+    borrarFinca( String? id ) async {
         await DBProvider.db.deleteFinca(id);
         obtenerFincas();
     }
@@ -73,21 +73,21 @@ class FincasBloc {
         _parcelasController.sink.add( await DBProvider.db.getTodasParcelas() );
     }
     
-    obtenerParcelasIdFinca(String idFinca) async {
+    obtenerParcelasIdFinca(String? idFinca) async {
         _parcelasController.sink.add( await DBProvider.db.getTodasParcelasIdFinca(idFinca) );
     }
 
-    addParcela( Parcela parcela, String idFinca ) async{
+    addParcela( Parcela parcela, String? idFinca ) async{
         await DBProvider.db.nuevoParcela(parcela);
         obtenerParcelasIdFinca(idFinca);
     }
 
-    actualizarParcela( Parcela parcela, String idFinca ) async{
+    actualizarParcela( Parcela parcela, String? idFinca ) async{
         await DBProvider.db.updateParcela(parcela);
         obtenerParcelasIdFinca(idFinca);
     }
     
-    borrarParcela( String id ) async {
+    borrarParcela( String? id ) async {
         await DBProvider.db.deleteParcela(id);
         obtenerParcelas();
     }
@@ -106,23 +106,23 @@ class FincasBloc {
         obtenerPodas();
     }
 
-    borrarTestPoda( String idTest) async{
+    borrarTestPoda( String? idTest) async{
         await DBProvider.db.deleteTestPoda(idTest);
         obtenerPodas();
     }
 
 
     //Plantas
-    obtenerPlantas(String idTest) async {
+    obtenerPlantas(String? idTest) async {
         _countPlantaControl.sink.add( await DBProvider.db.getTodasPlantaIdTest(idTest) );  
     }
 
     
-    obtenerPlantaIdTest(String idTest, int estacion) async {
+    obtenerPlantaIdTest(String? idTest, int? estacion) async {
         _plantaController.sink.add( await DBProvider.db.getTodasPlantasIdTest(idTest, estacion));
     }
     
-    addPlata( Planta nuevaPlanta, String idTest, int estacion) async{
+    addPlata( Planta nuevaPlanta, String? idTest, int? estacion) async{
         await DBProvider.db.nuevoPlanta(nuevaPlanta);
         obtenerPlantaIdTest(idTest, estacion);
         obtenerPlantas(idTest);
@@ -136,7 +136,7 @@ class FincasBloc {
 
 
     //deciones
-    obtenerDecisiones(String idTest) async {
+    obtenerDecisiones(String? idTest) async {
         _decisionesControl.sink.add( await DBProvider.db.getDecisionesIdTest(idTest) );
     }
 
@@ -146,14 +146,14 @@ class FincasBloc {
 
     //Cerrar stream
     dispose() {
-        _fincasController?.close();
-        _parcelasController?.close();
-        _fincasSelectControl?.close();
-        _parcelaSelectControl?.close();
-        _podaController?.close();
-        _plantaController?.close();
-        _countPlantaControl?.close();
-        _decisionesControl?.close();
+        _fincasController.close();
+        _parcelasController.close();
+        _fincasSelectControl.close();
+        _parcelaSelectControl.close();
+        _podaController.close();
+        _plantaController.close();
+        _countPlantaControl.close();
+        _decisionesControl.close();
     }
 
 

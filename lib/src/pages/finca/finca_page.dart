@@ -90,7 +90,7 @@ class _FincasPageState extends State<FincasPage> {
             
             label: Text('Agregar finca',
                 style: Theme.of(context).textTheme
-                    .headline6
+                    .headline6!
                     .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
             ),
             padding:EdgeInsets.all(13),

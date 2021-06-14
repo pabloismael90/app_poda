@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class TitulosPages  extends StatelessWidget {
-    final String titulo;
+    final String? titulo;
     const TitulosPages({
-        Key key,
+        Key? key,
         this.titulo,
     }) : super(key: key);
 
@@ -13,9 +13,9 @@ class TitulosPages  extends StatelessWidget {
             child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                 child: Text(
-                    titulo,
+                    titulo!,
                     style: Theme.of(context).textTheme
-                        .headline5
+                        .headline5!
                         .copyWith(fontWeight: FontWeight.w900)
                 ),
             )

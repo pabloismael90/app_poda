@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app_poda/src/models/decisiones_model.dart';
 import 'package:app_poda/src/models/testpoda_model.dart';
 //import 'package:app_poda/src/pages/decisiones/pdf_view.dart';
@@ -6,7 +8,7 @@ import 'package:app_poda/src/models/selectValue.dart' as selectMap;
 import 'package:app_poda/src/utils/constants.dart';
 import 'package:app_poda/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 
 class ReportePage extends StatefulWidget {
 
@@ -32,61 +34,61 @@ class _ReportePageState extends State<ReportePage> {
     
     
 
-    Future getdata(String idTest) async{
+    Future getdata(String? idTest) async{
 
         List<Decisiones> listDecisiones = await DBProvider.db.getDecisionesIdTest(idTest);
-        TestPoda testplaga = await DBProvider.db.getTestId(idTest);
+        TestPoda testplaga = await (DBProvider.db.getTestId(idTest) as FutureOr<TestPoda>);
 
-        Finca finca = await DBProvider.db.getFincaId(testplaga.idFinca);
-        Parcela parcela = await DBProvider.db.getParcelaId(testplaga.idLote);
+        Finca? finca = await DBProvider.db.getFincaId(testplaga.idFinca);
+        Parcela? parcela = await DBProvider.db.getParcelaId(testplaga.idLote);
 
         return [listDecisiones, finca, parcela];
     }
 
-    Future<double> _countPercentPlaga(String idTest, int estacion, int idPlaga) async{
-        double countPalga = await DBProvider.db.countPlagaEstacion(idTest, estacion, idPlaga);         
-        return countPalga*100;
+    Future<double> _countPercentPlaga(String? idTest, int estacion, int idPlaga) async{
+        double? countPalga = await DBProvider.db.countPlagaEstacion(idTest, estacion, idPlaga);         
+        return countPalga!*100;
     }
     
-    Future<double> _countPercentTotal(String idTest,int idPlaga) async{
+    Future<double> _countPercentTotal(String? idTest,int idPlaga) async{
         double countPalga = await DBProvider.db.countPlagaTotal(idTest, idPlaga);         
         return countPalga*100;
     }
 
     
-    Future<double> _countPercentProduccion(String idTest, int estacion, int estado) async{
+    Future<double> _countPercentProduccion(String? idTest, int estacion, int estado) async{
         double countProduccion = await DBProvider.db.countProduccion(idTest, estacion, estado);
         return countProduccion*100;
     }
 
-    Future<double> _countPercentTotalProduccion(String idTest, int estado) async{
+    Future<double> _countPercentTotalProduccion(String? idTest, int estado) async{
         double countProduccion = await DBProvider.db.countTotalProduccion(idTest, estado);
         return countProduccion*100;
     }
 
-    Future<double> _countAlturaEstacion(String idTest, int estacion) async{
+    Future<double> _countAlturaEstacion(String? idTest, int estacion) async{
         double countAlturaestacion = await DBProvider.db.countAlturaEstacion(idTest, estacion);
         return countAlturaestacion/10;
     }
-    Future<double> _countAlturaTotal(String idTest) async{
+    Future<double> _countAlturaTotal(String? idTest) async{
         double countAlturaTotal = await DBProvider.db.countAlturaTotal(idTest);
         return countAlturaTotal/30;
     }
 
-    Future<double> _countAnchoEstacion(String idTest, int estacion) async{
+    Future<double> _countAnchoEstacion(String? idTest, int estacion) async{
         double countAnchoestacion = await DBProvider.db.countAnchoEstacion(idTest, estacion);
         return countAnchoestacion/10;
     }
-    Future<double> _countAnchoTotal(String idTest) async{
+    Future<double> _countAnchoTotal(String? idTest) async{
         double countAnchoTotal = await DBProvider.db.countAnchoTotal(idTest);
         return countAnchoTotal/30;
     }
 
-    Future<double> _countLargoEstacion(String idTest, int estacion) async{
+    Future<double> _countLargoEstacion(String? idTest, int estacion) async{
         double countLargoestacion = await DBProvider.db.countLargoEstacion(idTest, estacion);
         return countLargoestacion/10;
     }
-    Future<double> _countLargoTotal(String idTest) async{
+    Future<double> _countLargoTotal(String? idTest) async{
         double countLargoTotal = await DBProvider.db.countLargoTotal(idTest);
         return countLargoTotal/30;
     }
@@ -95,7 +97,7 @@ class _ReportePageState extends State<ReportePage> {
 
     @override
     Widget build(BuildContext context) {
-        String idTest = ModalRoute.of(context).settings.arguments;
+        String? idTest = ModalRoute.of(context)!.settings.arguments as String?;
 
         return Scaffold(
             appBar: AppBar(),
@@ -105,7 +107,7 @@ class _ReportePageState extends State<ReportePage> {
                     if (!snapshot.hasData) {
                         return CircularProgressIndicator();
                     }
-                    List<Widget> pageItem = List<Widget>();
+                    List<Widget> pageItem = [];
                     Finca finca = snapshot.data[1];
                     Parcela parcela = snapshot.data[2];
 
@@ -132,7 +134,7 @@ class _ReportePageState extends State<ReportePage> {
                                                 "Deslice hacia la derecha para continuar con el reporte",
                                                 textAlign: TextAlign.center,
                                                 style: Theme.of(context).textTheme
-                                                    .headline5
+                                                    .headline5!
                                                     .copyWith(fontWeight: FontWeight.w600, fontSize: 16)
                                             ),
                                         ),
@@ -171,7 +173,7 @@ class _ReportePageState extends State<ReportePage> {
         );
     }
 
-    Widget _principalData(String plagaid, BuildContext context, Finca finca, Parcela parcela){
+    Widget _principalData(String? plagaid, BuildContext context, Finca finca, Parcela parcela){
     
          return Container(
             decoration: BoxDecoration(
@@ -195,7 +197,7 @@ class _ReportePageState extends State<ReportePage> {
                                                     "Datos consolidados",
                                                     textAlign: TextAlign.center,
                                                     style: Theme.of(context).textTheme
-                                                        .headline5
+                                                        .headline5!
                                                         .copyWith(fontWeight: FontWeight.w600, fontSize: 18)
                                                 ),
                                             )
@@ -241,8 +243,8 @@ class _ReportePageState extends State<ReportePage> {
     }
     
     Widget _dataFincas( BuildContext context, Finca finca, Parcela parcela ){
-        String labelMedidaFinca;
-        String labelvariedad;
+        String? labelMedidaFinca;
+        String? labelvariedad;
 
         final item = selectMap.dimenciones().firstWhere((e) => e['value'] == '${finca.tipoMedida}');
         labelMedidaFinca  = item['label'];
@@ -364,35 +366,35 @@ class _ReportePageState extends State<ReportePage> {
             children: [
                 Expanded(child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Text('Estaciones', textAlign: TextAlign.start, style: Theme.of(context).textTheme.headline6
+                    child: Text('Estaciones', textAlign: TextAlign.start, style: Theme.of(context).textTheme.headline6!
                                             .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
                 ),),
                 Container(
                     width: 45,
-                    child: Text('1', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
+                    child: Text('1', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6!
                             .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
                 ),
                 Container(
                     width: 45,
-                    child: Text('2', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
+                    child: Text('2', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6!
                             .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
                 ),
                 Container(
                     width: 45,
-                    child: Text('3', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
+                    child: Text('3', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6!
                             .copyWith(fontSize: 16, fontWeight: FontWeight.w600))
                 ),
                 Container(
                     width: 45,
-                    child: Text('Total', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6
+                    child: Text('Total', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6!
                             .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
                 ),
             ],
         );
     }
 
-    Widget _countAltura(String idTest){
-        List<Widget> lisItem = List<Widget>();
+    Widget _countAltura(String? idTest){
+        List<Widget> lisItem = [];
 
 
             lisItem.add(
@@ -464,8 +466,8 @@ class _ReportePageState extends State<ReportePage> {
         return Column(children:lisItem,);
     }
 
-    Widget _countAncho(String idTest){
-        List<Widget> lisItem = List<Widget>();
+    Widget _countAncho(String? idTest){
+        List<Widget> lisItem = [];
 
 
             lisItem.add(
@@ -537,8 +539,8 @@ class _ReportePageState extends State<ReportePage> {
         return Column(children:lisItem,);
     }
 
-    Widget _countLargo(String idTest){
-        List<Widget> lisItem = List<Widget>();
+    Widget _countLargo(String? idTest){
+        List<Widget> lisItem = [];
 
 
             lisItem.add(
@@ -610,11 +612,11 @@ class _ReportePageState extends State<ReportePage> {
         return Column(children:lisItem,);
     }
 
-    Widget _countPlagas(String idTest, int estacion){
-        List<Widget> lisItem = List<Widget>();
+    Widget _countPlagas(String? idTest, int estacion){
+        List<Widget> lisItem = [];
 
         for (var i = 0; i < itemPoda.length; i++) {
-            String labelPlaga = itemPoda.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "1","label": "No data"})['label'];
+            String? labelPlaga = itemPoda.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "1","label": "No data"})['label'];
             int idplga = int.parse(itemPoda.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "100","label": "No data"})['value']);
             lisItem.add(
                 Row(
@@ -685,8 +687,8 @@ class _ReportePageState extends State<ReportePage> {
         return Column(children:lisItem,);
     }
 
-    Widget _countProduccion(String idTest){
-        List<Widget> lisProd= List<Widget>();
+    Widget _countProduccion(String? idTest){
+        List<Widget> lisProd= [];
 
         List<String> nameProd = ['Alta','Media','Baja'];
 
@@ -696,7 +698,7 @@ class _ReportePageState extends State<ReportePage> {
                 children: [
                     Container(
                         padding: EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Text('Producción', textAlign: TextAlign.start, style: Theme.of(context).textTheme.headline6
+                        child: Text('Producción', textAlign: TextAlign.start, style: Theme.of(context).textTheme.headline6!
                                 .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
                     )
                 ],
@@ -777,7 +779,7 @@ class _ReportePageState extends State<ReportePage> {
     }
 
     Widget _podaProblemas(List<Decisiones> decisionesList){
-        List<Widget> listPrincipales = List<Widget>();
+        List<Widget> listPrincipales = [];
 
         listPrincipales.add(
             Column(
@@ -789,7 +791,7 @@ class _ReportePageState extends State<ReportePage> {
                                 "Problemas de poda",
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
-                                    .headline5
+                                    .headline5!
                                     .copyWith(fontWeight: FontWeight.w600, fontSize: 18)
                             ),
                         )
@@ -804,7 +806,7 @@ class _ReportePageState extends State<ReportePage> {
         for (var item in decisionesList) {
 
             if (item.idPregunta == 1) {
-                String label = itemPodaProblema.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
+                String? label = itemPodaProblema.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
 
                 listPrincipales.add(
 
@@ -847,7 +849,7 @@ class _ReportePageState extends State<ReportePage> {
     }
 
     Widget _podaAplicar(List<Decisiones> decisionesList){
-        List<Widget> listPrincipales = List<Widget>();
+        List<Widget> listPrincipales = [];
 
         listPrincipales.add(
             Column(
@@ -859,7 +861,7 @@ class _ReportePageState extends State<ReportePage> {
                                 "¿Qué tipo de poda debemos aplicar?",
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
-                                    .headline5
+                                    .headline5!
                                     .copyWith(fontWeight: FontWeight.w600, fontSize: 18)
                             ),
                         )
@@ -874,7 +876,7 @@ class _ReportePageState extends State<ReportePage> {
         for (var item in decisionesList) {
 
             if (item.idPregunta == 2) {
-                String label= itemPodaAplicar.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
+                String? label= itemPodaAplicar.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
 
                 listPrincipales.add(
 
@@ -904,7 +906,7 @@ class _ReportePageState extends State<ReportePage> {
                                 "¿En qué parte vamos a aplicar las pod",
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
-                                    .headline5
+                                    .headline5!
                                     .copyWith(fontWeight: FontWeight.w600, fontSize: 18)
                             ),
                         )
@@ -919,7 +921,7 @@ class _ReportePageState extends State<ReportePage> {
         for (var item in decisionesList) {
 
             if (item.idPregunta == 3) {
-                String label= itemDondeAplicar.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
+                String? label= itemDondeAplicar.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
 
                 listPrincipales.add(
 
@@ -962,7 +964,7 @@ class _ReportePageState extends State<ReportePage> {
     }
 
     Widget _vigorPlanta(List<Decisiones> decisionesList){
-        List<Widget> listPrincipales = List<Widget>();
+        List<Widget> listPrincipales = [];
 
         listPrincipales.add(
             Column(
@@ -974,7 +976,7 @@ class _ReportePageState extends State<ReportePage> {
                                 "¿Las plantas tiene suficiente vigor?",
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
-                                    .headline5
+                                    .headline5!
                                     .copyWith(fontWeight: FontWeight.w600, fontSize: 18)
                             ),
                         )
@@ -989,7 +991,7 @@ class _ReportePageState extends State<ReportePage> {
         for (var item in decisionesList) {
 
             if (item.idPregunta == 4) {
-                String label= itemVigorPlanta.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
+                String? label= itemVigorPlanta.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
 
                 listPrincipales.add(
 
@@ -1018,7 +1020,7 @@ class _ReportePageState extends State<ReportePage> {
                                 "¿Cómo podemos mejorar la entrada de luz?",
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
-                                    .headline5
+                                    .headline5!
                                     .copyWith(fontWeight: FontWeight.w600, fontSize: 18)
                             ),
                         )
@@ -1033,7 +1035,7 @@ class _ReportePageState extends State<ReportePage> {
         for (var item in decisionesList) {
 
             if (item.idPregunta == 5) {
-                String label= itemEntraLuz.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
+                String? label= itemEntraLuz.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
 
                 listPrincipales.add(
 
@@ -1075,7 +1077,7 @@ class _ReportePageState extends State<ReportePage> {
     }
     
     Widget _accionesMeses(List<Decisiones> decisionesList){
-        List<Widget> listPrincipales = List<Widget>();
+        List<Widget> listPrincipales = [];
 
         listPrincipales.add(
             Column(
@@ -1087,7 +1089,7 @@ class _ReportePageState extends State<ReportePage> {
                                 "¿Cúando vamos a realizar las podas?",
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
-                                    .headline5
+                                    .headline5!
                                     .copyWith(fontWeight: FontWeight.w600, fontSize: 18)
                             ),
                         )
@@ -1102,7 +1104,7 @@ class _ReportePageState extends State<ReportePage> {
         for (var item in decisionesList) {
 
             if (item.idPregunta == 6) {
-                String label= itemMeses.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
+                String? label= itemMeses.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
 
                 listPrincipales.add(
 
@@ -1142,11 +1144,11 @@ class _ReportePageState extends State<ReportePage> {
     }
 
 
-    Widget _plagasPDF(String idTest, int estacion){
-        List<Widget> lisItem = List<Widget>();
+    Widget _plagasPDF(String? idTest, int estacion){
+        List<Widget> lisItem = [];
 
         for (var i = 0; i < itemPoda.length; i++) {
-            String labelPlaga = itemPoda.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "1","label": "No data"})['label'];
+            String? labelPlaga = itemPoda.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "1","label": "No data"})['label'];
             int idplga = int.parse(itemPoda.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "100","label": "No data"})['value']);
             lisItem.add(
                 Row(

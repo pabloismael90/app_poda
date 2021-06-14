@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CategoryCard extends StatelessWidget {
-    final String svgSrc;
-    final String title;
-    final Function press;
+    final String? svgSrc;
+    final String? title;
+    final Function? press;
     const CategoryCard({
-        Key key,
+        Key? key,
         this.svgSrc,
         this.title,
         this.press,
@@ -30,18 +30,18 @@ class CategoryCard extends StatelessWidget {
             child: Material(
                 color: Colors.transparent,
                 child: InkWell(
-                    onTap: press,
+                    onTap: press as void Function()?,
                     child: Padding(
                     padding: const EdgeInsets.all(20.0),
                         child: Column(
                             children: <Widget>[
                                 Spacer(),
-                                SvgPicture.asset(svgSrc, height: 70,),
+                                SvgPicture.asset(svgSrc!, height: 70,),
                                 Spacer(),
                                 Text(
-                                    title,
+                                    title!,
                                     textAlign: TextAlign.center,
-                                    style: Theme.of(context).textTheme.headline6.copyWith(fontWeight: FontWeight.w600, fontSize: 16.0)
+                                    style: Theme.of(context).textTheme.headline6!.copyWith(fontWeight: FontWeight.w600, fontSize: 16.0)
                                 )
                             ],
                         ),

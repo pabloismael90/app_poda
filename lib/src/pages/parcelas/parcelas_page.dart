@@ -10,7 +10,7 @@ import 'package:flutter_svg/svg.dart';
 
 
 class ParcelaPage extends StatefulWidget {
-    ParcelaPage({Key key}) : super(key: key);
+    ParcelaPage({Key? key}) : super(key: key);
 
     @override
     _ParcelaPageState createState() => _ParcelaPageState();
@@ -23,7 +23,7 @@ class _ParcelaPageState extends State<ParcelaPage> {
     @override
     Widget build(BuildContext context) {
 
-        final Finca fincaData = ModalRoute.of(context).settings.arguments;
+        final Finca fincaData = ModalRoute.of(context)!.settings.arguments as Finca;
         var size = MediaQuery.of(context).size;
         fincasBloc.obtenerParcelasIdFinca(fincaData.id);
 
@@ -102,7 +102,7 @@ class _ParcelaPageState extends State<ParcelaPage> {
             
             label: Text('Editar Finca',
                 style: Theme.of(context).textTheme
-                    .headline6
+                    .headline6!
                     .copyWith(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 16)
             ),
             padding:EdgeInsets.all(13),
@@ -117,7 +117,7 @@ class _ParcelaPageState extends State<ParcelaPage> {
             textColor: Colors.white,
             label: Text('Nueva Parcela',
                 style: Theme.of(context).textTheme
-                    .headline6
+                    .headline6!
                     .copyWith(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 16)
             ),
             padding:EdgeInsets.all(13),
@@ -128,8 +128,8 @@ class _ParcelaPageState extends State<ParcelaPage> {
 
 
     Widget  _listaDeParcelas(List parcelas, Finca finca, Size size, BuildContext context){
-        String labelMedida;
-        String labelVariedad;
+        String? labelMedida;
+        String? labelVariedad;
 
         return ListView.builder(
             itemBuilder: (context, index) {
@@ -160,7 +160,7 @@ class _ParcelaPageState extends State<ParcelaPage> {
 
     }
 
-    Widget _cardParcela(Size size, Parcela parcela, String labelMedida, String labelVariedad){
+    Widget _cardParcela(Size size, Parcela parcela, String? labelMedida, String? labelVariedad){
         return Container(
             margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             width: double.infinity,

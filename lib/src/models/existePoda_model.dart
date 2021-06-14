@@ -6,10 +6,10 @@ class ExistePoda {
         this.existe = 1,
     });
 
-    String id;
-    int idPlaga;
-    String idPlanta;
-    int existe;
+    String? id;
+    int? idPlaga;
+    String? idPlanta;
+    int? existe;
 
     factory ExistePoda.fromJson(Map<String, dynamic> json) => ExistePoda(
         id: json["id"],

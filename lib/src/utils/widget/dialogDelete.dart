@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 
-Future<bool> confirmacionUser(DismissDirection direction, BuildContext context) async {
+Future<bool?> confirmacionUser(DismissDirection direction, BuildContext context) async {
 
     return await showDialog(
         context: context,
@@ -34,7 +34,7 @@ Widget backgroundTrash(BuildContext context){
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                     Icon(Icons.delete, color: Colors.white),
-                    Text('Eliminar', style:Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
+                    Text('Eliminar', style:Theme.of(context).textTheme.headline6!.copyWith(color: Colors.white)),
                 ],
             ),
         )

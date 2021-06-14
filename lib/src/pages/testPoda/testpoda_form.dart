@@ -35,10 +35,10 @@ class _AgregarTestState extends State<AgregarTest> {
     String _fecha = '';
     TextEditingController _inputfecha = new TextEditingController();
 
-    List<TestPoda> mainlistplagas ;
+    List<TestPoda>? mainlistplagas ;
 
-    List mainparcela;
-    TextEditingController _control;
+    List? mainparcela;
+    late TextEditingController _control;
 
     @mustCallSuper
     // ignore: must_call_super
@@ -87,7 +87,7 @@ class _AgregarTestState extends State<AgregarTest> {
                                                     child:Text(
                                                         '3 Estaciones',
                                                         style: Theme.of(context).textTheme
-                                                            .headline6
+                                                            .headline6!
                                                             .copyWith(fontSize: 16)
                                                     ),
                                                 ),
@@ -96,7 +96,7 @@ class _AgregarTestState extends State<AgregarTest> {
                                                     child:Text(
                                                         '10 Plantas por estaciones',
                                                         style: Theme.of(context).textTheme
-                                                            .headline6
+                                                            .headline6!
                                                             .copyWith(fontSize: 16)
                                                     ),
                                                 ),
@@ -141,7 +141,7 @@ class _AgregarTestState extends State<AgregarTest> {
             items: _listitem,
             enabled: _enableFinca,
             validator: (value){
-                if(value.length < 1){
+                if(value!.length < 1){
                     return 'No se selecciono una finca';
                 }else{
                     return null;
@@ -175,9 +175,9 @@ class _AgregarTestState extends State<AgregarTest> {
                     controller: _control,
                     initialValue: '',
                     labelText: 'Seleccione la parcela',
-                    items: mainparcela,
+                    items: mainparcela as List<Map<String, dynamic>>,
                     validator: (value){
-                        if(value.length < 1){
+                        if(value!.length < 1){
                             return 'Selecione un elemento';
                         }else{
                             return null;
@@ -215,7 +215,7 @@ class _AgregarTestState extends State<AgregarTest> {
     }
 
     _selectDate(BuildContext context) async{
-        DateTime picked = await showDatePicker(
+        DateTime? picked = await showDatePicker(
             context: context,
 
             initialDate: new DateTime.now(),
@@ -251,7 +251,7 @@ class _AgregarTestState extends State<AgregarTest> {
 
                     label: Text('Guardar',
                         style: Theme.of(context).textTheme
-                            .headline6
+                            .headline6!
                             .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
                     ),
                     padding:EdgeInsets.symmetric(vertical: 13, horizontal: 50),
@@ -273,13 +273,13 @@ class _AgregarTestState extends State<AgregarTest> {
 
         plaga.estaciones = 3;
 
-        if  ( !formKey.currentState.validate() ){
+        if  ( !formKey.currentState!.validate() ){
             //Cuendo el form no es valido
             return null;
         }
-        formKey.currentState.save();
+        formKey.currentState!.save();
 
-        mainlistplagas.forEach((e) {
+        mainlistplagas!.forEach((e) {
             //print(plaga.fechaTest);
             //print(e.fechaTest);
             if (plaga.idFinca == e.idFinca && plaga.idLote == e.idLote && plaga.fechaTest == e.fechaTest) {
@@ -294,7 +294,7 @@ class _AgregarTestState extends State<AgregarTest> {
             return null;
         }
 
-        String checkParcela = mainparcela.firstWhere((e) => e['value'] == '${plaga.idLote}', orElse: () => {"value": "1","label": "No data"})['value'];
+        String? checkParcela = mainparcela!.firstWhere((e) => e['value'] == '${plaga.idLote}', orElse: () => {"value": "1","label": "No data"})['value'];
 
 
 
@@ -333,6 +333,6 @@ class _AgregarTestState extends State<AgregarTest> {
             duration: Duration(seconds: 2),
         );
 
-        scaffoldKey.currentState.showSnackBar(snackbar);
+        scaffoldKey.currentState!.showSnackBar(snackbar);
     }
 }

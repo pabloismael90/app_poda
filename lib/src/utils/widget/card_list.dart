@@ -6,12 +6,12 @@ import '../constants.dart';
 
 
 class CardList extends StatelessWidget {
-    final Size size;  
-    final Finca finca;
-    final String icon;
+    final Size? size;  
+    final Finca? finca;
+    final String? icon;
     
     const CardList({
-        Key key,
+        Key? key,
         this.size,
         this.finca,
         this.icon
@@ -22,8 +22,8 @@ class CardList extends StatelessWidget {
     Widget build(BuildContext context) {
 
         
-        String labelMedida;
-        final item = selectMap.dimenciones().firstWhere((e) => e['value'] == '${finca.tipoMedida}');
+        String? labelMedida;
+        final item = selectMap.dimenciones().firstWhere((e) => e['value'] == '${finca!.tipoMedida}');
         labelMedida  = item['label'];
 
 
@@ -58,12 +58,12 @@ class CardList extends StatelessWidget {
                                     Padding(
                                         padding: EdgeInsets.only(top: 10, bottom: 10.0),
                                         child: Text(
-                                            "${finca.nombreFinca}",
+                                            "${finca!.nombreFinca}",
                                             style: Theme.of(context).textTheme.headline6,
                                         ),
                                     ),
                                     Text(
-                                        "${finca.nombreProductor}",
+                                        "${finca!.nombreProductor}",
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(color: kLightBlackColor),
@@ -71,7 +71,7 @@ class CardList extends StatelessWidget {
                                     Padding(
                                         padding: EdgeInsets.only(top: 10, bottom: 10.0),
                                         child: Text(
-                                            "${finca.areaFinca} $labelMedida",
+                                            "${finca!.areaFinca} $labelMedida",
                                             style: TextStyle(color: kLightBlackColor),
                                         ),
                                     ),

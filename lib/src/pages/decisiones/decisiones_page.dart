@@ -1,4 +1,6 @@
 
+import 'dart:async';
+
 import 'package:app_poda/src/models/decisiones_model.dart';
 import 'package:app_poda/src/models/testpoda_model.dart';
 import 'package:app_poda/src/providers/db_provider.dart';
@@ -8,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class DesicionesList extends StatelessWidget {
-    const DesicionesList({Key key}) : super(key: key);
+    const DesicionesList({Key? key}) : super(key: key);
 
     
     Future getRegistros() async{
@@ -18,12 +20,12 @@ class DesicionesList extends StatelessWidget {
         return listAcciones;
     }
 
-    Future getDatos(String id) async{
+    Future getDatos(String? id) async{
         
-        TestPoda testplaga= await DBProvider.db.getTestId(id);
+        TestPoda testplaga= await (DBProvider.db.getTestId(id) as FutureOr<TestPoda>);
 
-        Finca finca = await DBProvider.db.getFincaId(testplaga.idFinca);
-        Parcela parcela = await DBProvider.db.getParcelaId(testplaga.idLote);
+        Finca? finca = await DBProvider.db.getFincaId(testplaga.idFinca);
+        Parcela? parcela = await DBProvider.db.getParcelaId(testplaga.idLote);
 
         return [testplaga, finca, parcela];
     }

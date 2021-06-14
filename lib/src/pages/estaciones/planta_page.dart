@@ -20,9 +20,9 @@ class _PlantaPageState extends State<PlantaPage> {
 
     @override
     Widget build(BuildContext context) {
-        List dataEstaciones = ModalRoute.of(context).settings.arguments;
+        List dataEstaciones = ModalRoute.of(context)!.settings.arguments as List<dynamic>;
         TestPoda plaga = dataEstaciones[0];
-        int indiceEstacion = dataEstaciones[1]+1;
+        int? indiceEstacion = dataEstaciones[1]+1;
         fincasBloc.obtenerPlantaIdTest(plaga.id, indiceEstacion);
 
         return Scaffold(
@@ -77,7 +77,7 @@ class _PlantaPageState extends State<PlantaPage> {
     
 
 
-    Widget  _listaDePlantas(List planta, BuildContext context, int numeroEstacion){
+    Widget  _listaDePlantas(List planta, BuildContext context, int? numeroEstacion){
 
         return ListView.builder(
             itemBuilder: (context, index) {
@@ -138,7 +138,7 @@ class _PlantaPageState extends State<PlantaPage> {
 
     
 
-    Widget  _countPlanta(String idPlaga,  int estacion, TestPoda plaga){
+    Widget  _countPlanta(String? idPlaga,  int? estacion, TestPoda plaga){
         return StreamBuilder<List<Planta>>(
             stream: fincasBloc.plantaStream,
             
@@ -156,21 +156,21 @@ class _PlantaPageState extends State<PlantaPage> {
                         children: [
                             Text('Plantas: $value / 10',
                                 style: Theme.of(context).textTheme
-                                        .headline6
+                                        .headline6!
                                         .copyWith(fontWeight: FontWeight.w600)
                             ),
                             _addPlanta(context, estacion, plaga, value),
                         ],
                     );
                 }else{
-                    if (estacion <= 2){
+                    if (estacion! <= 2){
                         return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                                 Container(
                                     child: Text('Plantas: $value / 10',
                                         style: Theme.of(context).textTheme
-                                                .headline6
+                                                .headline6!
                                                 .copyWith(fontWeight: FontWeight.w600)
                                     ),
                                 ),
@@ -178,7 +178,7 @@ class _PlantaPageState extends State<PlantaPage> {
                                     icon:Icon(Icons.navigate_next_rounded),                               
                                     label: Text('Siguiente estaciones',
                                         style: Theme.of(context).textTheme
-                                            .headline6
+                                            .headline6!
                                             .copyWith(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 16)
                                     ),
                                     padding:EdgeInsets.all(13),
@@ -193,7 +193,7 @@ class _PlantaPageState extends State<PlantaPage> {
                                 Container(
                                     child: Text('Plantas: $value / 10',
                                         style: Theme.of(context).textTheme
-                                                .headline6
+                                                .headline6!
                                                 .copyWith(fontWeight: FontWeight.w600)
                                     ),
                                 ),
@@ -201,7 +201,7 @@ class _PlantaPageState extends State<PlantaPage> {
                                     icon:Icon(Icons.chevron_left),                               
                                     label: Text('Lista de estaciones',
                                         style: Theme.of(context).textTheme
-                                            .headline6
+                                            .headline6!
                                             .copyWith(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 16)
                                     ),
                                     padding:EdgeInsets.all(13),
@@ -218,14 +218,14 @@ class _PlantaPageState extends State<PlantaPage> {
     }
 
 
-    Widget  _addPlanta(BuildContext context,  int estacion, TestPoda plaga, int value){
+    Widget  _addPlanta(BuildContext context,  int? estacion, TestPoda plaga, int value){
         return RaisedButton.icon(
             
             icon:Icon(Icons.add_circle_outline_outlined),
             
             label: Text('Agregar Planta',
                 style: Theme.of(context).textTheme
-                    .headline6
+                    .headline6!
                     .copyWith(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 16)
             ),
             padding:EdgeInsets.all(13),
