@@ -3,6 +3,7 @@ import 'package:app_poda/src/models/finca_model.dart';
 import 'package:app_poda/src/providers/db_provider.dart';
 import 'package:app_poda/src/utils/constants.dart';
 import 'package:app_poda/src/models/selectValue.dart' as selectMap;
+import 'package:app_poda/src/utils/widget/button.dart';
 import 'package:app_poda/src/utils/widget/dialogDelete.dart';
 import 'package:app_poda/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
@@ -96,33 +97,18 @@ class _ParcelaPageState extends State<ParcelaPage> {
     }
 
     Widget  _editarFinca(Finca finca){
-        return RaisedButton.icon(
-            
-            icon:Icon(Icons.edit_rounded),
-            
-            label: Text('Editar Finca',
-                style: Theme.of(context).textTheme
-                    .headline6!
-                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 16)
-            ),
-            padding:EdgeInsets.all(13),
-            onPressed: () => Navigator.pushNamed(context, 'addFinca', arguments: finca),
+        return ButtonMainStyle(
+            title: 'Editar Finca',
+            icon: Icons.edit_rounded,
+            press:() => Navigator.pushNamed(context, 'addFinca', arguments: finca),
         );
     }
 
     Widget  _addParcela( Finca finca ){
-        return RaisedButton.icon(
-            
-            icon:Icon(Icons.add_circle_outline_outlined),
-            textColor: Colors.white,
-            label: Text('Nueva Parcela',
-                style: Theme.of(context).textTheme
-                    .headline6!
-                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 16)
-            ),
-            padding:EdgeInsets.all(13),
-            
-            onPressed:() => Navigator.pushNamed(context, 'addParcela', arguments: finca),
+        return ButtonMainStyle(
+            title: 'Nueva Parcela',
+            icon: Icons.add_circle_outline_outlined,
+            press: () => Navigator.pushNamed(context, 'addParcela', arguments: finca),
         );
     }
 

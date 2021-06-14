@@ -85,16 +85,21 @@ class MyApp extends StatelessWidget {
                 inputDecorationTheme: InputDecorationTheme(
                     labelStyle: Theme.of(context).textTheme
                                 .headline6!
-                                .copyWith(fontWeight: FontWeight.bold, color: kTextColor, fontSize: 18, fontFamily: 'Museo'),
+                                .copyWith(fontWeight: FontWeight.bold, color: kTextColor, fontSize: 16, fontFamily: 'Museo'),
                 ),
             
-                buttonTheme: ButtonThemeData(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    textTheme: ButtonTextTheme.primary,
-                    buttonColor: Color(0xFF3f2a56),
-                   
+                elevatedButtonTheme: ElevatedButtonThemeData(
+                    style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                        primary: Color(0xFF3f2a56),
+                        textStyle: TextStyle(fontWeight: FontWeight.bold),
+                        minimumSize: Size(88, 40),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        
+
+                    )
                 )
                 
             ),

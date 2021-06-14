@@ -510,7 +510,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
             );
             lisItem.add(Divider());
         
-        return Column(children: lisItem as List<Widget>,);
+        return Column(children: lisItem);
     }
 
     Widget _countAncho(String? idTest){
@@ -1210,7 +1210,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                         ),
                         Padding(
                             padding: EdgeInsets.symmetric(horizontal: 60),
-                            child: RaisedButton.icon(
+                            child: FlatButton.icon(
                                 icon:Icon(Icons.save),
                                 label: Text('Guardar',
                                     style: Theme.of(context).textTheme

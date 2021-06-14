@@ -37,8 +37,8 @@ class _AgregarTestState extends State<AgregarTest> {
 
     List<TestPoda>? mainlistplagas ;
 
-    List? mainparcela;
-    late TextEditingController _control;
+    List<Map<String, dynamic>>? mainparcela;
+    TextEditingController? _control;
 
     @mustCallSuper
     // ignore: must_call_super
@@ -48,6 +48,7 @@ class _AgregarTestState extends State<AgregarTest> {
 
 
     }
+    
 
 
 
@@ -61,7 +62,6 @@ class _AgregarTestState extends State<AgregarTest> {
 
         return StreamBuilder(
             stream: fincasBloc.fincaSelect,
-            //future: DBProvider.db.getSelectFinca(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
                 //print(snapshot.data);
                 if (!snapshot.hasData) {
@@ -161,6 +161,7 @@ class _AgregarTestState extends State<AgregarTest> {
             stream: fincasBloc.parcelaSelect,
             builder: (BuildContext context, AsyncSnapshot snapshot){
                 if (!snapshot.hasData) {
+                    
                     return SelectFormField(
                         controller: _control,
                         initialValue: '',
@@ -175,7 +176,7 @@ class _AgregarTestState extends State<AgregarTest> {
                     controller: _control,
                     initialValue: '',
                     labelText: 'Seleccione la parcela',
-                    items: mainparcela as List<Map<String, dynamic>>,
+                    items: mainparcela,
                     validator: (value){
                         if(value!.length < 1){
                             return 'Selecione un elemento';
@@ -258,6 +259,8 @@ class _AgregarTestState extends State<AgregarTest> {
                     onPressed:(_guardando) ? null : _submit,
                     //onPressed: clearTextInput,
                 );
+
+                
             },
         );
 

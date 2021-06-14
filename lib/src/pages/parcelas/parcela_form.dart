@@ -1,6 +1,7 @@
 import 'package:app_poda/src/bloc/fincas_bloc.dart';
 import 'package:app_poda/src/models/parcela_model.dart';
 import 'package:app_poda/src/providers/db_provider.dart';
+import 'package:app_poda/src/utils/widget/button.dart';
 import 'package:app_poda/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -243,18 +244,10 @@ class _AgregarParcelaState extends State<AgregarParcela> {
     }
 
     Widget  _botonsubmit(String tituloBtn){
-        return RaisedButton.icon(
-            
-            icon:Icon(Icons.save, color: Colors.white,),
-            
-            label: Text(tituloBtn,
-                style: Theme.of(context).textTheme
-                    .headline6!
-                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
-            ),
-            padding:EdgeInsets.symmetric(vertical: 13, horizontal: 50),
-            onPressed:(_guardando) ? null : _submit,
-           // onPressed: _submit,
+        return ButtonMainStyle(
+            title: tituloBtn,
+            icon: Icons.save,
+            press: (_guardando) ? null : _submit,
         );
     }
     
@@ -264,8 +257,6 @@ class _AgregarParcelaState extends State<AgregarParcela> {
         
 
         if  ( !formKey.currentState!.validate() ){
-            
-            //Cuendo el form no es valido
             return null;
         }
         
@@ -273,19 +264,12 @@ class _AgregarParcelaState extends State<AgregarParcela> {
         formKey.currentState!.save();
 
         setState(() {_guardando = true;});
-
-        // print(parcela.id);
-        // print(parcela.idFinca);
-        // print(parcela.nombreLote);
-        // print(parcela.areaLote);
         if(parcela.id == null){
             parcela.id = uuid.v1();
             fincasBloc.addParcela(parcela, parcela.idFinca);
         }else{
             fincasBloc.actualizarParcela(parcela, parcela.idFinca);
         }
-        //fincasBloc.addParcela(parcela);
-        //DBProvider.db.nuevoParcela(parcela);
 
         setState(() {_guardando = false;});
         

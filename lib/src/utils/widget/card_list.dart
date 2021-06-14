@@ -5,14 +5,12 @@ import 'package:app_poda/src/models/selectValue.dart' as selectMap;
 import '../constants.dart';
 
 
-class CardList extends StatelessWidget {
-    final Size? size;  
+class CardList extends StatelessWidget {  
     final Finca? finca;
     final String? icon;
     
     const CardList({
         Key? key,
-        this.size,
         this.finca,
         this.icon
 

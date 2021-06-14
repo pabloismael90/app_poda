@@ -1,4 +1,5 @@
 
+import 'package:app_poda/src/utils/widget/button.dart';
 import 'package:app_poda/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 
@@ -191,17 +192,10 @@ class _AgregarFincaState extends State<AgregarFinca> {
     }
 
     Widget  _botonsubmit(tituloBtn){
-        return RaisedButton.icon(
-            
-            icon:Icon(Icons.save, color: Colors.white,),
-            
-            label: Text(tituloBtn,
-                style: Theme.of(context).textTheme
-                    .headline6!
-                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
-            ),
-            padding:EdgeInsets.symmetric(vertical: 13, horizontal: 50),
-            onPressed:(_guardando) ? null : _submit,
+        return ButtonMainStyle(
+            title: tituloBtn,
+            icon: Icons.save,
+            press: (_guardando) ? null : _submit,
         );
     }
 

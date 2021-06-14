@@ -1,7 +1,7 @@
 import 'package:app_poda/src/bloc/fincas_bloc.dart';
 import 'package:app_poda/src/models/finca_model.dart';
 import 'package:app_poda/src/providers/db_provider.dart';
-import 'package:app_poda/src/utils/constants.dart';
+import 'package:app_poda/src/utils/widget/button.dart';
 import 'package:app_poda/src/utils/widget/card_list.dart';
 import 'package:app_poda/src/utils/widget/dialogDelete.dart';
 import 'package:app_poda/src/utils/widget/titulos.dart';
@@ -23,7 +23,6 @@ class _FincasPageState extends State<FincasPage> {
     @override
     Widget build(BuildContext context) {
 
-        var size = MediaQuery.of(context).size;
         fincasBloc.obtenerFincas();
         return Scaffold(
             appBar: AppBar(
@@ -58,8 +57,10 @@ class _FincasPageState extends State<FincasPage> {
                         children: [
                             TitulosPages(titulo: 'Mis Fincas'),
                             Expanded(child: SingleChildScrollView(
-                                child: _listaDeFincas(snapshot.data, context, size),
-                            ))
+                                child: _listaDeFincas(snapshot.data, context),
+                            )),
+                            _addFinca(context),
+                            SizedBox(height: 5,)
                             
 
                         ],
@@ -67,15 +68,9 @@ class _FincasPageState extends State<FincasPage> {
                 },
             ),
 
-            bottomNavigationBar: BottomAppBar(
-                child: Container(
-                    color: kBackgroundColor,
-                    child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 70, vertical: 10),
-                        child: _addFinca(context)
-                    ),
-                ),
-            ),
+            // bottomNavigationBar: BottomAppBar(
+            //     child: 
+            // ),
             
         );
         
@@ -83,29 +78,23 @@ class _FincasPageState extends State<FincasPage> {
     }
 
     Widget _addFinca(BuildContext context){
-    
-        return RaisedButton.icon(
-            
-            icon:Icon(Icons.add_circle_outline_outlined),
-            
-            label: Text('Agregar finca',
-                style: Theme.of(context).textTheme
-                    .headline6!
-                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
-            ),
-            padding:EdgeInsets.all(13),
-            onPressed:() => Navigator.pushNamed(context, 'addFinca'),
+
+        return ButtonMainStyle(
+            title: 'Agregar finca',
+            icon: Icons.add_circle_outline_outlined,
+            press: () => Navigator.pushNamed(context, 'addFinca')
         );
+    
+       
     }
 
-    Widget  _listaDeFincas(List fincas, BuildContext context, Size size){
+    Widget  _listaDeFincas(List fincas, BuildContext context){
         return ListView.builder(
             itemBuilder: (context, index) {
                 return Dismissible(
                     key: UniqueKey(),
                     child: GestureDetector(
                         child: CardList(
-                            size: size, 
                             finca: fincas[index],
                             icon:'assets/icons/finca.svg'
                             

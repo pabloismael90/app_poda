@@ -29,29 +29,29 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: any
+  cupertino_icons: ^1.0.3
   #Select y multiselect
-  select_form_field: any
-  multiselect_formfield: any
+  select_form_field: ^2.0.0
+  multiselect_formfield: ^0.1.6
   #Slider page
-  flutter_swiper_null_safety: any
+  flutter_swiper_null_safety: ^1.0.2
   #Crear PDF
   #pdf: ^3.3.0
   pdf_flutter: 
     git: https://github.com/erluxman/pdf_flutter
   #flutter_full_pdf_viewer: ^1.0.6
   # Base de datos
-  uuid: any
-  sqflite: any
-  path_provider: any
+  uuid: ^3.0.4
+  sqflite: ^2.0.0+3
+  path_provider: ^2.0.2
   #Storage
   #ext_storage: ^1.0.3
   #imagenes
-  flutter_svg: any
+  flutter_svg: ^0.22.0
   #Indicador Circular o lineal
-  percent_indicator: any
+  percent_indicator: ^3.0.1
   #Visor img
-  photo_view: any
+  photo_view: ^0.11.1
 
 
 dev_dependencies:
