@@ -2,6 +2,7 @@ import 'package:app_poda/src/bloc/fincas_bloc.dart';
 import 'package:app_poda/src/models/parcela_model.dart';
 import 'package:app_poda/src/providers/db_provider.dart';
 import 'package:app_poda/src/utils/widget/button.dart';
+import 'package:app_poda/src/utils/widget/snackbar.dart';
 import 'package:app_poda/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -267,8 +268,10 @@ class _AgregarParcelaState extends State<AgregarParcela> {
         if(parcela.id == null){
             parcela.id = uuid.v1();
             fincasBloc.addParcela(parcela, parcela.idFinca);
+            mostrarSnackbar('Registro parcela guardado', context);
         }else{
             fincasBloc.actualizarParcela(parcela, parcela.idFinca);
+            mostrarSnackbar('Registro parcela actualizada', context);
         }
 
         setState(() {_guardando = false;});

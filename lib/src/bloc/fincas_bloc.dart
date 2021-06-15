@@ -101,8 +101,8 @@ class FincasBloc {
         _podaController.sink.add( await DBProvider.db.getTodasTestPoda() );
     }
     
-    addPlaga( TestPoda nuevaPlaga) async{
-        await DBProvider.db.nuevoTestPoda(nuevaPlaga);
+    addPoda( TestPoda nuevaPoda) async{
+        await DBProvider.db.nuevoTestPoda(nuevaPoda);
         obtenerPodas();
     }
 

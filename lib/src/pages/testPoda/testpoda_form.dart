@@ -1,6 +1,8 @@
 //import 'dart:html';
 
 import 'package:app_poda/src/models/testpoda_model.dart';
+import 'package:app_poda/src/utils/widget/button.dart';
+import 'package:app_poda/src/utils/widget/snackbar.dart';
 import 'package:app_poda/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 
@@ -163,6 +165,7 @@ class _AgregarTestState extends State<AgregarTest> {
                 if (!snapshot.hasData) {
                     
                     return SelectFormField(
+                        type: SelectFormFieldType.dropdown,
                         controller: _control,
                         initialValue: '',
                         enabled: false,
@@ -173,11 +176,13 @@ class _AgregarTestState extends State<AgregarTest> {
 
                 mainparcela = snapshot.data;
                 return SelectFormField(
+                    type: SelectFormFieldType.dropdown,
                     controller: _control,
                     initialValue: '',
                     labelText: 'Seleccione la parcela',
                     items: mainparcela,
                     validator: (value){
+                        print(value);
                         if(value!.length < 1){
                             return 'Selecione un elemento';
                         }else{
@@ -207,8 +212,6 @@ class _AgregarTestState extends State<AgregarTest> {
                 FocusScope.of(context).requestFocus(new FocusNode());
                 _selectDate(context);
             },
-            //onChanged: (value) => print('hola: $value'),
-            //validator: (value){},
             onSaved: (value){
                 plaga.fechaTest = value;
             }
@@ -247,17 +250,11 @@ class _AgregarTestState extends State<AgregarTest> {
                 }
                 mainlistplagas = snapshot.data;
 
-                return RaisedButton.icon(
-                    icon:Icon(Icons.save, color: Colors.white,),
-
-                    label: Text('Guardar',
-                        style: Theme.of(context).textTheme
-                            .headline6!
-                            .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
-                    ),
-                    padding:EdgeInsets.symmetric(vertical: 13, horizontal: 50),
-                    onPressed:(_guardando) ? null : _submit,
-                    //onPressed: clearTextInput,
+            
+                return ButtonMainStyle(
+                    title: 'Guardar',
+                    icon: Icons.save,
+                    press: (_guardando) ? null : _submit,
                 );
 
                 
@@ -293,7 +290,7 @@ class _AgregarTestState extends State<AgregarTest> {
 
 
         if (checkRepetido == true) {
-            mostrarSnackbar('Ya existe un registros con los mismos valores');
+            mostrarSnackbar('Ya existe un registros con los mismos valores', context);
             return null;
         }
 
@@ -302,7 +299,7 @@ class _AgregarTestState extends State<AgregarTest> {
 
 
         if (checkParcela == '1') {
-            mostrarSnackbar('La parcela selecionada no pertenece a esa finca');
+            mostrarSnackbar('La parcela selecionada no pertenece a esa finca', context);
             return null;
         }
 
@@ -310,18 +307,14 @@ class _AgregarTestState extends State<AgregarTest> {
 
         setState(() {_guardando = true;});
 
-        // print(plaga.id);
-        // print(plaga.idFinca);
-        // print(plaga.idLote);
-        // print(plaga.estaciones);
-        // print(plaga.fechaTest);
         if(plaga.id == null){
             plaga.id =  uuid.v1();
-            fincasBloc.addPlaga(plaga);
+            fincasBloc.addPoda(plaga);
+            mostrarSnackbar('Registro Guardado', context);
         }
 
         setState(() {_guardando = false;});
-        mostrarSnackbar('Registro Guardado');
+        
 
 
         Navigator.pop(context, 'fincas');
@@ -330,12 +323,4 @@ class _AgregarTestState extends State<AgregarTest> {
     }
 
 
-    void mostrarSnackbar(String mensaje){
-        final snackbar = SnackBar(
-            content: Text(mensaje),
-            duration: Duration(seconds: 2),
-        );
-
-        scaffoldKey.currentState!.showSnackBar(snackbar);
-    }
 }

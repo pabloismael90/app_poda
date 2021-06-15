@@ -6,6 +6,7 @@ import 'package:app_poda/src/models/planta_model.dart';
 import 'package:app_poda/src/models/testpoda_model.dart';
 import 'package:app_poda/src/providers/db_provider.dart';
 import 'package:app_poda/src/utils/constants.dart';
+import 'package:app_poda/src/utils/widget/button.dart';
 import 'package:app_poda/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -66,7 +67,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
                     body: Column(
                         children: [
                             escabezadoEstacion( context, poda ),
-                            TitulosPages(titulo: 'Estaciones'),
+                            TitulosPages(titulo: 'Sitios'),
                             Divider(),
                             Expanded(
                                 child: SingleChildScrollView(
@@ -203,7 +204,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
                                     Padding(
                                         padding: EdgeInsets.only(top: 10, bottom: 10.0),
                                         child: Text(
-                                            "Estación $estacion",
+                                            "Sitio $estacion",
                                             softWrap: true,
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 2,
@@ -253,24 +254,16 @@ class _EstacionesPageState extends State<EstacionesPage> {
                     }
                     List<Decisiones> desiciones = snapshot.data;
 
-                    //print(desiciones);
-
                     if (desiciones.length == 0){
 
                         return Container(
                             color: kBackgroundColor,
                             child: Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 60, vertical: 10),
-                                child: RaisedButton.icon(
-                                    icon:Icon(Icons.add_circle_outline_outlined),
-                                    
-                                    label: Text('Toma de decisiones',
-                                        style: Theme.of(context).textTheme
-                                            .headline6!
-                                            .copyWith(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 14)
-                                    ),
-                                    padding:EdgeInsets.all(13),
-                                    onPressed: () => Navigator.pushNamed(context, 'decisiones', arguments: poda),
+                                child: ButtonMainStyle(
+                                    title: 'Toma de decisiones',
+                                    icon: Icons.add_circle_outline_outlined,
+                                    press:() => Navigator.pushNamed(context, 'decisiones', arguments: poda),
                                 )
                             ),
                         );
@@ -282,18 +275,14 @@ class _EstacionesPageState extends State<EstacionesPage> {
                         color: kBackgroundColor,
                         child: Padding(
                             padding: EdgeInsets.symmetric(horizontal: 60, vertical: 10),
-                            child: RaisedButton.icon(
-                                icon:Icon(Icons.receipt_rounded),
+                            child: ButtonMainStyle(
+                                    title: 'Consultar decisiones',
+                                    icon: Icons.receipt_rounded,
+                                    press: () => Navigator.pushNamed(context, 'reporte', arguments: poda.id),
+                                
                             
-                                label: Text('Consultar decisiones',
-                                    style: Theme.of(context).textTheme
-                                        .headline6!
-                                        .copyWith(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 14)
-                                ),
-                                padding:EdgeInsets.all(13),
-                                onPressed: () => Navigator.pushNamed(context, 'reporte', arguments: poda.id),
-                            )
-                        ),
+                            ),
+                        )
                     );
                                        
                 },  
@@ -306,7 +295,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
             child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 child: Text(
-                    "Complete las estaciones",
+                    "Complete los sitios",
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme
                         .headline5!

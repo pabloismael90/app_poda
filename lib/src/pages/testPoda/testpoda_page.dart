@@ -2,6 +2,7 @@ import 'package:app_poda/src/bloc/fincas_bloc.dart';
 import 'package:app_poda/src/models/testpoda_model.dart';
 import 'package:app_poda/src/providers/db_provider.dart';
 import 'package:app_poda/src/utils/constants.dart';
+import 'package:app_poda/src/utils/widget/button.dart';
 import 'package:app_poda/src/utils/widget/dialogDelete.dart';
 import 'package:app_poda/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
@@ -57,7 +58,9 @@ class _TestPageState extends State<TestPage> {
                                             style: Theme.of(context).textTheme.headline6,
                                             )
                                         )
-                                    )
+                                    ),
+                                    _addtest(context),
+                                    SizedBox(height: 5,)
                                 ],
                             );
                         }
@@ -66,37 +69,26 @@ class _TestPageState extends State<TestPage> {
 
                                 TitulosPages(titulo: 'Parcelas'),
                                 Divider(),
-                                Expanded(child: SingleChildScrollView(child: _listaDePlagas(textPlagas, size, context)))
+                                Expanded(child: SingleChildScrollView(child: _listaDePlagas(textPlagas, size, context))),
+                                _addtest(context),
+                                SizedBox(height: 5,)
                             ],
                         );
                         
                         
                     },
                 ),
-                bottomNavigationBar: BottomAppBar(
-                    child: Container(
-                        color: kBackgroundColor,
-                        child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-                            child: _addtest(context)
-                        ),
-                    ),
-                ),
+                
         );
         
     }
 
     Widget _addtest(BuildContext context){
-        return RaisedButton.icon(
-            icon:Icon(Icons.add_circle_outline_outlined),
-            
-            label: Text('Escoger parcelas',
-                style: Theme.of(context).textTheme
-                    .headline6!
-                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
-            ),
-            padding:EdgeInsets.all(13),
-            onPressed:() => Navigator.pushNamed(context, 'addTest'),
+        
+        return ButtonMainStyle(
+            title: 'Escoger parcelas',
+            icon: Icons.add_circle_outline_outlined,
+            press: () => Navigator.pushNamed(context, 'addTest'),
         );
     }
 

@@ -4,6 +4,8 @@ import 'package:app_poda/src/models/planta_model.dart';
 
 import 'package:app_poda/src/models/selectValue.dart' as selectMap;
 import 'package:app_poda/src/providers/db_provider.dart';
+import 'package:app_poda/src/utils/widget/button.dart';
+import 'package:app_poda/src/utils/widget/snackbar.dart';
 import 'package:app_poda/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
@@ -66,7 +68,7 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                         key: formKey,
                         child: Column(
                             children: <Widget>[
-                                TitulosPages(titulo: 'Planta $countPlanta estacion ${planta.estacion}'),
+                                TitulosPages(titulo: 'Planta $countPlanta sitio ${planta.estacion}'),
                                 Divider(),
                                 _altoAncho(),
                                 SizedBox( height: 20,),
@@ -322,16 +324,10 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
     
 
     Widget  _botonsubmit(){
-        return RaisedButton.icon(
-            icon:Icon(Icons.save, color: Colors.white,),
-            
-            label: Text('Guardar',
-                style: Theme.of(context).textTheme
-                    .headline6!
-                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
-            ),
-            padding:EdgeInsets.symmetric(vertical: 13, horizontal: 50),
-            onPressed:(_guardando) ? null : _submit,
+        return ButtonMainStyle(
+            title: 'Guardar',
+            icon: Icons.save,
+            press:(_guardando) ? null : _submit,
         );
     }
 
@@ -372,14 +368,11 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
 
 
         if  ( variableVacias !=  0){
-            mostrarSnackbar(variableVacias);
+            mostrarSnackbar('Hay $variableVacias Campos Vacios, Favor llene todo los campos', context);
             return null;
         }
 
         formKey.currentState!.save();
-        // print(planta.altura);
-        // print(planta.ancho);
-        // print(planta.largo);
 
 
         setState(() {_guardando = true;});
@@ -395,7 +388,7 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
             });
 
         }
-         
+        mostrarSnackbar('Registro planta guardado8', context);
         setState(() {_guardando = false;});
 
         Navigator.pop(context, 'estaciones');
@@ -404,16 +397,7 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
     }
 
 
-    void mostrarSnackbar(int variableVacias){
-        final snackbar = SnackBar(
-            content: Text('Hay $variableVacias Campos Vacios, Favor llene todo los campos',
-                style: Theme.of(context).textTheme.headline6!.copyWith(color: Colors.white),
-            ),
-            duration: Duration(seconds: 2),
-        );
-        setState(() {_guardando = false;});
-        scaffoldKey.currentState!.showSnackBar(snackbar);
-    }
+ 
 
 
 }

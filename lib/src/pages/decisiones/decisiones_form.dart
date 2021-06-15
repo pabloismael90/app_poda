@@ -7,6 +7,8 @@ import 'package:app_poda/src/models/testpoda_model.dart';
 import 'package:app_poda/src/pages/finca/finca_page.dart';
 import 'package:app_poda/src/providers/db_provider.dart';
 import 'package:app_poda/src/utils/constants.dart';
+import 'package:app_poda/src/utils/widget/button.dart';
+import 'package:app_poda/src/utils/widget/snackbar.dart';
 import 'package:app_poda/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
@@ -1210,17 +1212,11 @@ class _DesicionesPageState extends State<DesicionesPage> {
                         ),
                         Padding(
                             padding: EdgeInsets.symmetric(horizontal: 60),
-                            child: FlatButton.icon(
-                                icon:Icon(Icons.save),
-                                label: Text('Guardar',
-                                    style: Theme.of(context).textTheme
-                                        .headline6!
-                                        .copyWith(fontWeight: FontWeight.w600, color: Colors.white)
-                                ),
-                                padding:EdgeInsets.all(13),
-                                onPressed:(_guardando) ? null : _submit,
-                                
-                            ),
+                            child: ButtonMainStyle(
+                                title: 'Guardar',
+                                icon: Icons.save,
+                                press: (_guardando) ? null : _submit,
+                            )
                         ),
                     ],
                 ),
@@ -1255,13 +1251,9 @@ class _DesicionesPageState extends State<DesicionesPage> {
 
 
         listaDecisiones.forEach((decision) {
-            // print("Id Pregunta: ${decision.idPregunta}");
-            // print("Id item: ${decision.idItem}");
-            // print("Id Respues: ${decision.repuesta}");
-            // print("Id prueba: ${decision.idTest}");
             DBProvider.db.nuevaDecision(decision);
         });
-
+        mostrarSnackbar('Registro decision guardado', context);
         
         fincasBloc.obtenerDecisiones(idpodaMain);
         setState(() {_guardando = false;});

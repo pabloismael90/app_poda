@@ -3,6 +3,7 @@ import 'package:app_poda/src/bloc/fincas_bloc.dart';
 import 'package:app_poda/src/models/planta_model.dart';
 import 'package:app_poda/src/models/testpoda_model.dart';
 import 'package:app_poda/src/utils/constants.dart';
+import 'package:app_poda/src/utils/widget/button.dart';
 import 'package:app_poda/src/utils/widget/dialogDelete.dart';
 import 'package:app_poda/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +41,7 @@ class _PlantaPageState extends State<PlantaPage> {
                     if (planta.length == 0) {
                         return Column(
                             children: [
-                                TitulosPages(titulo: 'Estacion $indiceEstacion'),
+                                TitulosPages(titulo: 'Sitio $indiceEstacion'),
                                 Divider(), 
                                 Expanded(child: Center(
                                     child: Text('No hay datos: \nIngrese datos de plantas', 
@@ -48,14 +49,15 @@ class _PlantaPageState extends State<PlantaPage> {
                                         style: Theme.of(context).textTheme.headline6,
                                         )
                                     )
-                                )
+                                ),
+                                
                             ],
                         );
                     }
                     
                     return Column(
                         children: [
-                            TitulosPages(titulo: 'Estacion $indiceEstacion'),
+                            TitulosPages(titulo: 'Sitio $indiceEstacion'),
                             Divider(),                            
                             Expanded(child: SingleChildScrollView(child: _listaDePlantas(planta, context, indiceEstacion))),
                         ],
@@ -174,15 +176,10 @@ class _PlantaPageState extends State<PlantaPage> {
                                                 .copyWith(fontWeight: FontWeight.w600)
                                     ),
                                 ),
-                                RaisedButton.icon(
-                                    icon:Icon(Icons.navigate_next_rounded),                               
-                                    label: Text('Siguiente estaciones',
-                                        style: Theme.of(context).textTheme
-                                            .headline6!
-                                            .copyWith(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 16)
-                                    ),
-                                    padding:EdgeInsets.all(13),
-                                    onPressed:() => Navigator.popAndPushNamed(context, 'plantas', arguments: [plaga, estacion]),
+                                ButtonMainStyle(
+                                    title: 'Siguiente Sitio',
+                                    icon: Icons.navigate_next_rounded,
+                                    press: () => Navigator.popAndPushNamed(context, 'plantas', arguments: [plaga, estacion]),
                                 )
                             ],
                         );
@@ -197,15 +194,10 @@ class _PlantaPageState extends State<PlantaPage> {
                                                 .copyWith(fontWeight: FontWeight.w600)
                                     ),
                                 ),
-                                RaisedButton.icon(
-                                    icon:Icon(Icons.chevron_left),                               
-                                    label: Text('Lista de estaciones',
-                                        style: Theme.of(context).textTheme
-                                            .headline6!
-                                            .copyWith(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 16)
-                                    ),
-                                    padding:EdgeInsets.all(13),
-                                    onPressed:() => Navigator.pop(context),
+                                ButtonMainStyle(
+                                    title: 'Lista de sitios',
+                                    icon: Icons.chevron_left,
+                                    press:() => Navigator.pop(context),
                                 )
                             ],
                         );
@@ -219,17 +211,10 @@ class _PlantaPageState extends State<PlantaPage> {
 
 
     Widget  _addPlanta(BuildContext context,  int? estacion, TestPoda plaga, int value){
-        return RaisedButton.icon(
-            
-            icon:Icon(Icons.add_circle_outline_outlined),
-            
-            label: Text('Agregar Planta',
-                style: Theme.of(context).textTheme
-                    .headline6!
-                    .copyWith(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 16)
-            ),
-            padding:EdgeInsets.all(13),
-            onPressed:() => Navigator.pushNamed(context, 'addPlanta', arguments: [estacion,plaga.id,value]),
+        return ButtonMainStyle(
+            title: 'Agregar Planta',
+            icon: Icons.add_circle_outline_outlined,
+            press:() => Navigator.pushNamed(context, 'addPlanta', arguments: [estacion,plaga.id,value]),
         );
     }
 

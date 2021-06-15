@@ -45,50 +45,44 @@ class _ParcelaPageState extends State<ParcelaPage> {
                             children: [
                                 TitulosPages(titulo: 'Parcelas de ${fincaData.nombreFinca}'),
                                 Divider(),
-                                Expanded(child: Center(
-                                    child: Text('No hay datos: \nIngrese datos de parcela en la finca', 
-                                    textAlign: TextAlign.center,
-                                        style: Theme.of(context).textTheme.headline6,
+                                Expanded(
+                                    child: Center(
+                                        child: Text('No hay datos: \nIngrese datos de parcela en la finca', 
+                                            textAlign: TextAlign.center,
+                                            style: Theme.of(context).textTheme.headline6,
                                         )
                                     )
-                                )
+                                ),
+                                Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                        _editarFinca(fincaData),
+                                        _addParcela(fincaData),
+                                    ],
+                                ),
+                                SizedBox(height: 5,)
                             ],
                         );
                     }
 
                     return Column(
                         children: [
-                            TitulosPages(titulo: 'Parcelas Finca ${fincaData.nombreFinca}'),
+                            TitulosPages(titulo: 'Parcelas de ${fincaData.nombreFinca}'),
                             Expanded(
                                 child: SingleChildScrollView(child: _listaDeParcelas(parcela, fincaData, size, context))
-                            )
+                            ),
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                    _editarFinca(fincaData),
+                                    _addParcela(fincaData),
+                                ],
+                            ),
+                            SizedBox(height: 5,)
                         ],
                     );
                     
                 },
-            ),
-
-            
-            bottomNavigationBar: BottomAppBar(
-                child: Container(
-                    color: kBackgroundColor,
-                    child: Padding(
-                        padding: EdgeInsets.symmetric( vertical: 10),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                                Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 5),
-                                    child: _editarFinca(fincaData),
-                                ),
-                                Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 5),
-                                    child: _addParcela(fincaData),
-                                ),
-                            ],
-                        ),
-                    ),
-                ),
             ),
         );
                 

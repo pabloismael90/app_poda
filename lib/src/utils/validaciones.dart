@@ -8,6 +8,7 @@ bool isNumeric(String value){
     } 
 
     final numero = num.parse(value);
+    // ignore: unnecessary_null_comparison
     return (numero == null ) ? false : true;
       
 }

@@ -48,7 +48,9 @@ class _FincasPageState extends State<FincasPage> {
                                         style: Theme.of(context).textTheme.headline6,
                                         )
                                     )
-                                )
+                                ),
+                                _addFinca(context),
+                                SizedBox(height: 5,)
                             ],
                         );
                     }
@@ -69,7 +71,7 @@ class _FincasPageState extends State<FincasPage> {
             ),
 
             // bottomNavigationBar: BottomAppBar(
-            //     child: 
+            //     child: _addFinca(context),
             // ),
             
         );

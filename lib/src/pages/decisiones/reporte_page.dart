@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:app_poda/src/models/decisiones_model.dart';
 import 'package:app_poda/src/models/testpoda_model.dart';
-//import 'package:app_poda/src/pages/decisiones/pdf_view.dart';
 import 'package:app_poda/src/providers/db_provider.dart';
 import 'package:app_poda/src/models/selectValue.dart' as selectMap;
 import 'package:app_poda/src/utils/constants.dart';
@@ -37,9 +36,9 @@ class _ReportePageState extends State<ReportePage> {
     Future getdata(String? idTest) async{
 
         List<Decisiones> listDecisiones = await DBProvider.db.getDecisionesIdTest(idTest);
-        TestPoda testplaga = await (DBProvider.db.getTestId(idTest) as FutureOr<TestPoda>);
+        TestPoda? testplaga = await (DBProvider.db.getTestId(idTest));
 
-        Finca? finca = await DBProvider.db.getFincaId(testplaga.idFinca);
+        Finca? finca = await DBProvider.db.getFincaId(testplaga!.idFinca);
         Parcela? parcela = await DBProvider.db.getParcelaId(testplaga.idLote);
 
         return [listDecisiones, finca, parcela];

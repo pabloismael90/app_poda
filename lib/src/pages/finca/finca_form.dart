@@ -1,5 +1,6 @@
 
 import 'package:app_poda/src/utils/widget/button.dart';
+import 'package:app_poda/src/utils/widget/snackbar.dart';
 import 'package:app_poda/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +21,6 @@ class _AgregarFincaState extends State<AgregarFinca> {
     
     
     final formKey = GlobalKey<FormState>();
-    final scaffoldKey = GlobalKey<ScaffoldState>();
  
 
     Finca finca = new Finca();
@@ -49,7 +49,6 @@ class _AgregarFincaState extends State<AgregarFinca> {
         }
 
         return Scaffold(
-            key: scaffoldKey,
             appBar: AppBar(),
             body: SingleChildScrollView(
                 child: Column(
@@ -218,12 +217,14 @@ class _AgregarFincaState extends State<AgregarFinca> {
         if(finca.id == null){
             finca.id = uuid.v1();
             fincasBloc.addFinca(finca);
+            mostrarSnackbar('Registro finca guardado', context);
         }else{
             fincasBloc.actualizarFinca(finca);
+            mostrarSnackbar('Registro finca actualizada', context);
         }
 
         setState(() {_guardando = false;});
-        mostrarSnackbar('Registro Guardado');
+        
 
 
         Navigator.pop(context, 'fincas');
@@ -232,12 +233,5 @@ class _AgregarFincaState extends State<AgregarFinca> {
     }
 
     
-    void mostrarSnackbar(String mensaje){
-        final snackbar = SnackBar(
-            content: Text(mensaje),
-            duration: Duration(microseconds: 1500),
-        );
 
-        scaffoldKey.currentState!.showSnackBar(snackbar);
-    }
 }
