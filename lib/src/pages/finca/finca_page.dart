@@ -1,6 +1,7 @@
 import 'package:app_poda/src/bloc/fincas_bloc.dart';
 import 'package:app_poda/src/models/finca_model.dart';
 import 'package:app_poda/src/providers/db_provider.dart';
+import 'package:app_poda/src/utils/constants.dart';
 import 'package:app_poda/src/utils/widget/button.dart';
 import 'package:app_poda/src/utils/widget/card_list.dart';
 import 'package:app_poda/src/utils/widget/dialogDelete.dart';
@@ -25,9 +26,7 @@ class _FincasPageState extends State<FincasPage> {
 
         fincasBloc.obtenerFincas();
         return Scaffold(
-            appBar: AppBar(
-                
-            ),
+            appBar: AppBar(),
             body: StreamBuilder<List<Finca>>(
                 stream: fincasBloc.fincaStream,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -49,8 +48,6 @@ class _FincasPageState extends State<FincasPage> {
                                         )
                                     )
                                 ),
-                                _addFinca(context),
-                                SizedBox(height: 5,)
                             ],
                         );
                     }
@@ -61,8 +58,6 @@ class _FincasPageState extends State<FincasPage> {
                             Expanded(child: SingleChildScrollView(
                                 child: _listaDeFincas(snapshot.data, context),
                             )),
-                            _addFinca(context),
-                            SizedBox(height: 5,)
                             
 
                         ],
@@ -70,9 +65,15 @@ class _FincasPageState extends State<FincasPage> {
                 },
             ),
 
-            // bottomNavigationBar: BottomAppBar(
-            //     child: _addFinca(context),
-            // ),
+            bottomNavigationBar: BottomAppBar(
+                elevation: 0,
+                child: Container(
+                    decoration: BoxDecoration(boxShadow: [
+                        BoxShadow(blurRadius: 0, color: kBackgroundColor)
+                    ]),
+                    child: _addFinca(context)
+                ),
+            ),
             
         );
         
@@ -80,12 +81,18 @@ class _FincasPageState extends State<FincasPage> {
     }
 
     Widget _addFinca(BuildContext context){
-
-        return ButtonMainStyle(
-            title: 'Agregar finca',
-            icon: Icons.add_circle_outline_outlined,
-            press: () => Navigator.pushNamed(context, 'addFinca')
+        return Row(
+            children: [
+                Spacer(),
+                ButtonMainStyle(
+                    title: 'Agregar finca',
+                    icon: Icons.add_circle_outline_outlined,
+                    press: () => Navigator.pushNamed(context, 'addFinca')
+                ),
+                Spacer()
+            ],
         );
+        
     
        
     }

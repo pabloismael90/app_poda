@@ -22,9 +22,9 @@ class DesicionesList extends StatelessWidget {
 
     Future getDatos(String? id) async{
         
-        TestPoda testplaga= await (DBProvider.db.getTestId(id) as FutureOr<TestPoda>);
+        TestPoda? testplaga= await (DBProvider.db.getTestId(id));
 
-        Finca? finca = await DBProvider.db.getFincaId(testplaga.idFinca);
+        Finca? finca = await DBProvider.db.getFincaId(testplaga!.idFinca);
         Parcela? parcela = await DBProvider.db.getParcelaId(testplaga.idLote);
 
         return [testplaga, finca, parcela];

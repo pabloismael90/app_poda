@@ -78,6 +78,11 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
                 fontFamily: "Museo",
                 scaffoldBackgroundColor: kBackgroundColor,
+                primaryTextTheme: TextTheme(
+                    headline6: TextStyle(
+                    color: Colors.white
+                    )
+                ),
                 textTheme: Theme.of(context).textTheme.apply(displayColor: kTextColor, fontFamily: 'Museo'),
                 appBarTheme: AppBarTheme(color: kbase,brightness: Brightness.dark),
                 primaryColor:kbase,
@@ -85,7 +90,7 @@ class MyApp extends StatelessWidget {
                 inputDecorationTheme: InputDecorationTheme(
                     labelStyle: Theme.of(context).textTheme
                                 .headline6!
-                                .copyWith(fontWeight: FontWeight.bold, color: kTextColor, fontSize: 16, fontFamily: 'Museo'),
+                                .copyWith(fontWeight: FontWeight.bold, color: kTextColor, fontSize: 14, fontFamily: 'Museo'),
                 ),
             
                 elevatedButtonTheme: ElevatedButtonThemeData(

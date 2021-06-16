@@ -357,44 +357,49 @@ class _DesicionesPageState extends State<DesicionesPage> {
 
                                 Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                        Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                                Padding(
-                                                    padding: EdgeInsets.only( bottom: 10.0),
-                                                    child: Text(
-                                                        "Área Finca: ${finca.areaFinca} ($labelMedidaFinca)",
-                                                        style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
+                                        Flexible(
+                                            child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                    Padding(
+                                                        padding: EdgeInsets.only( bottom: 10.0),
+                                                        child: Text(
+                                                            "Área Finca: ${finca.areaFinca} ($labelMedidaFinca)",
+                                                            style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
+                                                        ),
                                                     ),
-                                                ),
-                                                Padding(
-                                                    padding: EdgeInsets.only( bottom: 10.0),
-                                                    child: Text(
-                                                        "N de plantas: ${parcela.numeroPlanta}",
-                                                        style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
+                                                    Padding(
+                                                        padding: EdgeInsets.only( bottom: 10.0),
+                                                        child: Text(
+                                                            "N de plantas: ${parcela.numeroPlanta}",
+                                                            style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
+                                                        ),
                                                     ),
-                                                ),
-                                            ],
+                                                ],
+                                            ),
                                         ),
-                                        Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                                Padding(
-                                                    padding: EdgeInsets.only( bottom: 10.0, left: 20),
-                                                    child: Text(
-                                                        "Área Parcela: ${parcela.areaLote} ($labelMedidaFinca)",
-                                                        style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
+                                        Flexible(
+                                            child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                    Padding(
+                                                        padding: EdgeInsets.only( bottom: 10.0, left: 10),
+                                                        child: Text(
+                                                            "Área Parcela: ${parcela.areaLote} ($labelMedidaFinca)",
+                                                            style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
+                                                        ),
                                                     ),
-                                                ),
-                                                Padding(
-                                                    padding: EdgeInsets.only( bottom: 10.0, left: 20),
-                                                    child: Text(
-                                                        "Variedad: $labelvariedad ",
-                                                        style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
+                                                    Padding(
+                                                        padding: EdgeInsets.only( bottom: 10.0, left: 10),
+                                                        child: Text(
+                                                            "Variedad: $labelvariedad ",
+                                                            style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
+                                                        ),
                                                     ),
-                                                ),
-                                            ],
+                                                ],
+                                            ),
                                         )
                                     ],
                                 )
@@ -415,7 +420,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
             children: [
                 Expanded(child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Text('Estaciones', textAlign: TextAlign.start, style: Theme.of(context).textTheme.headline6!
+                    child: Text('Sitios', textAlign: TextAlign.start, style: Theme.of(context).textTheme.headline6!
                                             .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
                 ),),
                 Container(

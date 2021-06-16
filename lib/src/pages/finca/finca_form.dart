@@ -78,14 +78,15 @@ class _AgregarFincaState extends State<AgregarFinca> {
                                         _nombreProductor(),
                                         SizedBox(height: 40.0,),
                                         _nombreTecnico(),
-                                        SizedBox(height: 60.0,),
-                                        _botonsubmit(tituloBtn)
                                     ],
                                 ),
                             ),
                         ),
                     ],
                 )
+            ),
+            bottomNavigationBar: BottomAppBar(
+                child: _botonsubmit(tituloBtn)
             ),
         );
     }
@@ -191,10 +192,16 @@ class _AgregarFincaState extends State<AgregarFinca> {
     }
 
     Widget  _botonsubmit(tituloBtn){
-        return ButtonMainStyle(
-            title: tituloBtn,
-            icon: Icons.save,
-            press: (_guardando) ? null : _submit,
+        return Row(
+            children: [
+                Spacer(),
+                ButtonMainStyle(
+                    title: tituloBtn,
+                    icon: Icons.save,
+                    press: (_guardando) ? null : _submit,
+                ),
+                Spacer()
+            ],
         );
     }
 

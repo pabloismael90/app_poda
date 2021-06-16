@@ -16,7 +16,7 @@ class TitulosPages  extends StatelessWidget {
                     titulo!,
                     style: Theme.of(context).textTheme
                         .headline5!
-                        .copyWith(fontWeight: FontWeight.w900)
+                        .copyWith(fontWeight: FontWeight.w900, fontSize: 20)
                 ),
             )
         );

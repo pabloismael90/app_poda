@@ -53,14 +53,6 @@ class _ParcelaPageState extends State<ParcelaPage> {
                                         )
                                     )
                                 ),
-                                Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    children: [
-                                        _editarFinca(fincaData),
-                                        _addParcela(fincaData),
-                                    ],
-                                ),
-                                SizedBox(height: 5,)
                             ],
                         );
                     }
@@ -71,18 +63,19 @@ class _ParcelaPageState extends State<ParcelaPage> {
                             Expanded(
                                 child: SingleChildScrollView(child: _listaDeParcelas(parcela, fincaData, size, context))
                             ),
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
-                                    _editarFinca(fincaData),
-                                    _addParcela(fincaData),
-                                ],
-                            ),
-                            SizedBox(height: 5,)
                         ],
                     );
                     
                 },
+            ),
+            bottomNavigationBar: BottomAppBar(
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                        _editarFinca(fincaData),
+                        _addParcela(fincaData),
+                    ],
+                ),
             ),
         );
                 
@@ -162,7 +155,7 @@ class _ParcelaPageState extends State<ParcelaPage> {
                     children: [
                         Padding(
                             padding: EdgeInsets.only(right: 20),
-                            child: SvgPicture.asset('assets/icons/parcela.svg', height:80,),
+                            child: SvgPicture.asset('assets/icons/parcela.svg', height:60,),
                         ),
                         Flexible(
                             child: Column(

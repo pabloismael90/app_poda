@@ -59,8 +59,6 @@ class _TestPageState extends State<TestPage> {
                                             )
                                         )
                                     ),
-                                    _addtest(context),
-                                    SizedBox(height: 5,)
                                 ],
                             );
                         }
@@ -70,25 +68,32 @@ class _TestPageState extends State<TestPage> {
                                 TitulosPages(titulo: 'Parcelas'),
                                 Divider(),
                                 Expanded(child: SingleChildScrollView(child: _listaDePlagas(textPlagas, size, context))),
-                                _addtest(context),
-                                SizedBox(height: 5,)
                             ],
                         );
                         
                         
                     },
                 ),
+                bottomNavigationBar: BottomAppBar(
+                    child: _addtest(context),
+                ),
+                
                 
         );
         
     }
 
     Widget _addtest(BuildContext context){
-        
-        return ButtonMainStyle(
-            title: 'Escoger parcelas',
-            icon: Icons.add_circle_outline_outlined,
-            press: () => Navigator.pushNamed(context, 'addTest'),
+        return Row(
+            children: [
+                Spacer(),
+                ButtonMainStyle(
+                    title: 'Escoger parcelas',
+                    icon: Icons.add_circle_outline_outlined,
+                    press: () => Navigator.pushNamed(context, 'addTest'),
+                ),
+                Spacer()
+            ],
         );
     }
 

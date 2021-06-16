@@ -388,7 +388,7 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
             });
 
         }
-        mostrarSnackbar('Registro planta guardado8', context);
+        mostrarSnackbar('Registro planta guardado', context);
         setState(() {_guardando = false;});
 
         Navigator.pop(context, 'estaciones');

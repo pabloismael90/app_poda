@@ -104,19 +104,9 @@ class _AgregarParcelaState extends State<AgregarParcela> {
                                                     SizedBox(height: 40.0,),
                                                     _areaParcela(finca, labelMedida, listParcela),
                                                     SizedBox(height: 40.0,),
-                                                    Row(
-                                                        children: <Widget>[
-                                                            Flexible(
-                                                                child: _variedadCacao(),
-                                                            ),
-                                                            SizedBox(width: 20.0,),
-                                                            Flexible(
-                                                                child: _numeroPlanta(labelMedida),
-                                                            ),
-                                                        ],
-                                                    ),
-                                                    SizedBox(height: 60.0,),
-                                                    _botonsubmit(tituloBtn)
+                                                    _variedadCacao(),
+                                                    SizedBox(height: 40.0,),
+                                                    _numeroPlanta(labelMedida),
                                                 ],
                                             ),
                                         ),
@@ -125,7 +115,10 @@ class _AgregarParcelaState extends State<AgregarParcela> {
                             ),
                         );
                     },
-                ),
+            ),
+            bottomNavigationBar: BottomAppBar(
+                child: _botonsubmit(tituloBtn)
+            ),
         );
     
     }
@@ -222,7 +215,7 @@ class _AgregarParcelaState extends State<AgregarParcela> {
                 FilteringTextInputFormatter.digitsOnly
             ], 
             decoration: InputDecoration(
-                labelText: 'No de plantas x $labelMedida'
+                labelText: 'No de plantas por $labelMedida'
             ),
             validator: (value) {
 
@@ -244,11 +237,17 @@ class _AgregarParcelaState extends State<AgregarParcela> {
 
     }
 
-    Widget  _botonsubmit(String tituloBtn){
-        return ButtonMainStyle(
-            title: tituloBtn,
-            icon: Icons.save,
-            press: (_guardando) ? null : _submit,
+    Widget  _botonsubmit(tituloBtn){
+        return Row(
+            children: [
+                Spacer(),
+                ButtonMainStyle(
+                    title: tituloBtn,
+                    icon: Icons.save,
+                    press: (_guardando) ? null : _submit,
+                ),
+                Spacer()
+            ],
         );
     }
     

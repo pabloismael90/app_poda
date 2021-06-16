@@ -84,22 +84,26 @@ class _AgregarTestState extends State<AgregarTest> {
                                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                                             children: [
 
-                                                Padding(
-                                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                                                    child:Text(
-                                                        '3 Estaciones',
-                                                        style: Theme.of(context).textTheme
-                                                            .headline6!
-                                                            .copyWith(fontSize: 16)
+                                                Flexible(
+                                                    child: Padding(
+                                                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                                                        child:Text(
+                                                            '3 Estaciones',
+                                                            style: Theme.of(context).textTheme
+                                                                .headline6!
+                                                                .copyWith(fontSize: 16)
+                                                        ),
                                                     ),
                                                 ),
-                                                Padding(
-                                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                                                    child:Text(
-                                                        '10 Plantas por estaciones',
-                                                        style: Theme.of(context).textTheme
-                                                            .headline6!
-                                                            .copyWith(fontSize: 16)
+                                                Flexible(
+                                                    child: Padding(
+                                                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                                                        child:Text(
+                                                            '10 Plantas por estaciones',
+                                                            style: Theme.of(context).textTheme
+                                                                .headline6!
+                                                                .copyWith(fontSize: 16)
+                                                        ),
                                                     ),
                                                 ),
                                             ],
@@ -118,15 +122,15 @@ class _AgregarTestState extends State<AgregarTest> {
                                                     _selectParcela(),
                                                     SizedBox(height: 40.0),
                                                     _date(context),
-                                                    SizedBox(height: 60.0),
-
-                                                    _botonsubmit()
                                                 ],
                                             ),
                                         ),
                                     ),
                                 ],
                             ),
+                        ),
+                        bottomNavigationBar: BottomAppBar(
+                            child: _botonsubmit(),
                         ),
                     );
                 }
@@ -241,25 +245,33 @@ class _AgregarTestState extends State<AgregarTest> {
 
 
     Widget  _botonsubmit(){
+
         fincasBloc.obtenerPodas();
-        return StreamBuilder(
-            stream: fincasBloc.podaStream ,
-            builder: (BuildContext context, AsyncSnapshot snapshot){
-                if (!snapshot.hasData) {
-                    return Container();
-                }
-                mainlistplagas = snapshot.data;
+        return Row(
+            children: [
+                Spacer(),
+                StreamBuilder(
+                    stream: fincasBloc.podaStream ,
+                    builder: (BuildContext context, AsyncSnapshot snapshot){
+                        if (!snapshot.hasData) {
+                            return Container();
+                        }
+                        mainlistplagas = snapshot.data;
 
-            
-                return ButtonMainStyle(
-                    title: 'Guardar',
-                    icon: Icons.save,
-                    press: (_guardando) ? null : _submit,
-                );
+                    
+                        return ButtonMainStyle(
+                            title: 'Guardar',
+                            icon: Icons.save,
+                            press: (_guardando) ? null : _submit,
+                        );
 
-                
-            },
+                        
+                    },
+                ),
+                Spacer()
+            ],
         );
+        
 
 
     }
