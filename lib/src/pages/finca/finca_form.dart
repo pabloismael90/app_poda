@@ -1,6 +1,6 @@
 
 import 'package:app_poda/src/utils/widget/button.dart';
-import 'package:app_poda/src/utils/widget/snackbar.dart';
+import 'package:app_poda/src/utils/widget/varios_widget.dart';
 import 'package:app_poda/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 
@@ -85,9 +85,7 @@ class _AgregarFincaState extends State<AgregarFinca> {
                     ],
                 )
             ),
-            bottomNavigationBar: BottomAppBar(
-                child: _botonsubmit(tituloBtn)
-            ),
+            bottomNavigationBar: botonesBottom(_botonsubmit(tituloBtn))
         );
     }
 
@@ -140,14 +138,7 @@ class _AgregarFincaState extends State<AgregarFinca> {
                 hintText: 'ejem: 2',
                 
             ),
-            validator: (value) {
-                
-                if (utils.isNumeric(value!)){
-                    return null;
-                }else{
-                    return 'Solo números';
-                }
-            },
+            validator: (value) => utils.floatPositivo(value),
             onSaved: (value) => finca.areaFinca = double.parse(value!),
         );
 
@@ -158,13 +149,7 @@ class _AgregarFincaState extends State<AgregarFinca> {
             initialValue: finca.tipoMedida.toString(),            
             labelText: 'Unidad',
             items: selectMap.dimenciones(),
-            validator: (value){
-                if(value!.length < 1){
-                    return 'Selecione un elemento';
-                }else{
-                    return null;
-                } 
-            },
+            validator: (value) => utils.validateSelect(value),
             onSaved: (value) => finca.tipoMedida = int.parse(value!),
         );
     }
@@ -182,7 +167,7 @@ class _AgregarFincaState extends State<AgregarFinca> {
             },
             onSaved: (value){
                 if(value!.length < 1){
-                    finca.nombreTecnico = 'Sin Nombre';
+                    finca.nombreTecnico = '';
                 }else{
                     finca.nombreTecnico = value;
                 }

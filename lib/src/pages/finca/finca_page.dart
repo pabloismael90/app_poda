@@ -1,11 +1,11 @@
 import 'package:app_poda/src/bloc/fincas_bloc.dart';
 import 'package:app_poda/src/models/finca_model.dart';
 import 'package:app_poda/src/providers/db_provider.dart';
-import 'package:app_poda/src/utils/constants.dart';
 import 'package:app_poda/src/utils/widget/button.dart';
 import 'package:app_poda/src/utils/widget/card_list.dart';
 import 'package:app_poda/src/utils/widget/dialogDelete.dart';
 import 'package:app_poda/src/utils/widget/titulos.dart';
+import 'package:app_poda/src/utils/widget/varios_widget.dart';
 import 'package:flutter/material.dart';
 
 
@@ -65,15 +65,7 @@ class _FincasPageState extends State<FincasPage> {
                 },
             ),
 
-            bottomNavigationBar: BottomAppBar(
-                elevation: 0,
-                child: Container(
-                    decoration: BoxDecoration(boxShadow: [
-                        BoxShadow(blurRadius: 0, color: kBackgroundColor)
-                    ]),
-                    child: _addFinca(context)
-                ),
-            ),
+            bottomNavigationBar: botonesBottom(_addFinca(context))
             
         );
         

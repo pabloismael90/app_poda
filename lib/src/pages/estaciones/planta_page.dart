@@ -1,13 +1,12 @@
-//import 'package:app_poda/src/models/planta_model.dart';
+
 import 'package:app_poda/src/bloc/fincas_bloc.dart';
 import 'package:app_poda/src/models/planta_model.dart';
 import 'package:app_poda/src/models/testpoda_model.dart';
-import 'package:app_poda/src/utils/constants.dart';
 import 'package:app_poda/src/utils/widget/button.dart';
 import 'package:app_poda/src/utils/widget/dialogDelete.dart';
 import 'package:app_poda/src/utils/widget/titulos.dart';
+import 'package:app_poda/src/utils/widget/varios_widget.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter_swiper/flutter_swiper.dart';
 
 // ignore: must_be_immutable
 class PlantaPage extends StatefulWidget {
@@ -64,15 +63,7 @@ class _PlantaPageState extends State<PlantaPage> {
                     );
                 },
             ),
-            bottomNavigationBar: BottomAppBar(
-                child: Container(
-                    color: kBackgroundColor,
-                    child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        child: _countPlanta(plaga.id, indiceEstacion, plaga)
-                    ),
-                ),
-            ),
+            bottomNavigationBar: botonesBottom(_countPlanta(plaga.id, indiceEstacion, plaga) ),
         );
     }
 
@@ -88,37 +79,22 @@ class _PlantaPageState extends State<PlantaPage> {
                     return Dismissible(
                         key: UniqueKey(),
                         child: GestureDetector(
-                            child:Container(
-                                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                                width: double.infinity,
-                                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                                    
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(10.5),
-                                        boxShadow: [
-                                            BoxShadow(
-                                                color: Color(0xFF3A5160)
-                                                    .withOpacity(0.05),
-                                                offset: const Offset(1.1, 1.1),
-                                                blurRadius: 17.0),
-                                            ],
-                                    ),
-                                    child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        children: [
-                                            
-                                            Padding(
-                                                padding: EdgeInsets.only(top: 10, bottom: 10.0),
-                                                child: Text(
-                                                    "Planta ${index+1}",
-                                                    overflow: TextOverflow.ellipsis,
-                                                    maxLines: 2,
-                                                    style: Theme.of(context).textTheme.headline6,
-                                                ),
+                            child:cardDefault(
+                                Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                        
+                                        Padding(
+                                            padding: EdgeInsets.only(top: 10, bottom: 10.0),
+                                            child: Text(
+                                                "Planta ${index+1}",
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 2,
+                                                style: Theme.of(context).textTheme.headline6,
                                             ),
-                                        ],
-                                    ),
+                                        ),
+                                    ],
+                                ),
                             )
                         ),
                         confirmDismiss: (direction) => confirmacionUser(direction, context),

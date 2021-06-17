@@ -2,7 +2,7 @@
 
 import 'package:app_poda/src/models/testpoda_model.dart';
 import 'package:app_poda/src/utils/widget/button.dart';
-import 'package:app_poda/src/utils/widget/snackbar.dart';
+import 'package:app_poda/src/utils/widget/varios_widget.dart';
 import 'package:app_poda/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 
@@ -129,9 +129,7 @@ class _AgregarTestState extends State<AgregarTest> {
                                 ],
                             ),
                         ),
-                        bottomNavigationBar: BottomAppBar(
-                            child: _botonsubmit(),
-                        ),
+                        bottomNavigationBar: botonesBottom(_botonsubmit()),
                     );
                 }
             },

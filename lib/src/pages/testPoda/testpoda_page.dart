@@ -5,6 +5,7 @@ import 'package:app_poda/src/utils/constants.dart';
 import 'package:app_poda/src/utils/widget/button.dart';
 import 'package:app_poda/src/utils/widget/dialogDelete.dart';
 import 'package:app_poda/src/utils/widget/titulos.dart';
+import 'package:app_poda/src/utils/widget/varios_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -74,9 +75,7 @@ class _TestPageState extends State<TestPage> {
                         
                     },
                 ),
-                bottomNavigationBar: BottomAppBar(
-                    child: _addtest(context),
-                ),
+                bottomNavigationBar: botonesBottom(_addtest(context)),
                 
                 
         );
@@ -135,79 +134,64 @@ class _TestPageState extends State<TestPage> {
 
     Widget _cardTest(Size size, TestPoda textPlaga, Finca finca, Parcela parcela){
         
-        return Container(
-            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            width: double.infinity,
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(13),
-                    boxShadow: [
-                        BoxShadow(
-                                color: Color(0xFF3A5160)
-                                    .withOpacity(0.05),
-                                offset: const Offset(1.1, 1.1),
-                                blurRadius: 17.0),
-                        ],
-                ),
-                child: Column(
-                    children: [
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                                Padding(
-                                    padding: EdgeInsets.only(right: 20),
-                                    child: SvgPicture.asset('assets/icons/test.svg', height:80,),
-                                ),
-                                Flexible(
-                                    child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
+        return cardDefault(
+           Column(
+                children: [
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                            Padding(
+                                padding: EdgeInsets.only(right: 20),
+                                child: SvgPicture.asset('assets/icons/test.svg', height:80,),
+                            ),
+                            Flexible(
+                                child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                    
+                                        Padding(
+                                            padding: EdgeInsets.only(top: 10, bottom: 5.0),
+                                            child: Text(
+                                                "${finca.nombreFinca}",
+                                                softWrap: true,
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 2,
+                                                style: Theme.of(context).textTheme.headline6,
+                                            ),
+                                        ),
+                                        Padding(
+                                            padding: EdgeInsets.only( bottom: 4.0),
+                                            child: Text(
+                                                "${parcela.nombreLote}",
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(color: kLightBlackColor),
+                                            ),
+                                        ),
                                         
-                                            Padding(
-                                                padding: EdgeInsets.only(top: 10, bottom: 5.0),
-                                                child: Text(
-                                                    "${finca.nombreFinca}",
-                                                    softWrap: true,
-                                                    overflow: TextOverflow.ellipsis,
-                                                    maxLines: 2,
-                                                    style: Theme.of(context).textTheme.headline6,
-                                                ),
+                                        Padding(
+                                            padding: EdgeInsets.only( bottom: 10.0),
+                                            child: Text(
+                                                'Fecha: ${textPlaga.fechaTest}',
+                                                style: TextStyle(color: kLightBlackColor),
                                             ),
-                                            Padding(
-                                                padding: EdgeInsets.only( bottom: 4.0),
-                                                child: Text(
-                                                    "${parcela.nombreLote}",
-                                                    maxLines: 2,
-                                                    overflow: TextOverflow.ellipsis,
-                                                    style: TextStyle(color: kLightBlackColor),
-                                                ),
-                                            ),
-                                            
-                                            Padding(
-                                                padding: EdgeInsets.only( bottom: 10.0),
-                                                child: Text(
-                                                    'Fecha: ${textPlaga.fechaTest}',
-                                                    style: TextStyle(color: kLightBlackColor),
-                                                ),
-                                            ),
-                                        ],  
-                                    ),
+                                        ),
+                                    ],  
                                 ),
-                            ],
-                        ),
-                        Divider(),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                                Icon(Icons.touch_app, color: kRedColor,),
-                                Text(' Tocar para completar datos', style: TextStyle(color: kRedColor),)
-                            ],
-                        )
-                    ],
-                ),
+                            ),
+                        ],
+                    ),
+                    Divider(),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                            Icon(Icons.touch_app, color: kRedColor,),
+                            Text(' Tocar para completar datos', style: TextStyle(color: kRedColor),)
+                        ],
+                    )
+                ],
+            ),
         );
     }
 

@@ -6,6 +6,7 @@ import 'package:app_poda/src/models/selectValue.dart' as selectMap;
 import 'package:app_poda/src/utils/widget/button.dart';
 import 'package:app_poda/src/utils/widget/dialogDelete.dart';
 import 'package:app_poda/src/utils/widget/titulos.dart';
+import 'package:app_poda/src/utils/widget/varios_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -68,8 +69,8 @@ class _ParcelaPageState extends State<ParcelaPage> {
                     
                 },
             ),
-            bottomNavigationBar: BottomAppBar(
-                child: Row(
+            bottomNavigationBar: botonesBottom(
+                Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                         _editarFinca(fincaData),
@@ -134,74 +135,56 @@ class _ParcelaPageState extends State<ParcelaPage> {
     }
 
     Widget _cardParcela(Size size, Parcela parcela, String? labelMedida, String? labelVariedad){
-        return Container(
-            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            width: double.infinity,
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(13),
-                    boxShadow: [
-                        BoxShadow(
-                                color: Color(0xFF3A5160)
-                                    .withOpacity(0.05),
-                                offset: const Offset(1.1, 1.1),
-                                blurRadius: 17.0),
-                        ],
-                ),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                        Padding(
-                            padding: EdgeInsets.only(right: 20),
-                            child: SvgPicture.asset('assets/icons/parcela.svg', height:60,),
-                        ),
-                        Flexible(
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                
-                                    Padding(
-                                        padding: EdgeInsets.only(top: 10, bottom: 10.0),
-                                        child: Text(
-                                            "${parcela.nombreLote}",
-                                            softWrap: true,
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 2,
-                                            style: Theme.of(context).textTheme.headline6,
-                                        ),
+        return cardDefault(
+            Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                    Padding(
+                        padding: EdgeInsets.only(right: 20),
+                        child: SvgPicture.asset('assets/icons/parcela.svg', height:60,),
+                    ),
+                    Flexible(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                            
+                                Padding(
+                                    padding: EdgeInsets.only(top: 10, bottom: 10.0),
+                                    child: Text(
+                                        "${parcela.nombreLote}",
+                                        softWrap: true,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                        style: Theme.of(context).textTheme.headline6,
                                     ),
-                                    Padding(
-                                        padding: EdgeInsets.only( bottom: 10.0),
-                                        child: Text(
-                                            "Variedad: $labelVariedad",
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(color: kLightBlackColor),
-                                        ),
-                                    ),
-                                    Text(
-                                        'N Plantas: ${parcela.numeroPlanta}',
+                                ),
+                                Padding(
+                                    padding: EdgeInsets.only( bottom: 10.0),
+                                    child: Text(
+                                        "Variedad: $labelVariedad",
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(color: kLightBlackColor),
                                     ),
-                                    Padding(
-                                        padding: EdgeInsets.only(top: 10, bottom: 10.0),
-                                        child: Text(
-                                            "${parcela.areaLote} $labelMedida",
-                                            style: TextStyle(color: kLightBlackColor),
-                                        ),
+                                ),
+                                Text(
+                                    'N Plantas: ${parcela.numeroPlanta}',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(color: kLightBlackColor),
+                                ),
+                                Padding(
+                                    padding: EdgeInsets.only(top: 10, bottom: 10.0),
+                                    child: Text(
+                                        "${parcela.areaLote} $labelMedida",
+                                        style: TextStyle(color: kLightBlackColor),
                                     ),
-                                ],  
-                            ),
+                                ),
+                            ],  
                         ),
-                        
-                        
-                        
-                    ],
-                ),
+                    ),
+                ],
+            ), 
         );
     }
    

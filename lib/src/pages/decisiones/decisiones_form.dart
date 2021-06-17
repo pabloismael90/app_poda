@@ -8,7 +8,7 @@ import 'package:app_poda/src/pages/finca/finca_page.dart';
 import 'package:app_poda/src/providers/db_provider.dart';
 import 'package:app_poda/src/utils/constants.dart';
 import 'package:app_poda/src/utils/widget/button.dart';
-import 'package:app_poda/src/utils/widget/snackbar.dart';
+import 'package:app_poda/src/utils/widget/varios_widget.dart';
 import 'package:app_poda/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';

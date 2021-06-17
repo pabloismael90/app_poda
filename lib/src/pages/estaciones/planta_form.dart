@@ -1,11 +1,11 @@
 import 'package:app_poda/src/bloc/fincas_bloc.dart';
 import 'package:app_poda/src/models/existePoda_model.dart';
 import 'package:app_poda/src/models/planta_model.dart';
-
+import 'package:app_poda/src/utils/validaciones.dart' as utils;
 import 'package:app_poda/src/models/selectValue.dart' as selectMap;
 import 'package:app_poda/src/providers/db_provider.dart';
 import 'package:app_poda/src/utils/widget/button.dart';
-import 'package:app_poda/src/utils/widget/snackbar.dart';
+import 'package:app_poda/src/utils/widget/varios_widget.dart';
 import 'package:app_poda/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
@@ -146,17 +146,7 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                         decoration: InputDecoration(
                             labelText: 'Altura en mt'
                         ),
-                        validator: (value) {
-                            if (value == '') {
-                                return 'Campo vacio';
-                            }
-                            
-                            if (double.parse(value!) > 0) {
-                                return null;
-                            } else {
-                                return 'Altura mayor a 0';
-                            }
-                        },
+                        validator: (value) => utils.floatPositivo(value),
                         onSaved: (value) => planta.altura = double.parse(value!),
                     )
                 ),
@@ -168,17 +158,7 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                         decoration: InputDecoration(
                             labelText: 'Ancho en mt'
                         ),
-                        validator: (value) {
-                            if (value == '') {
-                                return 'Campo vacio';
-                            }
-
-                            if (double.parse(value!) > 0) {
-                                return null;
-                            } else {
-                                return 'Ancho mayor a cero';
-                            }
-                        },
+                        validator: (value) => utils.floatPositivo(value),
                         onSaved: (value) => planta.ancho = double.parse(value!),
                     )
                 ),
@@ -195,16 +175,7 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
             decoration: InputDecoration(
                 labelText: 'Largo de madera productiva'
             ),
-            validator: (value) {
-                if (value == '') {
-                    return 'Campo vacio';
-                }
-                if (double.parse(value!) > 0) {
-                    return null;
-                } else {
-                    return 'Largo de madera productiva mayor a cero';
-                }
-            },
+            validator: (value) => utils.floatPositivo(value),
             onSaved: (value) => planta.largo = double.parse(value!),
         );
         

@@ -2,7 +2,7 @@ import 'package:app_poda/src/bloc/fincas_bloc.dart';
 import 'package:app_poda/src/models/parcela_model.dart';
 import 'package:app_poda/src/providers/db_provider.dart';
 import 'package:app_poda/src/utils/widget/button.dart';
-import 'package:app_poda/src/utils/widget/snackbar.dart';
+import 'package:app_poda/src/utils/widget/varios_widget.dart';
 import 'package:app_poda/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -116,14 +116,11 @@ class _AgregarParcelaState extends State<AgregarParcela> {
                         );
                     },
             ),
-            bottomNavigationBar: BottomAppBar(
-                child: _botonsubmit(tituloBtn)
-            ),
+            bottomNavigationBar: botonesBottom(_botonsubmit(tituloBtn)),
         );
     
     }
     Widget _nombreParcela( String? fincaid ){
-        //print('id de finca: $fincaid');
         return TextFormField(
             initialValue: parcela.nombreLote,
             //autofocus: true,
@@ -157,6 +154,8 @@ class _AgregarParcelaState extends State<AgregarParcela> {
                 
                 sumaParcelas = sumaParcelas - areaParcela;
 
+               //print(sumaParcelas);
+
                 return TextFormField(
                     initialValue: parcela.areaLote == null ? '' : parcela.areaLote.toString(),
                     keyboardType: TextInputType.numberWithOptions(decimal: true),
@@ -166,19 +165,18 @@ class _AgregarParcelaState extends State<AgregarParcela> {
                     validator: (value) {
                         
                         if (utils.isNumeric(value!)){
-
-
+                            valorsuma = double.parse(value) + sumaParcelas;
                             if (valorsuma <= finca!.areaFinca!) {
                                 if (double.parse(value) > 0) {
                                     return null;
                                 } else {
-                                    return 'Área mayor a cero';
+                                    return 'Valor $value inválido';
                                 }
                             } else {
                                 return 'Área parcelas mayor a Finca';
                             }
                         }else{
-                            return 'Solo números';
+                            return 'Valor $value inválido';
                         }
                     },
                     onSaved: (value) => parcela.areaLote = double.parse(value!),
@@ -217,21 +215,7 @@ class _AgregarParcelaState extends State<AgregarParcela> {
             decoration: InputDecoration(
                 labelText: 'No de plantas por $labelMedida'
             ),
-            validator: (value) {
-
-                final isDigitsOnly = int.tryParse(value!);
-                if (isDigitsOnly == null) {
-                    return 'Solo números enteros';
-                }
-                if (isDigitsOnly <= 0) {
-                    return 'Valor invalido';
-                }else{
-                    return null;
-                }
-                 
-                    
-
-            },
+            validator: (value) => utils.validateEntero(value),
             onSaved: (value) => parcela.numeroPlanta = int.parse(value!),
         );
 

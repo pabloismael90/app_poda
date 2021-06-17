@@ -8,6 +8,7 @@ import 'package:app_poda/src/providers/db_provider.dart';
 import 'package:app_poda/src/utils/constants.dart';
 import 'package:app_poda/src/utils/widget/button.dart';
 import 'package:app_poda/src/utils/widget/titulos.dart';
+import 'package:app_poda/src/utils/widget/varios_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
@@ -176,68 +177,52 @@ class _EstacionesPageState extends State<EstacionesPage> {
     }
 
     Widget _cardTest(int estacion, int numeroPlantas, String estado){
-        return Container(
-            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            width: double.infinity,
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(13),
-                    boxShadow: [
-                        BoxShadow(
-                                color: Color(0xFF3A5160)
-                                    .withOpacity(0.05),
-                                offset: const Offset(1.1, 1.1),
-                                blurRadius: 17.0),
-                        ],
-                ),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                        
-                        Flexible(
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
+        return cardDefault(
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                    
+                    Flexible(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                            
+                                Padding(
+                                    padding: EdgeInsets.only(top: 10, bottom: 10.0),
+                                    child: Text(
+                                        "Sitio $estacion",
+                                        softWrap: true,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                        style: Theme.of(context).textTheme.headline6,
+                                    ),
+                                ),
                                 
-                                    Padding(
-                                        padding: EdgeInsets.only(top: 10, bottom: 10.0),
-                                        child: Text(
-                                            "Sitio $estacion",
-                                            softWrap: true,
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 2,
-                                            style: Theme.of(context).textTheme.headline6,
-                                        ),
+                                
+                                Padding(
+                                    padding: EdgeInsets.only( bottom: 10.0),
+                                    child: Text(
+                                        '$estado',
+                                        style: TextStyle(color: kLightBlackColor),
                                     ),
-                                    
-                                    
-                                    Padding(
-                                        padding: EdgeInsets.only( bottom: 10.0),
-                                        child: Text(
-                                            '$estado',
-                                            style: TextStyle(color: kLightBlackColor),
-                                        ),
-                                    ),
-                                ],  
-                            ),
+                                ),
+                            ],  
                         ),
-                        Container(
-                            child: CircularPercentIndicator(
-                                radius: 70.0,
-                                lineWidth: 5.0,
-                                animation: true,
-                                percent: numeroPlantas/10,
-                                center: new Text("${(numeroPlantas/10)*100}%"),
-                                progressColor: Color(0xFF498C37),
-                            ),
-                        )
-                        
-                        
-                        
-                    ],
-                ),
+                    ),
+                    Container(
+                        child: CircularPercentIndicator(
+                            radius: 70.0,
+                            lineWidth: 5.0,
+                            animation: true,
+                            percent: numeroPlantas/10,
+                            center: new Text("${(numeroPlantas/10)*100}%"),
+                            progressColor: Color(0xFF498C37),
+                        ),
+                    )
+                    
+                ],
+            ), 
+                
         );
     }
    
