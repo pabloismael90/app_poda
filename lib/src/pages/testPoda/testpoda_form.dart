@@ -184,7 +184,6 @@ class _AgregarTestState extends State<AgregarTest> {
                     labelText: 'Seleccione la parcela',
                     items: mainparcela,
                     validator: (value){
-                        print(value);
                         if(value!.length < 1){
                             return 'Selecione un elemento';
                         }else{
