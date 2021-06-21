@@ -83,7 +83,7 @@ class MyApp extends StatelessWidget {
                     color: Colors.white
                     )
                 ),
-                textTheme: Theme.of(context).textTheme.apply(displayColor: kTextColor, fontFamily: 'Museo'),
+                textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor, fontFamily: 'Museo'),
                 appBarTheme: AppBarTheme(color: kbase,brightness: Brightness.dark),
                 primaryColor:kbase,
                 primaryIconTheme: IconThemeData(color: Colors.white),
@@ -96,7 +96,8 @@ class MyApp extends StatelessWidget {
                 elevatedButtonTheme: ElevatedButtonThemeData(
                     style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                        primary: Color(0xFF3f2a56),
+                        //primary: Color(0xFF3f2a56),
+                        primary: Color(0xFF330D40),
                         textStyle: TextStyle(fontWeight: FontWeight.bold),
                         minimumSize: Size(88, 40),
                         shape: RoundedRectangleBorder(
