@@ -12,15 +12,15 @@ class TitulosPages  extends StatelessWidget {
     @override
     Widget build(BuildContext context) {
         return Container(
-            padding: EdgeInsets.only(top:0, bottom: 5),
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                     Container(
-                        padding: EdgeInsets.only(bottom: 10, left: 20, right: 20),
+                        padding: EdgeInsets.only(bottom: 10),
                         child: Text(
                             titulo!,
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
                         ),
                     ),
                     Row(

@@ -100,56 +100,77 @@ class _EstacionesPageState extends State<EstacionesPage> {
                 Parcela parcela = snapshot.data[1];
 
                 return Container(
-                    
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: [
-                            BoxShadow(
-                                    color: Color(0xFF3A5160)
-                                        .withOpacity(0.05),
-                                    offset: const Offset(1.1, 1.1),
-                                    blurRadius: 17.0),
-                            ],
-                    ),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                    color: Colors.white,
+                    padding: EdgeInsets.all(20),
+                    margin: EdgeInsets.only(bottom: 10),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                            
-                            Flexible(
-                                child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                    
-                                        Padding(
-                                            padding: EdgeInsets.only(top: 10, bottom: 10.0),
-                                            child: Text(
-                                                "${finca.nombreFinca}",
-                                                softWrap: true,
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 2,
-                                                style: Theme.of(context).textTheme.headline6,
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                    Flexible(
+                                        child: Container(
+                                            padding: EdgeInsets.only(right: 10),
+                                            child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                    Container(
+                                                        padding: EdgeInsets.symmetric(vertical: 5),
+                                                        child: Text('${finca.nombreFinca}',
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: ktitulo),
+                                                        ),
+                                                    ),
+                                                    Container(
+                                                        padding: EdgeInsets.symmetric(vertical: 5),
+                                                        child: Text('Parcela: ${parcela.nombreLote}',
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: kSubtitulo),
+                                                        ),
+                                                    ),
+                                                    
+                                                    Container(
+                                                        padding: EdgeInsets.symmetric(vertical: 5),
+                                                        child: Text('Productor: ${finca.nombreProductor}',
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                                                        ),
+                                                    ),
+                                                    
+                                                ],
                                             ),
                                         ),
-                                        Padding(
-                                            padding: EdgeInsets.only( bottom: 10.0),
-                                            child: Text(
-                                                "${parcela.nombreLote}",
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(color: kLightBlackColor),
-                                            ),
-                                        ),
-                                        
-                                    ],  
-                                ),
+                                    ),
+                                ],
                             ),
+                            Wrap(
+                                spacing: 20,
+                                children: [
+                                    Container(
+                                        padding: EdgeInsets.symmetric(vertical: 5),
+                                        child: Text('Área finca: ${finca.areaFinca} ${finca.tipoMedida == 1 ? 'Mz': 'Ha'}',
+                                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                                        ),
+                                    ),
+                                    Container(
+                                        padding: EdgeInsets.symmetric(vertical: 5),
+                                        child: Text('Área parcela: ${parcela.areaLote} ${finca.tipoMedida == 1 ? 'Mz': 'Ha'}',
+                                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                                        ),
+                                    ), 
+                                ],
+                            )
+                            
+                                                            
+
                         ],
                     ),
                 );
             },
         );        
     }
+
+  
+
 
     Widget  _listaDeEstaciones( BuildContext context, TestPoda poda, List countEstaciones){
         return ListView.builder(

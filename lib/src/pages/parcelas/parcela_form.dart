@@ -3,7 +3,6 @@ import 'package:app_poda/src/models/parcela_model.dart';
 import 'package:app_poda/src/providers/db_provider.dart';
 import 'package:app_poda/src/utils/widget/button.dart';
 import 'package:app_poda/src/utils/widget/varios_widget.dart';
-import 'package:app_poda/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -78,7 +77,7 @@ class _AgregarParcelaState extends State<AgregarParcela> {
         
         
         return Scaffold(
-            appBar: AppBar(),
+            appBar: AppBar(title: Text(tituloForm as String),),
             body: FutureBuilder(
                     future: getparcelas(fincaid),
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -92,8 +91,6 @@ class _AgregarParcelaState extends State<AgregarParcela> {
                         return SingleChildScrollView(                
                             child: Column(
                                 children: [
-                                    TitulosPages(titulo: tituloForm),
-                                    Divider(),
                                     Container(
                                     padding: EdgeInsets.all(15.0),
                                         child: Form(
@@ -101,11 +98,11 @@ class _AgregarParcelaState extends State<AgregarParcela> {
                                             child: Column(
                                                 children: <Widget>[
                                                     _nombreParcela(fincaid),
-                                                    SizedBox(height: 40.0,),
+                                                    SizedBox(height: 30.0,),
                                                     _areaParcela(finca, labelMedida, listParcela),
-                                                    SizedBox(height: 40.0,),
+                                                    SizedBox(height: 30.0,),
                                                     _variedadCacao(),
-                                                    SizedBox(height: 40.0,),
+                                                    SizedBox(height: 30.0,),
                                                     _numeroPlanta(labelMedida),
                                                 ],
                                             ),
@@ -123,7 +120,7 @@ class _AgregarParcelaState extends State<AgregarParcela> {
     Widget _nombreParcela( String? fincaid ){
         return TextFormField(
             initialValue: parcela.nombreLote,
-            //autofocus: true,
+            maxLength: 30,
             decoration: InputDecoration(
                 labelText: 'Nombre de la parcela'
             ),
@@ -154,11 +151,10 @@ class _AgregarParcelaState extends State<AgregarParcela> {
                 
                 sumaParcelas = sumaParcelas - areaParcela;
 
-               //print(sumaParcelas);
-
                 return TextFormField(
                     initialValue: parcela.areaLote == null ? '' : parcela.areaLote.toString(),
                     keyboardType: TextInputType.numberWithOptions(decimal: true),
+                    maxLength: 5,
                     decoration: InputDecoration(
                         labelText: 'Área de la parcela ($labelMedida)'
                     ),
@@ -190,6 +186,7 @@ class _AgregarParcelaState extends State<AgregarParcela> {
         return SelectFormField(
             initialValue: parcela.variedadCacao.toString(),
             labelText: 'Variedad',
+            maxLength: 24,
             items: selectMap.variedadCacao(),
             validator: (value){
                 if(value!.length < 1){
@@ -198,8 +195,6 @@ class _AgregarParcelaState extends State<AgregarParcela> {
                     return null;
                 } 
             },
-
-            //onChanged: (val) => print(val),
             onSaved: (value) => parcela.variedadCacao = int.parse(value!),
         );
     }
@@ -211,7 +206,8 @@ class _AgregarParcelaState extends State<AgregarParcela> {
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.digitsOnly
-            ], 
+            ],
+            maxLength: 5,
             decoration: InputDecoration(
                 labelText: 'No de plantas por $labelMedida'
             ),

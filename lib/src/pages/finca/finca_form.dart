@@ -1,7 +1,8 @@
 
+// import 'dart:html';
+
 import 'package:app_poda/src/utils/widget/button.dart';
 import 'package:app_poda/src/utils/widget/varios_widget.dart';
-import 'package:app_poda/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 
 import 'package:app_poda/src/bloc/fincas_bloc.dart';
@@ -49,14 +50,12 @@ class _AgregarFincaState extends State<AgregarFinca> {
         }
 
         return Scaffold(
-            appBar: AppBar(),
+            appBar: AppBar(title: Text(tituloForm),),
             body: SingleChildScrollView(
                 child: Column(
                     children: [
-                        TitulosPages(titulo: tituloForm),
-                        Divider(),
                         Container(
-                            padding: EdgeInsets.all(15.0),
+                            padding: EdgeInsets.symmetric(vertical: 40, horizontal: 20),
                             child: Form(
                                 key: formKey,
                                 child: Column(
@@ -92,7 +91,7 @@ class _AgregarFincaState extends State<AgregarFinca> {
     Widget _nombreFinca(){
         return TextFormField(
             initialValue: finca.nombreFinca,
-            autofocus: true,
+            maxLength: 30,
             decoration: InputDecoration(
                 labelText: 'Nombre de la finca',
             ),
@@ -111,7 +110,7 @@ class _AgregarFincaState extends State<AgregarFinca> {
     Widget _nombreProductor(){
         return TextFormField(
             initialValue: finca.nombreProductor,
-            autofocus: true,
+            maxLength: 30,
             decoration: InputDecoration(
                 labelText: 'Nombre de productor',
                 
@@ -133,6 +132,7 @@ class _AgregarFincaState extends State<AgregarFinca> {
         return TextFormField(
             initialValue: finca.areaFinca == null ? '' : finca.areaFinca.toString(),
             keyboardType: TextInputType.numberWithOptions(decimal: true),
+            maxLength: 5,
             decoration: InputDecoration(
                 labelText: 'Área de la finca',
                 hintText: 'ejem: 2',
@@ -148,6 +148,7 @@ class _AgregarFincaState extends State<AgregarFinca> {
         return SelectFormField(
             initialValue: finca.tipoMedida.toString(),            
             labelText: 'Unidad',
+            maxLength: 2,
             items: selectMap.dimenciones(),
             validator: (value) => utils.validateSelect(value),
             onSaved: (value) => finca.tipoMedida = int.parse(value!),
@@ -158,7 +159,7 @@ class _AgregarFincaState extends State<AgregarFinca> {
     Widget _nombreTecnico(){
         return TextFormField(
             initialValue: finca.nombreTecnico,
-            autofocus: true,
+            maxLength: 30,
             decoration: InputDecoration(
                 labelText: 'Nombre del Técnico'
             ),

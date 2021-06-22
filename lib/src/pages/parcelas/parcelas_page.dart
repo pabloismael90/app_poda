@@ -30,7 +30,7 @@ class _ParcelaPageState extends State<ParcelaPage> {
         fincasBloc.obtenerParcelasIdFinca(fincaData.id);
 
         return Scaffold(
-            appBar: AppBar(),
+            appBar: AppBar(title: Text('Mis Parcelas'),),
             body: StreamBuilder(
                 stream: fincasBloc.parcelaStream,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -41,11 +41,11 @@ class _ParcelaPageState extends State<ParcelaPage> {
 
                     final parcela = snapshot.data;
 
-                    if (parcela.length == 0) {
+
                         return Column(
                             children: [
-                                TitulosPages(titulo: 'Parcelas de ${fincaData.nombreFinca}'),
-                                Divider(),
+                                _dataFinca(fincaData),
+                                parcela.length == 0 ? 
                                 Expanded(
                                     child: Center(
                                         child: Text('No hay datos: \nIngrese datos de parcela en la finca', 
@@ -53,19 +53,15 @@ class _ParcelaPageState extends State<ParcelaPage> {
                                             style: Theme.of(context).textTheme.headline6,
                                         )
                                     )
+                                )
+                                :
+                                TitulosPages(titulo: 'Lista de parcelas'),
+                                Expanded(
+                                    child: SingleChildScrollView(child: _listaDeParcelas(parcela, fincaData, size, context))
                                 ),
                             ],
                         );
-                    }
-
-                    return Column(
-                        children: [
-                            TitulosPages(titulo: 'Parcelas de ${fincaData.nombreFinca}'),
-                            Expanded(
-                                child: SingleChildScrollView(child: _listaDeParcelas(parcela, fincaData, size, context))
-                            ),
-                        ],
-                    );
+            
                     
                 },
             ),
@@ -73,7 +69,6 @@ class _ParcelaPageState extends State<ParcelaPage> {
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                        _editarFinca(fincaData),
                         _addParcela(fincaData),
                     ],
                 ),
@@ -84,19 +79,84 @@ class _ParcelaPageState extends State<ParcelaPage> {
         
     }
 
-    Widget  _editarFinca(Finca finca){
-        return ButtonMainStyle(
-            title: 'Editar Finca',
-            icon: Icons.edit_rounded,
-            press:() => Navigator.pushNamed(context, 'addFinca', arguments: finca),
-        );
-    }
+    // Widget  _editarFinca(Finca finca){
+    //     return ButtonMainStyle(
+    //         title: 'Editar Finca',
+    //         icon: Icons.edit_rounded,
+    //         press:() => Navigator.pushNamed(context, 'addFinca', arguments: finca),
+    //     );
+    // }
 
     Widget  _addParcela( Finca finca ){
         return ButtonMainStyle(
             title: 'Nueva Parcela',
             icon: Icons.add_circle_outline_outlined,
             press: () => Navigator.pushNamed(context, 'addParcela', arguments: finca),
+        );
+    }
+
+    Widget _dataFinca(Finca finca){
+        return Container(
+            color: Colors.white,
+            padding: EdgeInsets.all(20),
+            margin: EdgeInsets.only(bottom: 10),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                            Flexible(
+                                child: Container(
+                                    padding: EdgeInsets.only(right: 10),
+                                    child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                            Container(
+                                                padding: EdgeInsets.symmetric(vertical: 5),
+                                                child: Text('${finca.nombreFinca}',
+                                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: ktitulo),
+                                                ),
+                                            ),
+                                            Text('Productor: ${finca.nombreProductor}', 
+                                                style: TextStyle(fontWeight: FontWeight.bold, color: kSubtitulo, fontSize: 13)
+                                            )
+                                        ],
+                                    ),
+                                ),
+                            ),
+                            
+                            TextButton(
+                                onPressed: () => Navigator.pushNamed(context, 'addFinca', arguments: finca),
+                                style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(kmorado),
+                                    
+                                ),
+                                child: Row(
+                                    children: [
+                                        Icon(Icons.mode_edit_outlined, color: kwhite, size: 16,),
+                                        SizedBox(width: 5,),
+                                        Text('Editar', style: TextStyle(color: kwhite, fontWeight: FontWeight.bold),)
+                                    ],
+                                ),
+                            )
+                        ],
+                    ),
+                    Container(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: Text('Área de la finca: ${finca.areaFinca} ${finca.tipoMedida == 1 ? 'Mz': 'Ha'}',
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)
+                        )
+                    ),
+                    finca.nombreTecnico != '' 
+                    ?Container(
+                        child: Text('Técnico: ${finca.nombreTecnico}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13))
+                    )
+                    :Container(),           
+
+                ],
+            ),
         );
     }
 
@@ -115,7 +175,7 @@ class _ParcelaPageState extends State<ParcelaPage> {
                 return Dismissible(
                     key: UniqueKey(),
                     child: GestureDetector(
-                        child: _cardParcela(size, parcelas[index], labelMedida, labelVariedad),
+                        child: _cardDesing(parcelas[index], labelMedida, labelVariedad),
                         onTap: () => Navigator.pushNamed(context, 'addParcela', arguments: parcelas[index]),
                     ),
                     confirmDismiss: (direction) => confirmacionUser(direction, context),
@@ -134,58 +194,64 @@ class _ParcelaPageState extends State<ParcelaPage> {
 
     }
 
-    Widget _cardParcela(Size size, Parcela parcela, String? labelMedida, String? labelVariedad){
+
+    Widget _cardDesing(Parcela parcela, String? labelMedida, String? labelVariedad){
+        
         return cardDefault(
-            Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+            Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                    Padding(
-                        padding: EdgeInsets.only(right: 20),
-                        child: SvgPicture.asset('assets/icons/parcela.svg', height:60,),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                            Flexible(
+                                child: Container(
+                                    padding: EdgeInsets.only(right: 10),
+                                    child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                            Container(
+                                                padding: EdgeInsets.symmetric(vertical: 5),
+                                                child: Text('${parcela.nombreLote}',
+                                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: ktitulo),
+                                                ),
+                                            ),
+                                            Text('$labelVariedad', 
+                                                style: TextStyle(fontWeight: FontWeight.bold, color: kSubtitulo, fontSize: 13)
+                                            )
+                                        ],
+                                    ),
+                                ),
+                            ),
+                            Container(
+                                width: 55,
+                                child: SvgPicture.asset('assets/icons/parcela.svg', height:55, alignment: Alignment.topCenter),
+                            )
+                        ],
                     ),
-                    Flexible(
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                            
-                                Padding(
-                                    padding: EdgeInsets.only(top: 10, bottom: 10.0),
-                                    child: Text(
-                                        "${parcela.nombreLote}",
-                                        softWrap: true,
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
-                                        style: Theme.of(context).textTheme.headline6,
-                                    ),
-                                ),
-                                Padding(
-                                    padding: EdgeInsets.only( bottom: 10.0),
-                                    child: Text(
-                                        "Variedad: $labelVariedad",
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(color: kLightBlackColor),
-                                    ),
-                                ),
-                                Text(
-                                    'N Plantas: ${parcela.numeroPlanta}',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(color: kLightBlackColor),
-                                ),
-                                Padding(
-                                    padding: EdgeInsets.only(top: 10, bottom: 10.0),
-                                    child: Text(
-                                        "${parcela.areaLote} $labelMedida",
-                                        style: TextStyle(color: kLightBlackColor),
-                                    ),
-                                ),
-                            ],  
-                        ),
-                    ),
+                    Wrap(
+                        spacing: 20,
+                        children: [
+                            Container(
+                                padding: EdgeInsets.symmetric(vertical: 10),
+                                child: Text('N Plantas: ${parcela.numeroPlanta}',
+                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)
+                                )
+                            ),
+                            Container(
+                                padding: EdgeInsets.symmetric(vertical: 10),
+                                child: Text('Área: ${parcela.areaLote} $labelMedida',
+                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)
+                                )
+                            ),
+                        ],
+                    )
                 ],
-            ), 
+            )
         );
     }
-   
+
+
+
+
 }

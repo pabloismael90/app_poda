@@ -7,7 +7,7 @@ import 'package:app_poda/src/utils/constants.dart';
 import 'package:app_poda/src/utils/widget/button.dart';
 // import 'package:app_poda/src/utils/widget/card_list.dart';
 import 'package:app_poda/src/utils/widget/dialogDelete.dart';
-import 'package:app_poda/src/utils/widget/titulos.dart';
+// import 'package:app_poda/src/utils/widget/titulos.dart';
 import 'package:app_poda/src/utils/widget/varios_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -30,7 +30,9 @@ class _FincasPageState extends State<FincasPage> {
 
         fincasBloc.obtenerFincas();
         return Scaffold(
-            appBar: AppBar(title: Text('Mis fincas',),),
+            appBar: AppBar(
+                title: Text('Mis fincas')
+            ),
             body: StreamBuilder<List<Finca>>(
                 stream: fincasBloc.fincaStream,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -43,8 +45,6 @@ class _FincasPageState extends State<FincasPage> {
                     if (fincas.length == 0) {
                         return Column(
                             children: [
-                                // TitulosPages(titulo: 'Mis Fincas'),
-                                // Divider(),
                                 Expanded(child: Center(
                                     child: Text('No hay datos: \nIngrese datos de parcela', 
                                         textAlign: TextAlign.center,
@@ -58,13 +58,11 @@ class _FincasPageState extends State<FincasPage> {
                     
                     return Column(
                         children: [
-                            //TitulosPages(titulo: 'Mis Fincas'),
-                            
-                            Expanded(child: SingleChildScrollView(
-                                child: _listaDeFincas(snapshot.data, context),
-                            )),
-                            
-
+                            Expanded(
+                                child: SingleChildScrollView(
+                                    child: _listaDeFincas(snapshot.data, context),
+                                )
+                            ),
                         ],
                     );
                 },
@@ -89,9 +87,6 @@ class _FincasPageState extends State<FincasPage> {
                 Spacer()
             ],
         );
-        
-    
-       
     }
 
     Widget  _listaDeFincas(List fincas, BuildContext context){
@@ -100,13 +95,7 @@ class _FincasPageState extends State<FincasPage> {
                 return Dismissible(
                     key: UniqueKey(),
                     child: GestureDetector(
-                        // child: CardList(
-                        //     finca: fincas[index],
-                        //     icon:'assets/icons/finca.svg'
-                            
-                        // ),
                         child: _cardDesing(fincas[index]),
-                        
                         onTap: () => Navigator.pushNamed(context, 'parcelas', arguments: fincas[index]),
                     ),
                     confirmDismiss: (direction) => confirmacionUser(direction, context),
@@ -127,22 +116,8 @@ class _FincasPageState extends State<FincasPage> {
     }
 
     Widget _cardDesing(Finca finca){
-        return Container(
-            margin: EdgeInsets.symmetric(vertical: 7, horizontal: 20),
-            width: double.infinity,
-            padding: EdgeInsets.all(15),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                    BoxShadow(
-                            color: Color(0xFF3A5160)
-                                .withOpacity(0.05),
-                            offset: const Offset(1.1, 1.1),
-                            blurRadius: 17.0),
-                    ],
-            ),
-            child: Column(
+        return cardDefault(
+            Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                     Row(
@@ -157,18 +132,17 @@ class _FincasPageState extends State<FincasPage> {
                                             Container(
                                                 padding: EdgeInsets.symmetric(vertical: 5),
                                                 child: Text('${finca.nombreFinca}',
-                                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: ktitulo),
+                                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: ktitulo),
                                                 ),
                                             ),
                                             Text('Productor: ${finca.nombreProductor}', 
-                                                style: TextStyle(fontWeight: FontWeight.bold, color: kSubtitulo, fontSize: 14)
+                                                style: TextStyle(fontWeight: FontWeight.bold, color: kSubtitulo, fontSize: 13)
                                             )
                                         ],
                                     ),
                                 ),
                             ),
                             Container(
-                                //color: Colors.amber,
                                 width: 55,
                                 child: SvgPicture.asset('assets/icons/finca.svg', height:55, alignment: Alignment.topCenter),
                             )
@@ -176,15 +150,17 @@ class _FincasPageState extends State<FincasPage> {
                     ),
                     Container(
                         padding: EdgeInsets.symmetric(vertical: 10),
-                        child: Text('Área de la finca: ${finca.areaFinca}  ${finca.tipoMedida == 1 ? 'Mz': 'Ha'}',
+                        child: Text('Área de la finca: ${finca.areaFinca} ${finca.tipoMedida == 1 ? 'Mz': 'Ha'}',
                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)
                         )
                     ),
-                    Container(
-                        child: Text(finca.nombreTecnico == '' ? '' :'Técnico: ${finca.nombreTecnico}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13))
-                    ),
+                    finca.nombreTecnico != '' 
+                    ?Container(
+                        child: Text('Técnico: ${finca.nombreTecnico}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13))
+                    )
+                    : Container()
                 ],
-            ),
+            )
         );
     }
 

@@ -10,6 +10,8 @@ const kcafe = Color(0xff7e381a);
 const krojo = Color(0xffc22026);
 const ktitulo = Color(0xff013B8D);
 const kSubtitulo = Color(0xff45687F);
+const kmorado = Color(0xFF330D40);
+const kwhite = Color(0xFFFFFFFF);
 
 
 

@@ -24,21 +24,20 @@ Widget botonesBottom(Widget widget){
 
 Widget cardDefault(Widget widget){
     return Container(
-        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        margin: EdgeInsets.symmetric(vertical: 7, horizontal: 20),
         width: double.infinity,
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-            
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15),
-                boxShadow: [
-                    BoxShadow(
-                            color: Color(0xFF3A5160)
-                                .withOpacity(0.05),
-                            offset: const Offset(1.1, 1.1),
-                            blurRadius: 17.0),
-                    ],
-            ),
-            child: widget
+        padding: EdgeInsets.all(15),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+                BoxShadow(
+                    color: Color(0xFF3A5160)
+                        .withOpacity(0.05),
+                    offset: const Offset(1.1, 1.1),
+                    blurRadius: 17.0),
+                ],
+        ),
+        child: widget,
     );
 }

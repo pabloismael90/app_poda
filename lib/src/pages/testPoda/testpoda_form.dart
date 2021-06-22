@@ -3,7 +3,6 @@
 import 'package:app_poda/src/models/testpoda_model.dart';
 import 'package:app_poda/src/utils/widget/button.dart';
 import 'package:app_poda/src/utils/widget/varios_widget.dart';
-import 'package:app_poda/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 
 import 'package:app_poda/src/bloc/fincas_bloc.dart';
@@ -73,36 +72,29 @@ class _AgregarTestState extends State<AgregarTest> {
                     List<Map<String, dynamic>> _listitem = snapshot.data;
                     return Scaffold(
                         key: scaffoldKey,
-                        appBar: AppBar(),
+                        appBar: AppBar(title: Text('Toma de datos'),),
                         body: SingleChildScrollView(
                             child: Column(
                                 children: [
-                                    TitulosPages(titulo: 'Toma de datos'),
-                                    Divider(),
                                     Container(
                                         child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                                             children: [
-
                                                 Flexible(
-                                                    child: Padding(
-                                                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                                                    child: Container(
+                                                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                                                         child:Text(
                                                             '3 Estaciones',
-                                                            style: Theme.of(context).textTheme
-                                                                .headline6!
-                                                                .copyWith(fontSize: 16)
+                                                            style: TextStyle(fontWeight: FontWeight.bold),
                                                         ),
                                                     ),
                                                 ),
                                                 Flexible(
                                                     child: Padding(
-                                                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                                                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                                                         child:Text(
                                                             '10 Plantas por estaciones',
-                                                            style: Theme.of(context).textTheme
-                                                                .headline6!
-                                                                .copyWith(fontSize: 16)
+                                                            style: TextStyle(fontWeight: FontWeight.bold),
                                                         ),
                                                     ),
                                                 ),
