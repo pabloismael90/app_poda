@@ -1,12 +1,10 @@
 import 'package:app_poda/src/bloc/fincas_bloc.dart';
 import 'package:app_poda/src/models/testpoda_model.dart';
 import 'package:app_poda/src/providers/db_provider.dart';
-import 'package:app_poda/src/utils/constants.dart';
 import 'package:app_poda/src/utils/widget/button.dart';
 import 'package:app_poda/src/utils/widget/dialogDelete.dart';
 import 'package:app_poda/src/utils/widget/varios_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 
 final fincasBloc = new FincasBloc();
@@ -47,25 +45,18 @@ class _TestPageState extends State<TestPage> {
                         }
 
                         List<TestPoda> textPlagas= snapshot.data;
-                        if (textPlagas.length == 0) {
-                            return Column(
-                                children: [
-                                    Expanded(child: Center(
-                                        child: Text('No hay datos: \nIngrese una toma de datos', 
-                                        textAlign: TextAlign.center,
-                                            style: Theme.of(context).textTheme.headline6,
-                                            )
-                                        )
-                                    ),
-                                ],
-                            );
-                        }
                         return Column(
                             children: [
-                                Expanded(child: SingleChildScrollView(child: _listaDePlagas(textPlagas, size, context))),
+                                Expanded(
+                                    child:
+                                    textPlagas.length == 0
+                                    ?
+                                    textoListaVacio('Ingrese una toma de datos')
+                                    :
+                                    SingleChildScrollView(child: _listaDeTest(textPlagas, size, context))
+                                ),
                             ],
                         );
-                        
                         
                     },
                 ),
@@ -90,7 +81,7 @@ class _TestPageState extends State<TestPage> {
         );
     }
 
-    Widget  _listaDePlagas(List textPlagas, Size size, BuildContext context){
+    Widget  _listaDeTest(List textPlagas, Size size, BuildContext context){
         return ListView.builder(
             itemBuilder: (context, index) {
                 return Dismissible(
@@ -133,49 +124,9 @@ class _TestPageState extends State<TestPage> {
             Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                            Flexible(
-                                child: Container(
-                                    padding: EdgeInsets.only(right: 10),
-                                    child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                            Container(
-                                                padding: EdgeInsets.symmetric(vertical: 5),
-                                                child: Text('${finca.nombreFinca}',
-                                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: ktitulo),
-                                                ),
-                                            ),
-                                            Text('${parcela.nombreLote}', 
-                                                style: TextStyle(fontWeight: FontWeight.bold, color: kSubtitulo, fontSize: 13)
-                                            )
-                                        ],
-                                    ),
-                                ),
-                            ),
-                            Container(
-                                width: 55,
-                                child: SvgPicture.asset('assets/icons/test.svg', height:55, alignment: Alignment.topCenter),
-                            )
-                        ],
-                    ),
-                    Container(
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        child: Text('Fecha: ${textPlaga.fechaTest}',
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)
-                        )
-                    ),
-                    Divider(),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                            Icon(Icons.touch_app, color: kRedColor, size: 18,),
-                            Text(' Tocar para completar datos', style: TextStyle(color: kRedColor, fontSize: 12),)
-                        ],
-                    )
+                    encabezadoCard('${finca.nombreFinca}','${parcela.nombreLote}', 'assets/icons/test.svg'),
+                    textoCardBody('Fecha: ${textPlaga.fechaTest}'),
+                    iconTap(' Tocar para completar datos')
                 ],
             )
         );

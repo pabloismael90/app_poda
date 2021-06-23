@@ -1,16 +1,10 @@
-import 'dart:ui';
-
 import 'package:app_poda/src/bloc/fincas_bloc.dart';
 import 'package:app_poda/src/models/finca_model.dart';
 import 'package:app_poda/src/providers/db_provider.dart';
-import 'package:app_poda/src/utils/constants.dart';
 import 'package:app_poda/src/utils/widget/button.dart';
-// import 'package:app_poda/src/utils/widget/card_list.dart';
 import 'package:app_poda/src/utils/widget/dialogDelete.dart';
-// import 'package:app_poda/src/utils/widget/titulos.dart';
 import 'package:app_poda/src/utils/widget/varios_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 
 
@@ -42,29 +36,23 @@ class _FincasPageState extends State<FincasPage> {
                     }
 
                     final fincas = snapshot.data;
-                    if (fincas.length == 0) {
-                        return Column(
-                            children: [
-                                Expanded(child: Center(
-                                    child: Text('No hay datos: \nIngrese datos de parcela', 
-                                        textAlign: TextAlign.center,
-                                        style: Theme.of(context).textTheme.headline6,
-                                        )
-                                    )
-                                ),
-                            ],
-                        );
-                    }
                     
                     return Column(
                         children: [
                             Expanded(
-                                child: SingleChildScrollView(
+                                child: fincas.length == 0
+                                ?
+                                textoListaVacio('Ingrese datos de finca')
+                                :
+                                SingleChildScrollView(
                                     child: _listaDeFincas(snapshot.data, context),
                                 )
                             ),
                         ],
                     );
+
+                    
+
                 },
             ),
 
@@ -120,45 +108,10 @@ class _FincasPageState extends State<FincasPage> {
             Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                            Flexible(
-                                child: Container(
-                                    padding: EdgeInsets.only(right: 10),
-                                    child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                            Container(
-                                                padding: EdgeInsets.symmetric(vertical: 5),
-                                                child: Text('${finca.nombreFinca}',
-                                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: ktitulo),
-                                                ),
-                                            ),
-                                            Text('Productor: ${finca.nombreProductor}', 
-                                                style: TextStyle(fontWeight: FontWeight.bold, color: kSubtitulo, fontSize: 13)
-                                            )
-                                        ],
-                                    ),
-                                ),
-                            ),
-                            Container(
-                                width: 55,
-                                child: SvgPicture.asset('assets/icons/finca.svg', height:55, alignment: Alignment.topCenter),
-                            )
-                        ],
-                    ),
-                    Container(
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        child: Text('Área de la finca: ${finca.areaFinca} ${finca.tipoMedida == 1 ? 'Mz': 'Ha'}',
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)
-                        )
-                    ),
-                    finca.nombreTecnico != '' 
-                    ?Container(
-                        child: Text('Técnico: ${finca.nombreTecnico}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13))
-                    )
-                    : Container()
+                    encabezadoCard('${finca.nombreFinca}','Productor: ${finca.nombreProductor}', 'assets/icons/finca.svg'),
+                    textoCardBody('Área de la finca: ${finca.areaFinca} ${finca.tipoMedida == 1 ? 'Mz': 'Ha'}'),
+                    textoCardBody('${finca.nombreTecnico}'),
+                    iconTap(' Tocar para agregar parcelas')
                 ],
             )
         );

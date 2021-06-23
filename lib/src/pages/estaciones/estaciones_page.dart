@@ -69,7 +69,6 @@ class _EstacionesPageState extends State<EstacionesPage> {
                         children: [
                             escabezadoEstacion( context, poda ),
                             TitulosPages(titulo: 'Sitios'),
-                            Divider(),
                             Expanded(
                                 child: SingleChildScrollView(
                                     child: _listaDeEstaciones( context, poda, countEstaciones ),
@@ -106,62 +105,14 @@ class _EstacionesPageState extends State<EstacionesPage> {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                    Flexible(
-                                        child: Container(
-                                            padding: EdgeInsets.only(right: 10),
-                                            child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                    Container(
-                                                        padding: EdgeInsets.symmetric(vertical: 5),
-                                                        child: Text('${finca.nombreFinca}',
-                                                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: ktitulo),
-                                                        ),
-                                                    ),
-                                                    Container(
-                                                        padding: EdgeInsets.symmetric(vertical: 5),
-                                                        child: Text('Parcela: ${parcela.nombreLote}',
-                                                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: kSubtitulo),
-                                                        ),
-                                                    ),
-                                                    
-                                                    Container(
-                                                        padding: EdgeInsets.symmetric(vertical: 5),
-                                                        child: Text('Productor: ${finca.nombreProductor}',
-                                                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-                                                        ),
-                                                    ),
-                                                    
-                                                ],
-                                            ),
-                                        ),
-                                    ),
-                                ],
-                            ),
+                            encabezadoCard('Área finca: ${finca.nombreFinca}','Productor: ${finca.nombreProductor}', 'assets/icons/finca.svg'),
                             Wrap(
                                 spacing: 20,
                                 children: [
-                                    Container(
-                                        padding: EdgeInsets.symmetric(vertical: 5),
-                                        child: Text('Área finca: ${finca.areaFinca} ${finca.tipoMedida == 1 ? 'Mz': 'Ha'}',
-                                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-                                        ),
-                                    ),
-                                    Container(
-                                        padding: EdgeInsets.symmetric(vertical: 5),
-                                        child: Text('Área parcela: ${parcela.areaLote} ${finca.tipoMedida == 1 ? 'Mz': 'Ha'}',
-                                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-                                        ),
-                                    ), 
+                                    textoCardBody('Área finca: ${finca.areaFinca}'),
+                                    textoCardBody('Área parcela: ${parcela.areaLote} ${finca.tipoMedida == 1 ? 'Mz': 'Ha'}'), 
                                 ],
                             )
-                            
-                                                            
-
                         ],
                     ),
                 );
@@ -207,32 +158,14 @@ class _EstacionesPageState extends State<EstacionesPage> {
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                            
-                                Padding(
-                                    padding: EdgeInsets.only(top: 10, bottom: 10.0),
-                                    child: Text(
-                                        "Sitio $estacion",
-                                        softWrap: true,
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
-                                        style: Theme.of(context).textTheme.headline6,
-                                    ),
-                                ),
-                                
-                                
-                                Padding(
-                                    padding: EdgeInsets.only( bottom: 10.0),
-                                    child: Text(
-                                        '$estado',
-                                        style: TextStyle(color: kLightBlackColor),
-                                    ),
-                                ),
+                                tituloCard('Sitio $estacion'),
+                                subtituloCardBody('$estado')
                             ],  
                         ),
                     ),
                     Container(
                         child: CircularPercentIndicator(
-                            radius: 70.0,
+                            radius: 50.0,
                             lineWidth: 5.0,
                             animation: true,
                             percent: numeroPlantas/10,

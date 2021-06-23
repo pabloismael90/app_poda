@@ -8,7 +8,6 @@ import 'package:app_poda/src/utils/widget/dialogDelete.dart';
 import 'package:app_poda/src/utils/widget/titulos.dart';
 import 'package:app_poda/src/utils/widget/varios_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 
 class ParcelaPage extends StatefulWidget {
@@ -98,7 +97,7 @@ class _ParcelaPageState extends State<ParcelaPage> {
     Widget _dataFinca(Finca finca){
         return Container(
             color: Colors.white,
-            padding: EdgeInsets.all(20),
+            padding: EdgeInsets.all(15),
             margin: EdgeInsets.only(bottom: 10),
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,15 +112,8 @@ class _ParcelaPageState extends State<ParcelaPage> {
                                     child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                            Container(
-                                                padding: EdgeInsets.symmetric(vertical: 5),
-                                                child: Text('${finca.nombreFinca}',
-                                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: ktitulo),
-                                                ),
-                                            ),
-                                            Text('Productor: ${finca.nombreProductor}', 
-                                                style: TextStyle(fontWeight: FontWeight.bold, color: kSubtitulo, fontSize: 13)
-                                            )
+                                            tituloCard('${finca.nombreFinca}'),
+                                            subtituloCardBody('Productor: ${finca.nombreProductor}')
                                         ],
                                     ),
                                 ),
@@ -143,17 +135,8 @@ class _ParcelaPageState extends State<ParcelaPage> {
                             )
                         ],
                     ),
-                    Container(
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        child: Text('Área de la finca: ${finca.areaFinca} ${finca.tipoMedida == 1 ? 'Mz': 'Ha'}',
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)
-                        )
-                    ),
-                    finca.nombreTecnico != '' 
-                    ?Container(
-                        child: Text('Técnico: ${finca.nombreTecnico}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13))
-                    )
-                    :Container(),           
+                    textoCardBody('Área de la finca: ${finca.areaFinca} ${finca.tipoMedida == 1 ? 'Mz': 'Ha'}'),
+                    textoCardBody('${finca.nombreTecnico}'),           
 
                 ],
             ),
@@ -201,51 +184,15 @@ class _ParcelaPageState extends State<ParcelaPage> {
             Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                            Flexible(
-                                child: Container(
-                                    padding: EdgeInsets.only(right: 10),
-                                    child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                            Container(
-                                                padding: EdgeInsets.symmetric(vertical: 5),
-                                                child: Text('${parcela.nombreLote}',
-                                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: ktitulo),
-                                                ),
-                                            ),
-                                            Text('$labelVariedad', 
-                                                style: TextStyle(fontWeight: FontWeight.bold, color: kSubtitulo, fontSize: 13)
-                                            )
-                                        ],
-                                    ),
-                                ),
-                            ),
-                            Container(
-                                width: 55,
-                                child: SvgPicture.asset('assets/icons/parcela.svg', height:55, alignment: Alignment.topCenter),
-                            )
-                        ],
-                    ),
+                    encabezadoCard('${parcela.nombreLote}','$labelVariedad', 'assets/icons/parcela.svg'),
                     Wrap(
                         spacing: 20,
                         children: [
-                            Container(
-                                padding: EdgeInsets.symmetric(vertical: 10),
-                                child: Text('N Plantas: ${parcela.numeroPlanta}',
-                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)
-                                )
-                            ),
-                            Container(
-                                padding: EdgeInsets.symmetric(vertical: 10),
-                                child: Text('Área: ${parcela.areaLote} $labelMedida',
-                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)
-                                )
-                            ),
+                            textoCardBody('N Plantas: ${parcela.numeroPlanta}'),
+                            textoCardBody('Área: ${parcela.areaLote} $labelMedida'),
                         ],
-                    )
+                    ),
+                    iconTap(' Tocar para editar')
                 ],
             )
         );
