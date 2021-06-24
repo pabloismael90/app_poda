@@ -69,7 +69,7 @@ class _FincasPageState extends State<FincasPage> {
                 Spacer(),
                 ButtonMainStyle(
                     title: 'Agregar finca',
-                    icon: Icons.add_circle_outline_outlined,
+                    icon: Icons.post_add,
                     press: () => Navigator.pushNamed(context, 'addFinca')
                 ),
                 Spacer()
@@ -110,7 +110,7 @@ class _FincasPageState extends State<FincasPage> {
                 children: [
                     encabezadoCard('${finca.nombreFinca}','Productor: ${finca.nombreProductor}', 'assets/icons/finca.svg'),
                     textoCardBody('Área de la finca: ${finca.areaFinca} ${finca.tipoMedida == 1 ? 'Mz': 'Ha'}'),
-                    textoCardBody('${finca.nombreTecnico}'),
+                    tecnico('${finca.nombreTecnico}'),
                     iconTap(' Tocar para agregar parcelas')
                 ],
             )

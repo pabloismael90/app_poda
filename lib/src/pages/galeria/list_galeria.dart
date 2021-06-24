@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:app_poda/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 
 class GaleriaImagenes extends StatefulWidget {
@@ -37,7 +35,7 @@ class _GaleriaImagenesState extends State<GaleriaImagenes> {
     @override
     Widget build(BuildContext context) {
         return Scaffold(
-            appBar: AppBar(),
+            appBar: AppBar(title: Text('Galería de Imágenes'),),
             body: FutureBuilder(
                 future: _initImages(context),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -55,12 +53,10 @@ class _GaleriaImagenesState extends State<GaleriaImagenes> {
                     }
                     
 
-                    return Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
+                    return Container(
+                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         child: Column(
                             children: [
-                                TitulosPages(titulo: 'Galería de Imágenes'),
-                                Divider(),
                                 Expanded(
                                     child: GridView.builder(
                                         itemCount: someImages!.length,

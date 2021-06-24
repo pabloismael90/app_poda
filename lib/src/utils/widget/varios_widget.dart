@@ -117,6 +117,17 @@ Widget textoCardBody(String texto){
     Container();
 }
 
+Widget tecnico(String texto){
+    return texto != '' 
+    ?
+    Container(
+        padding: EdgeInsets.symmetric(vertical: 7),
+        child: Text('Técnico: $texto',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13))
+    )
+    :
+    Container();
+}
+
 Widget iconCard(String dir){
     return dir != '' 
     ?
@@ -136,5 +147,54 @@ Widget textoListaVacio(String texto){
         )
     );
 }
+
+Widget textoBottom(String texto, Color color){
+    return Text(texto,
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: color),
+    );
+}
+
+Widget textList(String texto){
+    return Container(
+        padding: EdgeInsets.only(right: 10),
+        child: Text(texto, style: TextStyle(fontWeight: FontWeight.w600))
+    );
+}
+Widget titleList(String texto){
+    return Text(texto, style: TextStyle(fontWeight: FontWeight.w600), textAlign: TextAlign.center);
+}
+
+Widget mensajeSwipe(String text){
+    return Container(
+        padding: EdgeInsets.symmetric(vertical: 15),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+                Flexible(
+                    child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 15),
+                        child: Text(
+                            "Deslice hacia la derecha para continuar con el formulario",
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color: kRedColor)
+                        ),
+                    ),
+                ),
+                Container(
+                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    child: Icon(
+                        Icons.swipe_rounded,
+                        size: 25,
+                        color: kRedColor,
+                    ),
+                ),
+            ],
+        ),
+    );
+
+}
+
+
+
+
 
 

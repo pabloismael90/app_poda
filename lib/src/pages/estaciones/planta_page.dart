@@ -2,9 +2,9 @@
 import 'package:app_poda/src/bloc/fincas_bloc.dart';
 import 'package:app_poda/src/models/planta_model.dart';
 import 'package:app_poda/src/models/testpoda_model.dart';
+import 'package:app_poda/src/utils/constants.dart';
 import 'package:app_poda/src/utils/widget/button.dart';
 import 'package:app_poda/src/utils/widget/dialogDelete.dart';
-import 'package:app_poda/src/utils/widget/titulos.dart';
 import 'package:app_poda/src/utils/widget/varios_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -26,9 +26,8 @@ class _PlantaPageState extends State<PlantaPage> {
         fincasBloc.obtenerPlantaIdTest(plaga.id, indiceEstacion);
 
         return Scaffold(
-            appBar: AppBar(),
+            appBar: AppBar(title: Text('Lista plantas sitio $indiceEstacion'),),
             body: StreamBuilder<List<Planta>>(
-                //future: DBProvider.db.getTodasPlantas(),
                 stream: fincasBloc.plantaStream,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                     if (!snapshot.hasData) {
@@ -37,30 +36,18 @@ class _PlantaPageState extends State<PlantaPage> {
                     //print(snapshot.data);
                     final planta = snapshot.data;
 
-                    if (planta.length == 0) {
-                        return Column(
-                            children: [
-                                TitulosPages(titulo: 'Sitio $indiceEstacion'),
-                                Divider(), 
-                                Expanded(child: Center(
-                                    child: Text('No hay datos: \nIngrese datos de plantas', 
-                                    textAlign: TextAlign.center,
-                                        style: Theme.of(context).textTheme.headline6,
-                                        )
-                                    )
-                                ),
-                                
-                            ],
-                        );
-                    }
-                    
                     return Column(
-                        children: [
-                            TitulosPages(titulo: 'Sitio $indiceEstacion'),
-                            Divider(),                            
-                            Expanded(child: SingleChildScrollView(child: _listaDePlantas(planta, context, indiceEstacion))),
+                        children: [ 
+                            Expanded(
+                                child: planta.length == 0
+                                ?
+                                textoListaVacio('Ingrese datos de plantas')
+                                :
+                                SingleChildScrollView(child: _listaDePlantas(planta, context, indiceEstacion)),
+                            ),
                         ],
                     );
+
                 },
             ),
             bottomNavigationBar: botonesBottom(_countPlanta(plaga.id, indiceEstacion, plaga) ),
@@ -75,27 +62,25 @@ class _PlantaPageState extends State<PlantaPage> {
         return ListView.builder(
             itemBuilder: (context, index) {
                 if (planta[index].estacion == numeroEstacion) {
-
                     return Dismissible(
                         key: UniqueKey(),
                         child: GestureDetector(
                             child:cardDefault(
-                                Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
+                                Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                        
-                                        Padding(
-                                            padding: EdgeInsets.only(top: 10, bottom: 10.0),
-                                            child: Text(
-                                                "Planta ${index+1}",
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 2,
-                                                style: Theme.of(context).textTheme.headline6,
-                                            ),
-                                        ),
+                                        tituloCard('Planta ${index+1}'),
+                                        Wrap(
+                                            spacing: 15,
+                                            children: [
+                                                textoCardBody('Alto: ${planta[index].altura}'),
+                                                textoCardBody('Alto: ${planta[index].ancho}'),
+                                                textoCardBody('Alto: ${planta[index].largo}'),
+                                            ],
+                                        )
                                     ],
                                 ),
-                            )
+                            ),
                         ),
                         confirmDismiss: (direction) => confirmacionUser(direction, context),
                         direction: DismissDirection.endToStart,
@@ -132,11 +117,7 @@ class _PlantaPageState extends State<PlantaPage> {
                     return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                            Text('Plantas: $value / 10',
-                                style: Theme.of(context).textTheme
-                                        .headline6!
-                                        .copyWith(fontWeight: FontWeight.w600)
-                            ),
+                            textoBottom('Plantas: $value / 10', kTextColor),
                             _addPlanta(context, estacion, plaga, value),
                         ],
                     );
@@ -145,13 +126,7 @@ class _PlantaPageState extends State<PlantaPage> {
                         return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                                Container(
-                                    child: Text('Plantas: $value / 10',
-                                        style: Theme.of(context).textTheme
-                                                .headline6!
-                                                .copyWith(fontWeight: FontWeight.w600)
-                                    ),
-                                ),
+                                textoBottom('Plantas: $value / 10',  kTextColor),
                                 ButtonMainStyle(
                                     title: 'Siguiente Sitio',
                                     icon: Icons.navigate_next_rounded,
@@ -189,7 +164,7 @@ class _PlantaPageState extends State<PlantaPage> {
     Widget  _addPlanta(BuildContext context,  int? estacion, TestPoda plaga, int value){
         return ButtonMainStyle(
             title: 'Agregar Planta',
-            icon: Icons.add_circle_outline_outlined,
+            icon: Icons.post_add,
             press:() => Navigator.pushNamed(context, 'addPlanta', arguments: [estacion,plaga.id,value]),
         );
     }

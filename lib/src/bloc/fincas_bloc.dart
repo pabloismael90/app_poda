@@ -122,10 +122,16 @@ class FincasBloc {
         _plantaController.sink.add( await DBProvider.db.getTodasPlantasIdTest(idTest, estacion));
     }
     
-    addPlata( Planta nuevaPlanta, String? idTest, int? estacion) async{
+    addPlata( Planta nuevaPlanta) async{
         await DBProvider.db.nuevoPlanta(nuevaPlanta);
-        obtenerPlantaIdTest(idTest, estacion);
-        obtenerPlantas(idTest);
+        obtenerPlantaIdTest(nuevaPlanta.idTest, nuevaPlanta.estacion);
+        obtenerPlantas(nuevaPlanta.idTest);
+    }
+
+    actualizarPlata( Planta updatePlanta) async{
+        await DBProvider.db.updatePlanta(updatePlanta);
+        obtenerPlantaIdTest(updatePlanta.idTest, updatePlanta.estacion);
+        obtenerPlantas(updatePlanta.idTest);
     }
 
     borrarPlanta( Planta planta) async{

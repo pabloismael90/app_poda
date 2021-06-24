@@ -124,8 +124,7 @@ class MyApp extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                         primary: kmorado,
-                        textStyle: TextStyle(fontWeight: FontWeight.bold),
-                        minimumSize: Size(88, 40),
+                        textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                         ),

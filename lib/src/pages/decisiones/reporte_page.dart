@@ -5,7 +5,7 @@ import 'package:app_poda/src/models/testpoda_model.dart';
 import 'package:app_poda/src/providers/db_provider.dart';
 import 'package:app_poda/src/models/selectValue.dart' as selectMap;
 import 'package:app_poda/src/utils/constants.dart';
-import 'package:app_poda/src/utils/widget/titulos.dart';
+import 'package:app_poda/src/utils/widget/varios_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 
@@ -99,7 +99,23 @@ class _ReportePageState extends State<ReportePage> {
         String? idTest = ModalRoute.of(context)!.settings.arguments as String?;
 
         return Scaffold(
-            appBar: AppBar(),
+            appBar: AppBar(
+                title: Text('Reporte de Decisiones'),
+                actions: [
+                    TextButton(
+                        
+                        onPressed: (){}, 
+                        child: Row(
+                            children: [
+                                Icon(Icons.download, color: kwhite, size: 16,),
+                                SizedBox(width: 5,),
+                                Text('PDF', style: TextStyle(color: Colors.white),)
+                            ],
+                        )
+                        
+                    )
+                ],
+            ),
             body: FutureBuilder(
                 future: getdata(idTest),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -120,36 +136,22 @@ class _ReportePageState extends State<ReportePage> {
                     
                     
                     return Column(
-                        children: [
-                            Container(
-                                child: Column(
-                                    children: [
-                                        
-                                        TitulosPages(titulo: 'Reporte de Decisiones'),
-                                        Divider(),
-                                        Padding(
-                                            padding: EdgeInsets.symmetric(vertical: 10),
-                                            child: Text(
-                                                "Deslice hacia la derecha para continuar con el reporte",
-                                                textAlign: TextAlign.center,
-                                                style: Theme.of(context).textTheme
-                                                    .headline5!
-                                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 16)
-                                            ),
-                                        ),
-                                    ],
-                                )
-                            ),
+                        children: [                            
+                            mensajeSwipe('Deslice hacia la derecha para continuar con el reporte'),
                             Expanded(
                                 
-                                child: Swiper(
-                                    itemBuilder: (BuildContext context, int index) {
-                                        return pageItem[index];
-                                    },
-                                    itemCount: pageItem.length,
-                                    viewportFraction: 1,
-                                    loop: false,
-                                    scale: 1,
+                                child: Container(
+                                    color: Colors.white,
+                                    padding: EdgeInsets.all(15),
+                                    child: Swiper(
+                                        itemBuilder: (BuildContext context, int index) {
+                                            return pageItem[index];
+                                        },
+                                        itemCount: pageItem.length,
+                                        viewportFraction: 1,
+                                        loop: false,
+                                        scale: 1,
+                                    ),
                                 ),
                             ),
                         ],
@@ -182,7 +184,7 @@ class _ReportePageState extends State<ReportePage> {
             child: Column(
                 children: [
                     _dataFincas( context, finca, parcela),
-
+                    Divider(),
                     Expanded(
                         child: SingleChildScrollView(
                             child: Container(
@@ -245,122 +247,29 @@ class _ReportePageState extends State<ReportePage> {
         String? labelMedidaFinca;
         String? labelvariedad;
 
-        final item = selectMap.dimenciones().firstWhere((e) => e['value'] == '${finca.tipoMedida}');
-        labelMedidaFinca  = item['label'];
+        labelMedidaFinca = selectMap.dimenciones().firstWhere((e) => e['value'] == '${finca.tipoMedida}')['label'];
+        labelvariedad = selectMap.variedadCacao().firstWhere((e) => e['value'] == '${parcela.variedadCacao}')['label'];
 
-        final itemvariedad = selectMap.variedadCacao().firstWhere((e) => e['value'] == '${parcela.variedadCacao}');
-        labelvariedad  = itemvariedad['label'];
-
-        return Container(
-                    
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                    BoxShadow(
-                            color: Color(0xFF3A5160)
-                                .withOpacity(0.05),
-                            offset: const Offset(1.1, 1.1),
-                            blurRadius: 17.0),
+        return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+                encabezadoCard('${finca.nombreFinca}','Parcela: ${parcela.nombreLote}', ''),
+                textoCardBody('Productor: ${finca.nombreProductor}'),
+                tecnico('${finca.nombreTecnico}'),
+                textoCardBody('Variedad: $labelvariedad'),
+                Wrap(
+                    spacing: 20,
+                    children: [
+                        textoCardBody('Área Finca: ${finca.areaFinca} ($labelMedidaFinca)'),
+                        textoCardBody('Área Parcela: ${parcela.areaLote} ($labelMedidaFinca)'),
+                        textoCardBody('N de plantas: ${parcela.numeroPlanta}'),
                     ],
-            ),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                    
-                    Flexible(
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                            
-                                Padding(
-                                    padding: EdgeInsets.only(top: 10, bottom: 10.0),
-                                    child: Text(
-                                        "${finca.nombreFinca}",
-                                        softWrap: true,
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
-                                        style: Theme.of(context).textTheme.headline6,
-                                    ),
-                                ),
-                                Padding(
-                                    padding: EdgeInsets.only( bottom: 10.0),
-                                    child: Text(
-                                        "${parcela.nombreLote}",
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
-                                    ),
-                                ),
-                                Padding(
-                                    padding: EdgeInsets.only( bottom: 10.0),
-                                    child: Text(
-                                        "Productor ${finca.nombreProductor}",
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
-                                    ),
-                                ),
-
-                                Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                        Flexible(
-                                            child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                    Padding(
-                                                        padding: EdgeInsets.only( bottom: 10.0),
-                                                        child: Text(
-                                                            "Área Finca: ${finca.areaFinca} ($labelMedidaFinca)",
-                                                            style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
-                                                        ),
-                                                    ),
-                                                    Padding(
-                                                        padding: EdgeInsets.only( bottom: 10.0),
-                                                        child: Text(
-                                                            "N de plantas: ${parcela.numeroPlanta}",
-                                                            style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
-                                                        ),
-                                                    ),
-                                                ],
-                                            ),
-                                        ),
-                                        Flexible(
-                                            child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                    Padding(
-                                                        padding: EdgeInsets.only( bottom: 10.0, left: 10),
-                                                        child: Text(
-                                                            "Área Parcela: ${parcela.areaLote} ($labelMedidaFinca)",
-                                                            style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
-                                                        ),
-                                                    ),
-                                                    Padding(
-                                                        padding: EdgeInsets.only( bottom: 10.0, left: 10),
-                                                        child: Text(
-                                                            "Variedad: $labelvariedad",
-                                                            style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
-                                                        ),
-                                                    ),
-                                                ],
-                                            ),
-                                        )
-                                    ],
-                                )
-
-                                
-                            ],  
-                        ),
-                    ),
-                ],
-            ),
+                ),
+            ],  
         );
 
     }
-
+    
     Widget _encabezadoTabla(){
         return Row(
             mainAxisAlignment: MainAxisAlignment.end,

@@ -14,7 +14,7 @@ class ButtonMainStyle extends StatelessWidget {
     @override
     Widget build(BuildContext context) {
         return ElevatedButton.icon(
-            icon:Icon(icon),
+            icon:Icon(icon, size: 20,),
             label: Text(title!),
             onPressed:press as void Function()?,
         );

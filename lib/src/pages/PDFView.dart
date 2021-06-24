@@ -8,7 +8,7 @@ class PDFView extends StatelessWidget {
     @override
     Widget build(BuildContext context) {
         return Scaffold(
-            appBar: AppBar(),
+            appBar: AppBar(title: Text('Instructivo Poda SAF'),),
             body: PDF.asset(
                 "assets/documentos/Instructivo Poda.pdf",
                 height: MediaQuery.of(context).size.height,

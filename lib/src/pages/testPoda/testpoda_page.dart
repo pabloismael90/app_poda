@@ -73,7 +73,7 @@ class _TestPageState extends State<TestPage> {
                 Spacer(),
                 ButtonMainStyle(
                     title: 'Escoger parcelas',
-                    icon: Icons.add_circle_outline_outlined,
+                    icon: Icons.post_add,
                     press: () => Navigator.pushNamed(context, 'addTest'),
                 ),
                 Spacer()

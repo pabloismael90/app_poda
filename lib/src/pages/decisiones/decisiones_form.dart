@@ -6,10 +6,8 @@ import 'package:app_poda/src/models/selectValue.dart' as selectMap;
 import 'package:app_poda/src/models/testpoda_model.dart';
 import 'package:app_poda/src/pages/finca/finca_page.dart';
 import 'package:app_poda/src/providers/db_provider.dart';
-import 'package:app_poda/src/utils/constants.dart';
 import 'package:app_poda/src/utils/widget/button.dart';
 import 'package:app_poda/src/utils/widget/varios_widget.dart';
-import 'package:app_poda/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:uuid/uuid.dart';
@@ -144,7 +142,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
         
 
         return Scaffold(
-            appBar: AppBar(),
+            appBar: AppBar(title: Text('Toma de Decisiones'),),
             body: FutureBuilder(
                 future: _getdataFinca(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -164,34 +162,20 @@ class _DesicionesPageState extends State<DesicionesPage> {
 
                     return Column(
                         children: [
-                            Container(
-                                child: Column(
-                                    children: [
-                                        TitulosPages(titulo: 'Toma de Decisiones'),
-                                        Divider(),
-                                        Padding(
-                                            padding: EdgeInsets.symmetric(vertical: 10),
-                                            child: Text(
-                                                "Deslice hacia la derecha para continuar con el formulario",
-                                                textAlign: TextAlign.center,
-                                                style: Theme.of(context).textTheme
-                                                    .headline5!
-                                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 16)
-                                            ),
-                                        ),
-                                    ],
-                                )
-                            ),
+                            mensajeSwipe('Deslice hacia la derecha para continuar con el formulario'),
                             Expanded(
-                                
-                                child: Swiper(
-                                    itemBuilder: (BuildContext context, int index) {
-                                        return pageItem[index];
-                                    },
-                                    itemCount: pageItem.length,
-                                    viewportFraction: 1,
-                                    loop: false,
-                                    scale: 1,
+                                child: Container(
+                                    color: Colors.white,
+                                    padding: EdgeInsets.all(15),
+                                    child: Swiper(
+                                        itemBuilder: (BuildContext context, int index) {
+                                            return pageItem[index];
+                                        },
+                                        itemCount: pageItem.length,
+                                        viewportFraction: 1,
+                                        loop: false,
+                                        scale: 1,
+                                    ),
                                 ),
                             ),
                         ],
@@ -215,7 +199,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                     child: Column(
                         children: [
                             _dataFincas( context, finca, parcela),
-
+                            Divider(),
                             Expanded(
                                 child: SingleChildScrollView(
                                     child: Container(
@@ -232,9 +216,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                                                     child: Text(
                                                                         "Datos consolidados",
                                                                         textAlign: TextAlign.center,
-                                                                        style: Theme.of(context).textTheme
-                                                                            .headline5!
-                                                                            .copyWith(fontWeight: FontWeight.w600, fontSize: 18)
+                                                                        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)
                                                                     ),
                                                                 ),
                                                                 Padding(
@@ -242,7 +224,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                                                     child: Icon(
                                                                         Icons.info_outline_rounded,
                                                                         color: Colors.green,
-                                                                        size: 25.0,
+                                                                        size: 20,
                                                                     ),
                                                                 ),
                                                             ],
@@ -252,20 +234,6 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                                 ),
                                                 Divider(),
                                                 Container(
-                                                    margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                                                    width: double.infinity,
-                                                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                                                    decoration: BoxDecoration(
-                                                        color: Colors.white,
-                                                        borderRadius: BorderRadius.circular(10),
-                                                        boxShadow: [
-                                                            BoxShadow(
-                                                                    color: Color(0xFF3A5160)
-                                                                        .withOpacity(0.05),
-                                                                    offset: const Offset(1.1, 1.1),
-                                                                    blurRadius: 17.0),
-                                                            ],
-                                                    ),
                                                     child: Column(
                                                         children: [
                                                             _encabezadoTabla(),
@@ -296,120 +264,25 @@ class _DesicionesPageState extends State<DesicionesPage> {
         String? labelMedidaFinca;
         String? labelvariedad;
 
-        final item = selectMap.dimenciones().firstWhere((e) => e['value'] == '${finca.tipoMedida}');
-        labelMedidaFinca  = item['label'];
+        labelMedidaFinca = selectMap.dimenciones().firstWhere((e) => e['value'] == '${finca.tipoMedida}')['label'];
+        labelvariedad = selectMap.variedadCacao().firstWhere((e) => e['value'] == '${parcela.variedadCacao}')['label'];
 
-        
-
-        final itemvariedad = selectMap.variedadCacao().firstWhere((e) => e['value'] == '${parcela.variedadCacao}');
-        labelvariedad  = itemvariedad['label'];
-
-        return Container(
-                    
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                    BoxShadow(
-                            color: Color(0xFF3A5160)
-                                .withOpacity(0.05),
-                            offset: const Offset(1.1, 1.1),
-                            blurRadius: 17.0),
+        return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+                encabezadoCard('${finca.nombreFinca}','Parcela: ${parcela.nombreLote}', ''),
+                textoCardBody('Productor: ${finca.nombreProductor}'),
+                tecnico('${finca.nombreTecnico}'),
+                textoCardBody('Variedad: $labelvariedad'),
+                Wrap(
+                    spacing: 20,
+                    children: [
+                        textoCardBody('Área Finca: ${finca.areaFinca} ($labelMedidaFinca)'),
+                        textoCardBody('Área Parcela: ${parcela.areaLote} ($labelMedidaFinca)'),
+                        textoCardBody('N de plantas: ${parcela.numeroPlanta}'),
                     ],
-            ),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                    
-                    Flexible(
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                            
-                                Padding(
-                                    padding: EdgeInsets.only(top: 10, bottom: 10.0),
-                                    child: Text(
-                                        "${finca.nombreFinca}",
-                                        softWrap: true,
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
-                                        style: Theme.of(context).textTheme.headline6,
-                                    ),
-                                ),
-                                Padding(
-                                    padding: EdgeInsets.only( bottom: 10.0),
-                                    child: Text(
-                                        "${parcela.nombreLote}",
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
-                                    ),
-                                ),
-                                Padding(
-                                    padding: EdgeInsets.only( bottom: 10.0),
-                                    child: Text(
-                                        "Productor ${finca.nombreProductor}",
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
-                                    ),
-                                ),
-
-                                Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                        Flexible(
-                                            child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                    Padding(
-                                                        padding: EdgeInsets.only( bottom: 10.0),
-                                                        child: Text(
-                                                            "Área Finca: ${finca.areaFinca} ($labelMedidaFinca)",
-                                                            style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
-                                                        ),
-                                                    ),
-                                                    Padding(
-                                                        padding: EdgeInsets.only( bottom: 10.0),
-                                                        child: Text(
-                                                            "N de plantas: ${parcela.numeroPlanta}",
-                                                            style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
-                                                        ),
-                                                    ),
-                                                ],
-                                            ),
-                                        ),
-                                        Flexible(
-                                            child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                    Padding(
-                                                        padding: EdgeInsets.only( bottom: 10.0, left: 10),
-                                                        child: Text(
-                                                            "Área Parcela: ${parcela.areaLote} ($labelMedidaFinca)",
-                                                            style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
-                                                        ),
-                                                    ),
-                                                    Padding(
-                                                        padding: EdgeInsets.only( bottom: 10.0, left: 10),
-                                                        child: Text(
-                                                            "Variedad: $labelvariedad ",
-                                                            style: TextStyle(color: kTextColor, fontSize: 12, fontWeight: FontWeight.bold),
-                                                        ),
-                                                    ),
-                                                ],
-                                            ),
-                                        )
-                                    ],
-                                )
-
-                                
-                            ],  
-                        ),
-                    ),
-                ],
-            ),
+                ),
+            ],  
         );
 
     }
@@ -418,30 +291,22 @@ class _DesicionesPageState extends State<DesicionesPage> {
         return Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-                Expanded(child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Text('Sitios', textAlign: TextAlign.start, style: Theme.of(context).textTheme.headline6!
-                                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
-                ),),
+                Expanded(child: textList('Sitios')),
                 Container(
                     width: 45,
-                    child: Text('1', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6!
-                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                    child: titleList('1'),
                 ),
                 Container(
                     width: 45,
-                    child: Text('2', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6!
-                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                    child: titleList('2'),
                 ),
                 Container(
                     width: 45,
-                    child: Text('3', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6!
-                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600))
+                    child: titleList('3')
                 ),
                 Container(
                     width: 45,
-                    child: Text('Total', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6!
-                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                    child: titleList('Total'),
                 ),
             ],
         );
@@ -455,10 +320,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                 Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                        Expanded(child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Text('Altura mt', textAlign: TextAlign.left, style:TextStyle(fontWeight: FontWeight.bold) ,),
-                        ),),
+                        Expanded(child: textList('Altura mt')),
                         Container(
                             width: 45,
                             child: FutureBuilder(
@@ -528,10 +390,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                 Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                        Expanded(child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Text('Ancho mt', textAlign: TextAlign.left, style:TextStyle(fontWeight: FontWeight.bold) ,),
-                        ),),
+                        Expanded(child: textList('Ancho mt')),
                         Container(
                             width: 45,
                             child: FutureBuilder(
@@ -601,10 +460,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                 Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                        Expanded(child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Text('Largo mt', textAlign: TextAlign.left, style:TextStyle(fontWeight: FontWeight.bold) ,),
-                        ),),
+                        Expanded(child: textList('Largo mt')),
                         Container(
                             width: 45,
                             child: FutureBuilder(
@@ -676,10 +532,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                 Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                        Expanded(child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Text('$labelpoda', textAlign: TextAlign.left, style:TextStyle(fontWeight: FontWeight.bold) ,),
-                        ),),
+                        Expanded(child: textList('$labelpoda')),
                         Container(
                             width: 45,
                             child: FutureBuilder(
@@ -751,7 +604,6 @@ class _DesicionesPageState extends State<DesicionesPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                     Container(
-                        padding: EdgeInsets.symmetric(horizontal: 20.0),
                         child: Text('Producción', textAlign: TextAlign.start, style: Theme.of(context).textTheme.headline6!
                                 .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
                     )
@@ -766,7 +618,6 @@ class _DesicionesPageState extends State<DesicionesPage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                         Expanded(child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20.0),
                             child: Text('%${nameProd[i]}', textAlign: TextAlign.left, style:TextStyle(fontWeight: FontWeight.bold) ,),
                         ),),
                         Container(
@@ -1189,20 +1040,6 @@ class _DesicionesPageState extends State<DesicionesPage> {
         idpodaMain = idpoda;
         return SingleChildScrollView(
             child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                
-                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                        BoxShadow(
-                                color: Color(0xFF3A5160)
-                                    .withOpacity(0.05),
-                                offset: const Offset(1.1, 1.1),
-                                blurRadius: 17.0),
-                        ],
-                ),
                 child: Column(
                     children: [
                         Padding(

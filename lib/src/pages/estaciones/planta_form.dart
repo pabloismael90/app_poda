@@ -6,7 +6,6 @@ import 'package:app_poda/src/models/selectValue.dart' as selectMap;
 import 'package:app_poda/src/providers/db_provider.dart';
 import 'package:app_poda/src/utils/widget/button.dart';
 import 'package:app_poda/src/utils/widget/varios_widget.dart';
-import 'package:app_poda/src/utils/widget/titulos.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
@@ -57,10 +56,13 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
         planta.estacion = data[0] ;
         countPlanta = data[2]+1;
         
-        //return Scaffold();
+        String tituloForm = 'Sitio ${planta.estacion} planta $countPlanta';
+        String tituloBtn = 'Guardar';
+        
+        
         return Scaffold(
             key: scaffoldKey,
-            appBar: AppBar(),
+            appBar: AppBar(title: Text(tituloForm),),
             body: SingleChildScrollView(
                 child: Container(
                     padding: EdgeInsets.all(15.0),
@@ -68,8 +70,6 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                         key: formKey,
                         child: Column(
                             children: <Widget>[
-                                TitulosPages(titulo: 'Planta $countPlanta sitio ${planta.estacion}'),
-                                Divider(),
                                 _altoAncho(),
                                 SizedBox( height: 20,),
                                 _largoMadera(),
@@ -79,17 +79,13 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                                     child: Row(
                                         mainAxisAlignment: MainAxisAlignment.end,
                                         children: [
-                                            Expanded(child: Text('', style: Theme.of(context).textTheme.headline6!
-                                                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600))),
                                             Container(
                                                 width: 50,
-                                                child: Text('Si', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6!
-                                                                .copyWith(fontSize: 16, fontWeight: FontWeight.w600,) ),
+                                                child: titleList('Si' ),
                                             ),
                                             Container(
                                                 width: 50,
-                                                child: Text('No', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6!
-                                                                .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                                                child: titleList('No'),
                                             ),
                                         ],
                                     ),
@@ -99,23 +95,19 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                                 Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                        Expanded(child: Container(),),
                                         Container(
                                             width: 50,
-                                            child: Text('Alta', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6!
-                                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600))
+                                            child: titleList('Alta')
                                             //color: Colors.deepPurple,
                                         ),
                                         Container(
                                             width: 50,
-                                            child: Text('Media', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6!
-                                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600))
+                                            child: titleList('Media')
                                             //color: Colors.deepPurple,
                                         ),
                                         Container(
                                             width: 50,
-                                            child: Text('Baja', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6!
-                                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600))
+                                            child: titleList('Baja')
                                         ),
                                     ],
                                 ),
@@ -124,7 +116,7 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                                 Divider(),
                                 Padding(
                                     padding: EdgeInsets.symmetric(vertical: 30.0),
-                                    child: _botonsubmit()
+                                    child: _botonsubmit(tituloBtn)
                                 )
                             ],
                         ),
@@ -144,8 +136,10 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                         initialValue: planta.altura == null ? '' : planta.altura.toString(),
                         keyboardType: TextInputType.numberWithOptions(decimal: true),
                         decoration: InputDecoration(
-                            labelText: 'Altura en mt'
+                            labelText: 'Altura en mt',
+                            hintText: 'ejem: 3',
                         ),
+                        maxLength: 5,
                         validator: (value) => utils.floatPositivo(value),
                         onSaved: (value) => planta.altura = double.parse(value!),
                     )
@@ -156,8 +150,10 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                         initialValue: planta.ancho == null ? '' : planta.ancho.toString(),
                         keyboardType: TextInputType.numberWithOptions(decimal: true),
                         decoration: InputDecoration(
-                            labelText: 'Ancho en mt'
+                            labelText: 'Ancho en mt',
+                            hintText: 'ejem: 3',
                         ),
+                        maxLength: 5,
                         validator: (value) => utils.floatPositivo(value),
                         onSaved: (value) => planta.ancho = double.parse(value!),
                     )
@@ -173,8 +169,10 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
             initialValue: planta.largo == null ? '' : planta.largo.toString(),
             keyboardType: TextInputType.numberWithOptions(decimal: true),
             decoration: InputDecoration(
-                labelText: 'Largo de madera productiva'
+                labelText: 'Largo de madera productiva',
+                hintText: 'ejem: 3',
             ),
+            maxLength: 5,
             validator: (value) => utils.floatPositivo(value),
             onSaved: (value) => planta.largo = double.parse(value!),
         );
@@ -191,15 +189,13 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                 
                 String? labelPoda = itemPoda.firstWhere((e) => e['value'] == '$index', orElse: () => {"value": "1","label": "No data"})['label'];
                 int idPoda = int.parse(itemPoda.firstWhere((e) => e['value'] == '$index', orElse: () => {"value": "100","label": "No data"})['value']);
-                
-                
-                
+                                
                 return Column(
                     children: [
                         Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: <Widget>[
-                                Expanded(child: Text('$labelPoda', style: Theme.of(context).textTheme.headline6!.copyWith(fontSize: 16, fontWeight: FontWeight.w600))),
+                                Expanded(child: textList('$labelPoda')),
                                 Transform.scale(
                                     scale: 1.2,
                                     child: Radio(
@@ -246,7 +242,7 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
         return Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
-                Expanded(child: Text('Producción', style: Theme.of(context).textTheme.headline6!.copyWith(fontSize: 16, fontWeight: FontWeight.w600))),
+                Expanded(child: textList('Producción')),
                 Transform.scale(
                     scale: 1.2,
                     child: Radio(
@@ -294,9 +290,9 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
 
     
 
-    Widget  _botonsubmit(){
+    Widget  _botonsubmit(String tituloBtn){
         return ButtonMainStyle(
-            title: 'Guardar',
+            title: tituloBtn,
             icon: Icons.save,
             press:(_guardando) ? null : _submit,
         );
@@ -352,12 +348,20 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
         if(planta.id == null){
             planta.id =  uuid.v1();
             _listaPodas();
-            fincasBloc.addPlata(planta, planta.idTest, planta.estacion);
+            fincasBloc.addPlata(planta);
 
             listaPodas.forEach((item) {
                 DBProvider.db.nuevoExistePodas(item);
             });
 
+        }else{
+            planta.id =  uuid.v1();
+            _listaPodas();
+            fincasBloc.actualizarPlata(planta);
+
+            listaPodas.forEach((item) {
+                DBProvider.db.nuevoExistePodas(item);
+            });
         }
         mostrarSnackbar('Registro planta guardado', context);
         setState(() {_guardando = false;});

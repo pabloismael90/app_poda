@@ -370,6 +370,14 @@ class DBProvider {
 
     }
 
+    Future<int> updatePlanta( Planta nuevaPlanta ) async {
+
+        final db  = await (database);
+        final res = await db!.update('Planta', nuevaPlanta.toJson(), where: 'id = ?', whereArgs: [nuevaPlanta.id] );
+        return res;
+
+    }
+
 
     //Conteos analisis
     Future<double?> countPlagaEstacion( String? idTest, int estacion, int idPlaga) async {

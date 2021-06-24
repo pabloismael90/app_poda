@@ -89,7 +89,7 @@ class _ParcelaPageState extends State<ParcelaPage> {
     Widget  _addParcela( Finca finca ){
         return ButtonMainStyle(
             title: 'Nueva Parcela',
-            icon: Icons.add_circle_outline_outlined,
+            icon: Icons.post_add,
             press: () => Navigator.pushNamed(context, 'addParcela', arguments: finca),
         );
     }

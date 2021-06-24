@@ -45,7 +45,6 @@ class _EstacionesPageState extends State<EstacionesPage> {
                     return CircularProgressIndicator();
                 }
                 List<Planta> plantas= snapshot.data;
-                //print(plantas.length);
                 fincasBloc.obtenerDecisiones(poda.id);
                 int estacion1 = 0;
                 int estacion2 = 0;
@@ -64,11 +63,11 @@ class _EstacionesPageState extends State<EstacionesPage> {
                 countEstaciones = [estacion1,estacion2,estacion3];
                 
                 return Scaffold(
-                    appBar: AppBar(),
+                    appBar: AppBar(title: Text('Completar datos'),),
                     body: Column(
                         children: [
                             escabezadoEstacion( context, poda ),
-                            TitulosPages(titulo: 'Sitios'),
+                            TitulosPages(titulo: 'Lista de sitios'),
                             Expanded(
                                 child: SingleChildScrollView(
                                     child: _listaDeEstaciones( context, poda, countEstaciones ),
@@ -76,9 +75,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
                             ),
                         ],
                     ),
-                    bottomNavigationBar: BottomAppBar(
-                        child: _tomarDecisiones(countEstaciones, poda)
-                    ),
+                    bottomNavigationBar: botonesBottom(_tomarDecisiones(countEstaciones, poda)),
                 );
             },
         );
@@ -149,6 +146,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
     }
 
     Widget _cardTest(int estacion, int numeroPlantas, String estado){
+        
         return cardDefault(
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -165,7 +163,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
                     ),
                     Container(
                         child: CircularPercentIndicator(
-                            radius: 50.0,
+                            radius: 70,
                             lineWidth: 5.0,
                             animation: true,
                             percent: numeroPlantas/10,
@@ -201,7 +199,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
                                 padding: EdgeInsets.symmetric(horizontal: 60, vertical: 10),
                                 child: ButtonMainStyle(
                                     title: 'Toma de decisiones',
-                                    icon: Icons.add_circle_outline_outlined,
+                                    icon: Icons.post_add,
                                     press:() => Navigator.pushNamed(context, 'decisiones', arguments: poda),
                                 )
                             ),
@@ -231,14 +229,12 @@ class _EstacionesPageState extends State<EstacionesPage> {
 
         return Container(
             color: kBackgroundColor,
-            child: Padding(
+            child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 child: Text(
                     "Complete los sitios",
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme
-                        .headline5!
-                        .copyWith(fontWeight: FontWeight.w900, color: kRedColor, fontSize: 22)
+                    style: TextStyle(fontWeight: FontWeight.w900, color: kRedColor, fontSize: 18)
                 ),
             ),
         );
