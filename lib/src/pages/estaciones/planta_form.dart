@@ -96,17 +96,15 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                         Container(
-                                            width: 50,
+                                            width: 55,
                                             child: titleList('Alta')
-                                            //color: Colors.deepPurple,
                                         ),
                                         Container(
-                                            width: 50,
+                                            width: 55,
                                             child: titleList('Media')
-                                            //color: Colors.deepPurple,
                                         ),
                                         Container(
-                                            width: 50,
+                                            width: 55,
                                             child: titleList('Baja')
                                         ),
                                     ],
@@ -240,46 +238,56 @@ class _AgregarPlantaState extends State<AgregarPlanta> {
 
     Widget _produccion(){
         return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
                 Expanded(child: textList('Producción')),
-                Transform.scale(
-                    scale: 1.2,
-                    child: Radio(
-                        value: 1,
-                        groupValue: planta.produccion,
-                        onChanged: (dynamic value) {
-                            setState(() {
-                                planta.produccion = value;
-                            });
-                        },
-                        activeColor: Colors.teal[900],
-                    ),
-                ),
-                Transform.scale(
-                    scale: 1.2,
-                    child: Radio(
-                        value: 2,
-                        groupValue: planta.produccion,
-                        onChanged: (dynamic value) {
-                            setState(() {
-                                planta.produccion = value;
-                            });
-                        },
-                        activeColor: Colors.orange[900],
-                    ),
-                ),
-                Transform.scale(
-                    scale: 1.2,
+                Container(
+                    width: 55,
+                    child: Transform.scale(
+                        scale: 1.2,
                         child: Radio(
-                        value: 3,
-                        groupValue: planta.produccion,
-                        onChanged: (dynamic value) {
-                            setState(() {
-                                planta.produccion = value;
-                            });
-                        },
-                        activeColor: Colors.red[900],
+                            value: 1,
+                            groupValue: planta.produccion,
+                            onChanged: (dynamic value) {
+                                setState(() {
+                                    planta.produccion = value;
+                                });
+                            },
+                            activeColor: Colors.teal[900],
+                        ),
+                    ),
+                ),
+                
+                Container(
+                    width: 55,
+                    child: Transform.scale(
+                        scale: 1.2,
+                        child: Radio(
+                            value: 2,
+                            groupValue: planta.produccion,
+                            onChanged: (dynamic value) {
+                                setState(() {
+                                    planta.produccion = value;
+                                });
+                            },
+                            activeColor: Colors.orange[900],
+                        ),
+                    ),
+                ),
+                Container(
+                    width: 55,
+                    child: Transform.scale(
+                        scale: 1.2,
+                            child: Radio(
+                            value: 3,
+                            groupValue: planta.produccion,
+                            onChanged: (dynamic value) {
+                                setState(() {
+                                    planta.produccion = value;
+                                });
+                            },
+                            activeColor: Colors.red[900],
+                        ),
                     ),
                 ),   
 

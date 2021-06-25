@@ -174,7 +174,7 @@ Widget mensajeSwipe(String text){
                     child: Container(
                         padding: EdgeInsets.symmetric(horizontal: 15),
                         child: Text(
-                            "Deslice hacia la derecha para continuar con el formulario",
+                            text,
                             style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color: kRedColor)
                         ),
                     ),

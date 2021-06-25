@@ -162,7 +162,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
 
                     return Column(
                         children: [
-                            mensajeSwipe('Deslice hacia la derecha para continuar con el formulario'),
+                            mensajeSwipe('Deslice hacia la izquierda para continuar con el formulario'),
                             Expanded(
                                 child: Container(
                                     color: Colors.white,

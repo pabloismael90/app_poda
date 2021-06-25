@@ -1,7 +1,7 @@
 import 'dart:async';
-
 import 'package:app_poda/src/models/decisiones_model.dart';
 import 'package:app_poda/src/models/testpoda_model.dart';
+import 'package:app_poda/src/pages/testPoda/pdf/pdf_api.dart';
 import 'package:app_poda/src/providers/db_provider.dart';
 import 'package:app_poda/src/models/selectValue.dart' as selectMap;
 import 'package:app_poda/src/utils/constants.dart';
@@ -44,8 +44,8 @@ class _ReportePageState extends State<ReportePage> {
         return [listDecisiones, finca, parcela];
     }
 
-    Future<double> _countPercentPlaga(String? idTest, int estacion, int idPlaga) async{
-        double? countPalga = await DBProvider.db.countPlagaEstacion(idTest, estacion, idPlaga);         
+    Future<double> _countPercentpoda(String? idTest, int estacion, int idpoda) async{
+        double? countPalga = await DBProvider.db.countPlagaEstacion(idTest, estacion, idpoda);         
         return countPalga!*100;
     }
     
@@ -104,7 +104,11 @@ class _ReportePageState extends State<ReportePage> {
                 actions: [
                     TextButton(
                         
-                        onPressed: (){}, 
+                        onPressed: () async{
+                            final pdfFile = await PdfApi.generateCenteredText('Hola que haces');
+                            print(pdfFile);
+                            PdfApi.openFile(pdfFile);
+                        }, 
                         child: Row(
                             children: [
                                 Icon(Icons.download, color: kwhite, size: 16,),
@@ -129,7 +133,6 @@ class _ReportePageState extends State<ReportePage> {
                     pageItem.add(_principalData(idTest,context, finca, parcela));
                     
                     pageItem.add( _podaProblemas(snapshot.data[0]));
-                    _plagasPDF(idTest,1);
                     pageItem.add( _podaAplicar(snapshot.data[0]));
                     pageItem.add( _vigorPlanta(snapshot.data[0]));
                     pageItem.add( _accionesMeses(snapshot.data[0]));
@@ -137,7 +140,7 @@ class _ReportePageState extends State<ReportePage> {
                     
                     return Column(
                         children: [                            
-                            mensajeSwipe('Deslice hacia la derecha para continuar con el reporte'),
+                            mensajeSwipe('Deslice hacia la izquierda para continuar con el reporte'),
                             Expanded(
                                 
                                 child: Container(
@@ -158,19 +161,6 @@ class _ReportePageState extends State<ReportePage> {
                     );
                 },
             ),
-            // floatingActionButton: FloatingActionButton(
-            //     child: Icon(Icons.save_alt),     
-            //     onPressed: ()async{
-            //         writePDF();
-            //         await savePDF();
-            //         Directory documentsDirectory = await getExternalStorageDirectory();
-            //         String documentPath = documentsDirectory.path;
-            //         String fullPath = "$documentPath/example.pdf";
-            //         Navigator.push(context, MaterialPageRoute(
-            //             builder: (context) => PDFView(fullPath)
-            //         ));
-            //     },
-            // ),
         );
     }
 
@@ -204,32 +194,16 @@ class _ReportePageState extends State<ReportePage> {
                                             )
                                         ),
                                         Divider(),
-                                        Container(
-                                            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                                            width: double.infinity,
-                                            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                                            decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.circular(10),
-                                                boxShadow: [
-                                                    BoxShadow(
-                                                            color: Color(0xFF3A5160)
-                                                                .withOpacity(0.05),
-                                                            offset: const Offset(1.1, 1.1),
-                                                            blurRadius: 17.0),
-                                                    ],
-                                            ),
-                                            child: Column(
-                                                children: [
-                                                    _encabezadoTabla(),
-                                                    Divider(),
-                                                    _countAltura(plagaid),
-                                                    _countAncho(plagaid),
-                                                    _countLargo(plagaid),
-                                                    _countPlagas(plagaid, 1),
-                                                    _countProduccion(plagaid),
-                                                ],
-                                            ),
+                                        Column(
+                                            children: [
+                                                _encabezadoTabla(),
+                                                Divider(),
+                                                _countAltura(plagaid),
+                                                _countAncho(plagaid),
+                                                _countLargo(plagaid),
+                                                _countpodas(plagaid),
+                                                _countProduccion(plagaid),
+                                            ],
                                         ),
                                     ],
                                 ),
@@ -274,35 +248,27 @@ class _ReportePageState extends State<ReportePage> {
         return Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-                Expanded(child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Text('Sitios', textAlign: TextAlign.start, style: Theme.of(context).textTheme.headline6!
-                                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
-                ),),
+                Expanded(child: textList('Sitios')),
                 Container(
                     width: 45,
-                    child: Text('1', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6!
-                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                    child: titleList('1'),
                 ),
                 Container(
                     width: 45,
-                    child: Text('2', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6!
-                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                    child: titleList('2'),
                 ),
                 Container(
                     width: 45,
-                    child: Text('3', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6!
-                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600))
+                    child: titleList('3')
                 ),
                 Container(
                     width: 45,
-                    child: Text('Total', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline6!
-                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                    child: titleList('Total'),
                 ),
             ],
         );
     }
-
+    
     Widget _countAltura(String? idTest){
         List<Widget> lisItem = [];
 
@@ -311,10 +277,7 @@ class _ReportePageState extends State<ReportePage> {
                 Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                        Expanded(child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Text('Altura mt', textAlign: TextAlign.left, style:TextStyle(fontWeight: FontWeight.bold) ,),
-                        ),),
+                        Expanded(child: textList('Altura mt')),
                         Container(
                             width: 45,
                             child: FutureBuilder(
@@ -373,7 +336,7 @@ class _ReportePageState extends State<ReportePage> {
             );
             lisItem.add(Divider());
         
-        return Column(children:lisItem,);
+        return Column(children: lisItem);
     }
 
     Widget _countAncho(String? idTest){
@@ -384,10 +347,7 @@ class _ReportePageState extends State<ReportePage> {
                 Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                        Expanded(child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Text('Ancho mt', textAlign: TextAlign.left, style:TextStyle(fontWeight: FontWeight.bold) ,),
-                        ),),
+                        Expanded(child: textList('Ancho mt')),
                         Container(
                             width: 45,
                             child: FutureBuilder(
@@ -457,10 +417,7 @@ class _ReportePageState extends State<ReportePage> {
                 Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                        Expanded(child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Text('Largo mt', textAlign: TextAlign.left, style:TextStyle(fontWeight: FontWeight.bold) ,),
-                        ),),
+                        Expanded(child: textList('Largo mt')),
                         Container(
                             width: 45,
                             child: FutureBuilder(
@@ -522,24 +479,21 @@ class _ReportePageState extends State<ReportePage> {
         return Column(children:lisItem,);
     }
 
-    Widget _countPlagas(String? idTest, int estacion){
+    Widget _countpodas(String? idTest){
         List<Widget> lisItem = [];
 
         for (var i = 0; i < itemPoda.length; i++) {
-            String? labelPlaga = itemPoda.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "1","label": "No data"})['label'];
+            String? labelpoda = itemPoda.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "1","label": "No data"})['label'];
             int idplga = int.parse(itemPoda.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "100","label": "No data"})['value']);
             lisItem.add(
                 Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                        Expanded(child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Text('$labelPlaga', textAlign: TextAlign.left, style:TextStyle(fontWeight: FontWeight.bold) ,),
-                        ),),
+                        Expanded(child: textList('$labelpoda')),
                         Container(
                             width: 45,
                             child: FutureBuilder(
-                                future: _countPercentPlaga(idTest, 1, idplga),
+                                future: _countPercentpoda(idTest, 1, idplga),
                                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                                     if (!snapshot.hasData) {
                                         return textFalse;
@@ -552,12 +506,12 @@ class _ReportePageState extends State<ReportePage> {
                         Container(
                             width: 45,
                             child: FutureBuilder(
-                                future: _countPercentPlaga(idTest, 2, idplga),
+                                future: _countPercentpoda(idTest, 2, idplga),
                                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                                     if (!snapshot.hasData) {
                                         return textFalse;
                                     }
-
+                                    
                                     return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
                                 },
                             ),
@@ -565,7 +519,7 @@ class _ReportePageState extends State<ReportePage> {
                         Container(
                             width: 45,
                             child: FutureBuilder(
-                                future: _countPercentPlaga(idTest, 3, idplga),
+                                future: _countPercentpoda(idTest, 3, idplga),
                                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                                     if (!snapshot.hasData) {
                                         return textFalse;
@@ -607,7 +561,6 @@ class _ReportePageState extends State<ReportePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                     Container(
-                        padding: EdgeInsets.symmetric(horizontal: 20.0),
                         child: Text('Producción', textAlign: TextAlign.start, style: Theme.of(context).textTheme.headline6!
                                 .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
                     )
@@ -615,7 +568,6 @@ class _ReportePageState extends State<ReportePage> {
             )
         );
         lisProd.add(Divider());
-
         for (var i = 0; i < nameProd.length; i++) {
             lisProd.add(
 
@@ -623,7 +575,6 @@ class _ReportePageState extends State<ReportePage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                         Expanded(child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20.0),
                             child: Text('%${nameProd[i]}', textAlign: TextAlign.left, style:TextStyle(fontWeight: FontWeight.bold) ,),
                         ),),
                         Container(
@@ -683,7 +634,6 @@ class _ReportePageState extends State<ReportePage> {
                 )
             );
             lisProd.add(Divider());
-            
         }
         return Column(children:lisProd,);
     }
@@ -1052,87 +1002,5 @@ class _ReportePageState extends State<ReportePage> {
             ),
         );
     }
-
-
-    Widget _plagasPDF(String? idTest, int estacion){
-        List<Widget> lisItem = [];
-
-        for (var i = 0; i < itemPoda.length; i++) {
-            String? labelPlaga = itemPoda.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "1","label": "No data"})['label'];
-            int idplga = int.parse(itemPoda.firstWhere((e) => e['value'] == '$i', orElse: () => {"value": "100","label": "No data"})['value']);
-            lisItem.add(
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                        Expanded(child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Text('$labelPlaga', textAlign: TextAlign.left, style:TextStyle(fontWeight: FontWeight.bold) ,),
-                        ),),
-                        Container(
-                            width: 45,
-                            child: FutureBuilder(
-                                future: _countPercentPlaga(idTest, 1, idplga),
-                                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                                    if (!snapshot.hasData) {
-                                        return textFalse;
-                                    }
-                                    
-                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
-                                },
-                            ),
-                        ),
-                        Container(
-                            width: 45,
-                            child: FutureBuilder(
-                                future: _countPercentPlaga(idTest, 2, idplga),
-                                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                                    if (!snapshot.hasData) {
-                                        return textFalse;
-                                    }
-
-                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
-                                },
-                            ),
-                        ),
-                        Container(
-                            width: 45,
-                            child: FutureBuilder(
-                                future: _countPercentPlaga(idTest, 3, idplga),
-                                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                                    if (!snapshot.hasData) {
-                                        return textFalse;
-                                    }
-
-                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
-                                },
-                            ),
-                        ),
-                        Container(
-                            width: 45,
-                            child: FutureBuilder(
-                                future: _countPercentTotal(idTest, idplga),
-                                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                                    if (!snapshot.hasData) {
-                                        return textFalse;
-                                    }
-
-                                    return Text('${snapshot.data.toStringAsFixed(0)}%', textAlign: TextAlign.center);
-                                },
-                            ),
-                        ),
-                        
-                    ],
-                )
-            );
-        }
-        return Column(children:lisItem,);
-    }
-
-
-
-   
-
-    
-
 
 }

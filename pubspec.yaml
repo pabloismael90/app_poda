@@ -36,7 +36,8 @@ dependencies:
   #Slider page
   flutter_swiper_null_safety: ^1.0.2
   #Crear PDF
-  #pdf: ^3.3.0
+  pdf: ^3.4.2
+  open_file: ^3.2.1
   pdf_flutter: 
     git: https://github.com/erluxman/pdf_flutter
   #flutter_full_pdf_viewer: ^1.0.6
@@ -97,7 +98,7 @@ flutter:
   fonts:
     - family: Museo
       fonts:
-        - asset: assets/fonts/Museo/Museo300.otf
+        - asset: assets/fonts/Museo/Museo300.ttf
           weight: 300
         - asset: assets/fonts/Museo/Museo500.otf
           weight: 500
