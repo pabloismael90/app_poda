@@ -33,13 +33,12 @@ class _ReportePageState extends State<ReportePage> {
     
     
 
-    Future getdata(String? idTest) async{
+    Future getdata(TestPoda? testPoda) async{
 
-        List<Decisiones> listDecisiones = await DBProvider.db.getDecisionesIdTest(idTest);
-        TestPoda? testplaga = await (DBProvider.db.getTestId(idTest));
+        List<Decisiones> listDecisiones = await DBProvider.db.getDecisionesIdTest(testPoda!.id);
 
-        Finca? finca = await DBProvider.db.getFincaId(testplaga!.idFinca);
-        Parcela? parcela = await DBProvider.db.getParcelaId(testplaga.idLote);
+        Finca? finca = await DBProvider.db.getFincaId(testPoda.idFinca);
+        Parcela? parcela = await DBProvider.db.getParcelaId(testPoda.idLote);
 
         return [listDecisiones, finca, parcela];
     }
@@ -49,12 +48,12 @@ class _ReportePageState extends State<ReportePage> {
         return countPalga!*100;
     }
     
-    Future<double> _countPercentTotal(String? idTest,int idPlaga) async{
-        double countPalga = await DBProvider.db.countPlagaTotal(idTest, idPlaga);         
+    Future<double> _countPercentTotal(String? idTest,int idpoda) async{
+        double countPalga = await DBProvider.db.countPlagaTotal(idTest, idpoda);         
         return countPalga*100;
     }
 
-    
+
     Future<double> _countPercentProduccion(String? idTest, int estacion, int estado) async{
         double countProduccion = await DBProvider.db.countProduccion(idTest, estacion, estado);
         return countProduccion*100;
@@ -64,40 +63,39 @@ class _ReportePageState extends State<ReportePage> {
         double countProduccion = await DBProvider.db.countTotalProduccion(idTest, estado);
         return countProduccion*100;
     }
-
     Future<double> _countAlturaEstacion(String? idTest, int estacion) async{
         double countAlturaestacion = await DBProvider.db.countAlturaEstacion(idTest, estacion);
-        return countAlturaestacion/10;
+        return countAlturaestacion;
     }
     Future<double> _countAlturaTotal(String? idTest) async{
         double countAlturaTotal = await DBProvider.db.countAlturaTotal(idTest);
-        return countAlturaTotal/30;
+        return countAlturaTotal;
     }
 
     Future<double> _countAnchoEstacion(String? idTest, int estacion) async{
         double countAnchoestacion = await DBProvider.db.countAnchoEstacion(idTest, estacion);
-        return countAnchoestacion/10;
+        return countAnchoestacion;
     }
     Future<double> _countAnchoTotal(String? idTest) async{
         double countAnchoTotal = await DBProvider.db.countAnchoTotal(idTest);
-        return countAnchoTotal/30;
+        return countAnchoTotal;
     }
 
     Future<double> _countLargoEstacion(String? idTest, int estacion) async{
         double countLargoestacion = await DBProvider.db.countLargoEstacion(idTest, estacion);
-        return countLargoestacion/10;
+        return countLargoestacion;
     }
     Future<double> _countLargoTotal(String? idTest) async{
         double countLargoTotal = await DBProvider.db.countLargoTotal(idTest);
-        return countLargoTotal/30;
+        return countLargoTotal;
     }
 
     
 
     @override
     Widget build(BuildContext context) {
-        String? idTest = ModalRoute.of(context)!.settings.arguments as String?;
-
+        TestPoda?  testPoda = ModalRoute.of(context)!.settings.arguments as TestPoda;
+        
         return Scaffold(
             appBar: AppBar(
                 title: Text('Reporte de Decisiones'),
@@ -105,7 +103,8 @@ class _ReportePageState extends State<ReportePage> {
                     TextButton(
                         
                         onPressed: () async{
-                            final pdfFile = await PdfApi.generateCenteredText('Hola que haces');
+                            
+                            final pdfFile = await PdfApi.generateCenteredText('Hola que haces', '${testPoda.id}');
                             print(pdfFile);
                             PdfApi.openFile(pdfFile);
                         }, 
@@ -121,7 +120,7 @@ class _ReportePageState extends State<ReportePage> {
                 ],
             ),
             body: FutureBuilder(
-                future: getdata(idTest),
+                future: getdata(testPoda),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                     if (!snapshot.hasData) {
                         return CircularProgressIndicator();
@@ -130,7 +129,7 @@ class _ReportePageState extends State<ReportePage> {
                     Finca finca = snapshot.data[1];
                     Parcela parcela = snapshot.data[2];
 
-                    pageItem.add(_principalData(idTest,context, finca, parcela));
+                    pageItem.add(_principalData(testPoda.id,context, finca, parcela));
                     
                     pageItem.add( _podaProblemas(snapshot.data[0]));
                     pageItem.add( _podaAplicar(snapshot.data[0]));

@@ -1,8 +1,6 @@
 import 'package:app_poda/src/bloc/fincas_bloc.dart';
 import 'package:app_poda/src/models/finca_model.dart';
-import 'package:app_poda/src/pages/testPoda/pdf/pdf_api.dart';
 import 'package:app_poda/src/providers/db_provider.dart';
-import 'package:app_poda/src/utils/constants.dart';
 import 'package:app_poda/src/utils/widget/button.dart';
 import 'package:app_poda/src/utils/widget/dialogDelete.dart';
 import 'package:app_poda/src/utils/widget/varios_widget.dart';
@@ -28,25 +26,6 @@ class _FincasPageState extends State<FincasPage> {
         return Scaffold(
             appBar: AppBar(
                 title: Text('Mis fincas'),
-                actions: [
-                    TextButton(
-                        
-                        onPressed: () async{
-                            final pdfFile = await PdfApi.generateCenteredText('Hola que haces');
-                            print(pdfFile);
-                            PdfApi.openFile(pdfFile);
-                        }, 
-                        child: Row(
-                            children: [
-                                Icon(Icons.download, color: kwhite, size: 16,),
-                                SizedBox(width: 5,),
-                                Text('PDF', style: TextStyle(color: Colors.white),)
-                            ],
-                        )
-                        
-                    )
-                ],
-                
             ),
             body: StreamBuilder<List<Finca>>(
                 stream: fincasBloc.fincaStream,

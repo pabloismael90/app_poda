@@ -58,23 +58,21 @@ class DesicionesList extends StatelessWidget {
     Widget  _listaDePlagas(List acciones, BuildContext context){
         return ListView.builder(
             itemBuilder: (context, index) {
-                return GestureDetector(
-                    child : FutureBuilder(
-                        future: getDatos(acciones[index].idTest),
-                        builder: (BuildContext context, AsyncSnapshot snapshot) {
-                            if (!snapshot.hasData) {
-                                return CircularProgressIndicator();
-                            }
-                            TestPoda testplagadata = snapshot.data[0];
-                            Finca fincadata = snapshot.data[1];
-                            Parcela parceladata = snapshot.data[2];
+                return FutureBuilder(
+                    future: getDatos(acciones[index].idTest),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        if (!snapshot.hasData) {
+                            return CircularProgressIndicator();
+                        }
+                        TestPoda testplagadata = snapshot.data[0];
+                        Finca fincadata = snapshot.data[1];
+                        Parcela parceladata = snapshot.data[2];
 
-                            return _cardDesiciones(testplagadata,fincadata,parceladata, context);
-                        },
-                    ),
-                    
-                    onTap: () => Navigator.pushNamed(context, 'reporte', arguments: acciones[index].idTest),
-                    //onTap: () => print (acciones[index].idTest),
+                        return GestureDetector(
+                            child: _cardDesiciones(testplagadata,fincadata,parceladata, context),
+                            onTap: () => Navigator.pushNamed(context, 'reporte', arguments: testplagadata),
+                        );
+                    },
                 );
                
             },
