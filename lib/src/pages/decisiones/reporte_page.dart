@@ -103,9 +103,16 @@ class _ReportePageState extends State<ReportePage> {
                     TextButton(
                         
                         onPressed: () async{
+                            List<double?> altura =[
+                                await _countAlturaEstacion(testPoda.id, 1),
+                                await _countAlturaEstacion(testPoda.id, 2),
+                                await _countAlturaEstacion(testPoda.id, 3),
+                                await _countAlturaTotal(testPoda.id),
+                            ];
+                            //print(altura);
                             
-                            final pdfFile = await PdfApi.generateCenteredText('Hola que haces', '${testPoda.id}');
-                            print(pdfFile);
+                            final pdfFile = await PdfApi.generateCenteredText('${testPoda.id}', altura);
+                            
                             PdfApi.openFile(pdfFile);
                         }, 
                         child: Row(
@@ -686,23 +693,7 @@ class _ReportePageState extends State<ReportePage> {
         }
         
         return SingleChildScrollView(
-            child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                        BoxShadow(
-                                color: Color(0xFF3A5160)
-                                    .withOpacity(0.05),
-                                offset: const Offset(1.1, 1.1),
-                                blurRadius: 17.0),
-                        ],
-                ),
-                child: Column(children:listPrincipales,)
-            ),
+            child: Column(children:listPrincipales,)
         );
         
     }
@@ -762,7 +753,7 @@ class _ReportePageState extends State<ReportePage> {
                         child: Padding(
                             padding: EdgeInsets.only(top: 20, bottom: 10),
                             child: Text(
-                                "¿En qué parte vamos a aplicar las pod",
+                                "¿En qué parte vamos a aplicar las podas? ",
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
                                     .headline5!
@@ -801,23 +792,7 @@ class _ReportePageState extends State<ReportePage> {
         }
         
         return SingleChildScrollView(
-            child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                        BoxShadow(
-                                color: Color(0xFF3A5160)
-                                    .withOpacity(0.05),
-                                offset: const Offset(1.1, 1.1),
-                                blurRadius: 17.0),
-                        ],
-                ),
-                child: Column(children:listPrincipales,)
-            ),
+            child: Column(children:listPrincipales,)
         );
         
     }
@@ -914,23 +889,7 @@ class _ReportePageState extends State<ReportePage> {
         }
         
         return SingleChildScrollView(
-            child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                        BoxShadow(
-                                color: Color(0xFF3A5160)
-                                    .withOpacity(0.05),
-                                offset: const Offset(1.1, 1.1),
-                                blurRadius: 17.0),
-                        ],
-                ),
-                child: Column(children:listPrincipales,)
-            ),
+            child: Column(children:listPrincipales,)
         );
         
     }
@@ -982,23 +941,7 @@ class _ReportePageState extends State<ReportePage> {
             }
         }
         return SingleChildScrollView(
-            child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                        BoxShadow(
-                                color: Color(0xFF3A5160)
-                                    .withOpacity(0.05),
-                                offset: const Offset(1.1, 1.1),
-                                blurRadius: 17.0),
-                        ],
-                ),
-                child: Column(children:listPrincipales,)
-            ),
+            child: Column(children:listPrincipales,)
         );
     }
 
