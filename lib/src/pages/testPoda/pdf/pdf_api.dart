@@ -10,11 +10,20 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 import 'package:app_poda/src/models/selectValue.dart' as selectMap;
+import 'package:pdf/widgets.dart';
 
 class PdfApi {
     
 
-    static Future<File> generateCenteredText(String idTest, List<double?> altura) async {
+    static Future<File> generateCenteredText(
+        String idTest,
+        List<double?> altura,
+        List<double?> ancho,
+        List<double?> largo,
+        Map<int,List> porcentajePoda,
+        Map<int,List> produccion,
+    
+    ) async {
         final pdf = pw.Document();
         final font = pw.Font.ttf(await rootBundle.load('assets/fonts/Museo/Museo300.ttf'));
         
@@ -26,7 +35,7 @@ class PdfApi {
         String? labelMedidaFinca = selectMap.dimenciones().firstWhere((e) => e['value'] == '${finca!.tipoMedida}')['label'];
         String? labelvariedad = selectMap.variedadCacao().firstWhere((e) => e['value'] == '${parcela!.variedadCacao}')['label'];
 
-        //final List<Map<String, dynamic>>  itemPoda = selectMap.podaCacao();
+        final List<Map<String, dynamic>>  itemPoda = selectMap.podaCacao();
         final List<Map<String, dynamic>>  itemPodaProblema = selectMap.podaProblemas();
         final List<Map<String, dynamic>>  itemPodaAplicar = selectMap.podaAplicar();
         final List<Map<String, dynamic>>  itemDondeAplicar = selectMap.dondeAplicar();
@@ -34,8 +43,13 @@ class PdfApi {
         final List<Map<String, dynamic>>  itemEntraLuz = selectMap.entraLuz();
         final List<Map<String, dynamic>>  itemMeses = selectMap.listMeses();
 
+
+        List<String> tituloTable = ['Sitios','1','2','3','Total'];
+
         pdf.addPage(
+            
             pw.MultiPage(
+                pageFormat: PdfPageFormat.a4,
                 build: (context) => <pw.Widget>[
                     _encabezado('Datos de finca', font),
                     pw.Row(
@@ -65,18 +79,36 @@ class PdfApi {
                             )
                         ]
                     ),
-                    pw.SizedBox(height: 40),
+                    pw.SizedBox(height: 10),
+                    pw.Text(
+                        'Datos consolidados',
+                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 16, font: font)
+                    ),
+                    pw.SizedBox(height: 10),
+                    _tablaPoda(tituloTable, altura, ancho, largo, porcentajePoda, font, itemPoda, produccion),
+                    pw.SizedBox(height: 120),
                     _pregunta('Problemas de poda', font, listDecisiones, 1, itemPodaProblema),
                     _pregunta('¿Qué tipo de poda debemos aplicar?', font, listDecisiones, 2, itemPodaAplicar),
                     _pregunta('¿En qué parte vamos a aplicar las podas? ', font, listDecisiones, 3, itemDondeAplicar),
                     _pregunta('¿Las plantas tiene suficiente vigor?', font, listDecisiones, 4, itemVigorPlanta),
                     _pregunta('¿Cómo podemos mejorar la entrada de luz?', font, listDecisiones, 5, itemEntraLuz),
-                    _pregunta('¿Cúando vamos a realizar las podas?', font, listDecisiones, 6, itemMeses),
+                    _pregunta('¿Cúando vamos a realizar las podas?', font, listDecisiones, 6, itemMeses),                   
                     
-                    
-                    
-                ]
+                ],
+                footer: (context) {
+                    final text = 'Page ${context.pageNumber} of ${context.pagesCount}';
+
+                    return Container(
+                        alignment: Alignment.centerRight,
+                        margin: EdgeInsets.only(top: 1 * PdfPageFormat.cm),
+                        child: Text(
+                            text,
+                            style: TextStyle(color: PdfColors.black, font: font),
+                        ),
+                    );
+                },
             )
+        
         );
 
         return saveDocument(name: 'Reporte.pdf', pdf: pdf);
@@ -177,6 +209,111 @@ class PdfApi {
         );
 
     }
+
+    static pw.Widget _tablaPoda( List<String> tituloTable, List<double?> altura, List<double?> ancho, List<double?> largo, Map<int,List> porcentajePoda, Font font, List<Map<String, dynamic>> itemPoda, Map<int, List<dynamic>> produccion,){
+        return pw.Column(
+            children: [
+                pw.Table(
+                    columnWidths: const <int, TableColumnWidth>{
+                        0: FlexColumnWidth(),
+                        1:FixedColumnWidth(65),
+                        2:FixedColumnWidth(65),
+                        3:FixedColumnWidth(65),
+                        4:FixedColumnWidth(65),
+                    },
+                    border: TableBorder.all(),
+                    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                    children: [
+                        _crearFila(tituloTable, '', font),
+                        _crearFila(altura, 'Altura mt', font),
+                        _crearFila(ancho, 'Ancho mt', font),
+                        _crearFila(largo, 'Largo mt', font),
+                    ]
+                ),
+                pw.Table(
+                    columnWidths: const <int, TableColumnWidth>{
+                        0: FlexColumnWidth(),
+                        1:FixedColumnWidth(65),
+                        2:FixedColumnWidth(65),
+                        3:FixedColumnWidth(65),
+                        4:FixedColumnWidth(65),
+                    },
+                    border: TableBorder(
+                        bottom: BorderSide(color: PdfColors.black, width: 1), 
+                        horizontalInside: BorderSide(color: PdfColors.black, width: 1),
+                        verticalInside: BorderSide(color: PdfColors.black, width: 1),
+                        left: BorderSide(color: PdfColors.black, width: 1),
+                        right: BorderSide(color: PdfColors.black, width: 1),
+                    ),
+                    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                    children: _filasPoda(itemPoda, porcentajePoda, font)
+                ),
+
+                pw.Table(
+                    columnWidths: const <int, TableColumnWidth>{
+                        0: FlexColumnWidth(),
+                        1:FixedColumnWidth(65),
+                        2:FixedColumnWidth(65),
+                        3:FixedColumnWidth(65),
+                        4:FixedColumnWidth(65),
+                    },
+                    border: TableBorder(
+                        bottom: BorderSide(color: PdfColors.black, width: 1), 
+                        horizontalInside: BorderSide(color: PdfColors.black, width: 1),
+                        verticalInside: BorderSide(color: PdfColors.black, width: 1),
+                        left: BorderSide(color: PdfColors.black, width: 1),
+                        right: BorderSide(color: PdfColors.black, width: 1),
+                    ),
+                    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                    children: [
+                        _crearFila([], 'Produccion', font),
+                        _crearFila(produccion[1] as List<dynamic>, '%Alta', font),
+                        _crearFila(produccion[2] as List<dynamic>, '%Media', font),
+                        _crearFila(produccion[3] as List<dynamic>, '%Baja', font),
+                    ]
+                ),
+                
+            ]
+        );
+
+    }
+
+    static pw.TableRow _crearFila(List itemList, String titulo, Font font){
+        List<Widget> celdas = [];
+        if(titulo != ''){
+            celdas.add(_cellText('$titulo', font));
+        }
+        itemList.forEach((item) { 
+            celdas.add(_cellText(item.runtimeType == double ? '${item.toStringAsFixed(2)} %' : item, font)); 
+        });
+        return pw.TableRow(children: celdas);
+
+    }
+
+    static List<pw.TableRow> _filasPoda(List<Map<String, dynamic>> itemPoda , Map<int,List> porcentajePoda, Font font){
+        List<pw.TableRow> filas = [];
+
+        porcentajePoda.forEach((key, value) {
+            String nameItem = itemPoda.firstWhere((e) => e['value'] == '$key', orElse: () => {"value": "1","label": "No data"})['label'];
+            filas.add(_crearFila(value, '$nameItem', font));
+            
+        });
+        return filas;
+
+    }
+
+    static pw.Widget _cellText( String texto, pw.Font font){
+        return pw.Container(
+            padding: pw.EdgeInsets.all(5),
+            child: pw.Text(texto,
+                style: pw.TextStyle(font: font)
+            )
+        );
+    }
+
+
+
+
 }
 
 

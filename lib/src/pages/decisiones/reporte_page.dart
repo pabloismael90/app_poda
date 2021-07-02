@@ -58,11 +58,11 @@ class _ReportePageState extends State<ReportePage> {
         double countProduccion = await DBProvider.db.countProduccion(idTest, estacion, estado);
         return countProduccion*100;
     }
-
     Future<double> _countPercentTotalProduccion(String? idTest, int estado) async{
         double countProduccion = await DBProvider.db.countTotalProduccion(idTest, estado);
         return countProduccion*100;
     }
+    
     Future<double> _countAlturaEstacion(String? idTest, int estacion) async{
         double countAlturaestacion = await DBProvider.db.countAlturaEstacion(idTest, estacion);
         return countAlturaestacion;
@@ -102,19 +102,7 @@ class _ReportePageState extends State<ReportePage> {
                 actions: [
                     TextButton(
                         
-                        onPressed: () async{
-                            List<double?> altura =[
-                                await _countAlturaEstacion(testPoda.id, 1),
-                                await _countAlturaEstacion(testPoda.id, 2),
-                                await _countAlturaEstacion(testPoda.id, 3),
-                                await _countAlturaTotal(testPoda.id),
-                            ];
-                            //print(altura);
-                            
-                            final pdfFile = await PdfApi.generateCenteredText('${testPoda.id}', altura);
-                            
-                            PdfApi.openFile(pdfFile);
-                        }, 
+                        onPressed: () => _crearPdf(testPoda), 
                         child: Row(
                             children: [
                                 Icon(Icons.download, color: kwhite, size: 16,),
@@ -137,11 +125,48 @@ class _ReportePageState extends State<ReportePage> {
                     Parcela parcela = snapshot.data[2];
 
                     pageItem.add(_principalData(testPoda.id,context, finca, parcela));
-                    
-                    pageItem.add( _podaProblemas(snapshot.data[0]));
-                    pageItem.add( _podaAplicar(snapshot.data[0]));
-                    pageItem.add( _vigorPlanta(snapshot.data[0]));
-                    pageItem.add( _accionesMeses(snapshot.data[0]));
+                    pageItem.add(
+                        SingleChildScrollView(
+                            child: Column(
+                                children:_generatePregunta(snapshot.data[0],'Problemas de poda', 1, itemPodaProblema ),
+                            )
+                        ) 
+                    );
+                    pageItem.add(
+                        SingleChildScrollView(
+                            child: Column(
+                                children:[
+                                    Column(
+                                        children:_generatePregunta(snapshot.data[0],'¿Qué tipo de poda debemos aplicar?', 2, itemPodaAplicar ),
+                                    ),
+                                    Column(
+                                        children:_generatePregunta(snapshot.data[0],'¿En qué parte vamos a aplicar las podas?', 3, itemDondeAplicar ),
+                                    )
+                                ]
+                            )
+                        ) 
+                    );
+                    pageItem.add(
+                        SingleChildScrollView(
+                            child: Column(
+                                children:[
+                                    Column(
+                                        children:_generatePregunta(snapshot.data[0],'¿Las plantas tiene suficiente vigor?', 4, itemVigorPlanta ),
+                                    ),
+                                    Column(
+                                        children:_generatePregunta(snapshot.data[0],'¿Cómo podemos mejorar la entrada de luz?', 5, itemEntraLuz ),
+                                    )
+                                ]
+                            )
+                        ) 
+                    );
+                    pageItem.add(
+                        SingleChildScrollView(
+                            child: Column(
+                                children:_generatePregunta(snapshot.data[0],'¿Cúando vamos a realizar las podas?', 6, itemMeses ),
+                            )
+                        )
+                    );
                     
                     
                     return Column(
@@ -644,21 +669,22 @@ class _ReportePageState extends State<ReportePage> {
         return Column(children:lisProd,);
     }
 
-    Widget _podaProblemas(List<Decisiones> decisionesList){
-        List<Widget> listPrincipales = [];
+    List<Widget> _generatePregunta(List<Decisiones> decisionesList, String? titulo, int idPregunta, List<Map<String, dynamic>>  listaItem){
+        List<Widget> listWidget = [];
+        List<Decisiones> listDecisiones = decisionesList.where((i) => i.idPregunta == idPregunta).toList();
 
-        listPrincipales.add(
+        listWidget.add(
             Column(
                 children: [
                     Container(
                         child: Padding(
                             padding: EdgeInsets.only(top: 20, bottom: 10),
                             child: Text(
-                                "Problemas de poda",
+                                titulo as String,
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme
                                     .headline5!
-                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 18)
+                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 16)
                             ),
                         )
                     ),
@@ -668,281 +694,86 @@ class _ReportePageState extends State<ReportePage> {
             
         );
         
+        
+        for (var item in listDecisiones) {
+                String? label= listaItem.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
 
-        for (var item in decisionesList) {
-
-            if (item.idPregunta == 1) {
-                String? label = itemPodaProblema.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
-
-                listPrincipales.add(
+                listWidget.add(
 
                     Container(
                         child: CheckboxListTile(
-                        title: Text('$label'),
-                            value: item.repuesta == 1 ? true : false ,
-                            activeColor: Colors.teal[900], 
-                            onChanged: (value) {
-                                
-                            },
-                        ),
-                    )                  
+                        title: Text('$label',
+                            style: TextStyle(fontSize: 14),
                         
+                        ),
+                            value: item.repuesta == 1 ? true : false ,
+                            activeColor: Colors.teal[900], 
+                            onChanged: (value) {
+                                
+                            },
+                        ),
+                    )                  
+                    
                 );
-            }
-            
         }
-        
-        return SingleChildScrollView(
-            child: Column(children:listPrincipales,)
-        );
-        
+        return listWidget;
     }
 
-    Widget _podaAplicar(List<Decisiones> decisionesList){
-        List<Widget> listPrincipales = [];
 
-        listPrincipales.add(
-            Column(
-                children: [
-                    Container(
-                        child: Padding(
-                            padding: EdgeInsets.only(top: 20, bottom: 10),
-                            child: Text(
-                                "¿Qué tipo de poda debemos aplicar?",
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme
-                                    .headline5!
-                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 18)
-                            ),
-                        )
-                    ),
-                    Divider(),
-                ],
-            )
-            
-        );
-        
 
-        for (var item in decisionesList) {
+    Future _crearPdf( TestPoda testPoda ) async{
+        List<double?> altura =[
+            await _countAlturaEstacion(testPoda.id, 1),
+            await _countAlturaEstacion(testPoda.id, 2),
+            await _countAlturaEstacion(testPoda.id, 3),
+            await _countAlturaTotal(testPoda.id),
+        ];
+        List<double?> ancho =[
+            await _countAnchoEstacion(testPoda.id, 1),
+            await _countAnchoEstacion(testPoda.id, 2),
+            await _countAnchoEstacion(testPoda.id, 3),
+            await _countAnchoTotal(testPoda.id),
+        ];
+        List<double?> largo =[
+            await _countLargoEstacion(testPoda.id, 1),
+            await _countLargoEstacion(testPoda.id, 2),
+            await _countLargoEstacion(testPoda.id, 3),
+            await _countLargoTotal(testPoda.id),
+        ];
+        Map<int,List> produccion = {};
 
-            if (item.idPregunta == 2) {
-                String? label= itemPodaAplicar.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
+        for (var i = 1; i < 4; i++) {
+            int key = i;
+            List<double?> valueProduccion =[
+                await _countPercentProduccion(testPoda.id, 1, i),
+                await _countPercentProduccion(testPoda.id, 2, i),
+                await _countPercentProduccion(testPoda.id, 3, i),
+                await _countPercentTotalProduccion(testPoda.id, i),
+            ];
 
-                listPrincipales.add(
+            produccion.putIfAbsent(key, () => valueProduccion);
 
-                    Container(
-                        child: CheckboxListTile(
-                        title: Text('$label'),
-                            value: item.repuesta == 1 ? true : false ,
-                            activeColor: Colors.teal[900], 
-                            onChanged: (value) {
-                                
-                            },
-                        ),
-                    )                  
-                    
-                );
-            }
-            
-        }
-
-        listPrincipales.add(
-            Column(
-                children: [
-                    Container(
-                        child: Padding(
-                            padding: EdgeInsets.only(top: 20, bottom: 10),
-                            child: Text(
-                                "¿En qué parte vamos a aplicar las podas? ",
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme
-                                    .headline5!
-                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 18)
-                            ),
-                        )
-                    ),
-                    Divider(),
-                ],
-            )
-            
-        );
-        
-
-        for (var item in decisionesList) {
-
-            if (item.idPregunta == 3) {
-                String? label= itemDondeAplicar.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
-
-                listPrincipales.add(
-
-                    Container(
-                        child: CheckboxListTile(
-                        title: Text('$label'),
-                            value: item.repuesta == 1 ? true : false ,
-                            activeColor: Colors.teal[900], 
-                            onChanged: (value) {
-                                
-                            },
-                        ),
-                    )                  
-                    
-                );
-            }
-            
         }
         
-        return SingleChildScrollView(
-            child: Column(children:listPrincipales,)
-        );
+        Map<int,List> porcentajePoda = {};
+
+        for (var item in itemPoda) {
+            int key = int.parse(item['value']);
+            List<double?> valueList = [
+                await _countPercentpoda(testPoda.id, 1, key),
+                await _countPercentpoda(testPoda.id, 2, key),
+                await _countPercentpoda(testPoda.id, 3, key),
+                await _countPercentTotal(testPoda.id, key),
+            ];
+
+            porcentajePoda.putIfAbsent(key, () => valueList);
+          
+        }      
+
         
-    }
-
-    Widget _vigorPlanta(List<Decisiones> decisionesList){
-        List<Widget> listPrincipales = [];
-
-        listPrincipales.add(
-            Column(
-                children: [
-                    Container(
-                        child: Padding(
-                            padding: EdgeInsets.only(top: 20, bottom: 10),
-                            child: Text(
-                                "¿Las plantas tiene suficiente vigor?",
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme
-                                    .headline5!
-                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 18)
-                            ),
-                        )
-                    ),
-                    Divider(),
-                ],
-            )
-            
-        );
+        final pdfFile = await PdfApi.generateCenteredText('${testPoda.id}', altura, ancho, largo, porcentajePoda, produccion);
         
-
-        for (var item in decisionesList) {
-
-            if (item.idPregunta == 4) {
-                String? label= itemVigorPlanta.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
-
-                listPrincipales.add(
-
-                    Container(
-                        child: CheckboxListTile(
-                        title: Text('$label'),
-                            value: item.repuesta == 1 ? true : false ,
-                            activeColor: Colors.teal[900], 
-                            onChanged: (value) {
-                                
-                            },
-                        ),
-                    )                  
-                    
-                );
-            }
-        }
-
-        listPrincipales.add(
-            Column(
-                children: [
-                    Container(
-                        child: Padding(
-                            padding: EdgeInsets.only(top: 20, bottom: 10),
-                            child: Text(
-                                "¿Cómo podemos mejorar la entrada de luz?",
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme
-                                    .headline5!
-                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 18)
-                            ),
-                        )
-                    ),
-                    Divider(),
-                ],
-            )
-            
-        );
-        
-
-        for (var item in decisionesList) {
-
-            if (item.idPregunta == 5) {
-                String? label= itemEntraLuz.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
-
-                listPrincipales.add(
-
-                    Container(
-                        child: CheckboxListTile(
-                        title: Text('$label'),
-                            value: item.repuesta == 1 ? true : false ,
-                            activeColor: Colors.teal[900], 
-                            onChanged: (value) {
-                                
-                            },
-                        ),
-                    )                  
-                    
-                );
-            }
-        }
-        
-        return SingleChildScrollView(
-            child: Column(children:listPrincipales,)
-        );
-        
-    }
-    
-    Widget _accionesMeses(List<Decisiones> decisionesList){
-        List<Widget> listPrincipales = [];
-
-        listPrincipales.add(
-            Column(
-                children: [
-                    Container(
-                        child: Padding(
-                            padding: EdgeInsets.only(top: 20, bottom: 10),
-                            child: Text(
-                                "¿Cúando vamos a realizar las podas?",
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme
-                                    .headline5!
-                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 18)
-                            ),
-                        )
-                    ),
-                    Divider(),
-                ],
-            )
-            
-        );
-        
-        
-        for (var item in decisionesList) {
-
-            if (item.idPregunta == 6) {
-                String? label= itemMeses.firstWhere((e) => e['value'] == '${item.idItem}', orElse: () => {"value": "1","label": "No data"})['label'];
-
-                listPrincipales.add(
-
-                    Container(
-                        child: CheckboxListTile(
-                        title: Text('$label'),
-                            value: item.repuesta == 1 ? true : false ,
-                            activeColor: Colors.teal[900], 
-                            onChanged: (value) {
-                                
-                            },
-                        ),
-                    )                  
-                    
-                );
-            }
-        }
-        return SingleChildScrollView(
-            child: Column(children:listPrincipales,)
-        );
+        PdfApi.openFile(pdfFile);
     }
 
 }
