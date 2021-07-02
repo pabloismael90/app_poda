@@ -44,7 +44,7 @@ class PdfApi {
         final List<Map<String, dynamic>>  itemMeses = selectMap.listMeses();
 
 
-        List<String> tituloTable = ['Sitios','1','2','3','Total'];
+        List<String> tituloTable = ['1','2','3','Total'];
 
         pdf.addPage(
             
@@ -61,7 +61,12 @@ class PdfApi {
                                     _textoBody('Finca: ${finca!.nombreFinca}', font),
                                     _textoBody('Parcela: ${parcela!.nombreLote}', font),
                                     _textoBody('Productor: ${finca.nombreProductor}', font),
+                                    finca.nombreTecnico != '' ?
+                                    _textoBody('Técnico: ${finca.nombreTecnico}', font)
+                                    : pw.Container(),
+
                                     _textoBody('Variedad: $labelvariedad', font),
+
 
                                 ]
                             ),
@@ -224,7 +229,7 @@ class PdfApi {
                     border: TableBorder.all(),
                     defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                     children: [
-                        _crearFila(tituloTable, '', font),
+                        _crearFila(tituloTable, 'Sitios', font),
                         _crearFila(altura, 'Altura mt', font),
                         _crearFila(ancho, 'Ancho mt', font),
                         _crearFila(largo, 'Largo mt', font),
@@ -280,9 +285,9 @@ class PdfApi {
 
     static pw.TableRow _crearFila(List itemList, String titulo, Font font){
         List<Widget> celdas = [];
-        if(titulo != ''){
-            celdas.add(_cellText('$titulo', font));
-        }
+        
+        celdas.add(_cellText('$titulo', font));
+        
         itemList.forEach((item) { 
             celdas.add(_cellText(item.runtimeType == double ? '${item.toStringAsFixed(2)} %' : item, font)); 
         });
