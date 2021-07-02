@@ -82,11 +82,11 @@ class PdfApi {
                     pw.SizedBox(height: 10),
                     pw.Text(
                         'Datos consolidados',
-                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 16, font: font)
+                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 14, font: font)
                     ),
                     pw.SizedBox(height: 10),
                     _tablaPoda(tituloTable, altura, ancho, largo, porcentajePoda, font, itemPoda, produccion),
-                    pw.SizedBox(height: 120),
+                    pw.SizedBox(height: 10),
                     _pregunta('Problemas de poda', font, listDecisiones, 1, itemPodaProblema),
                     _pregunta('¿Qué tipo de poda debemos aplicar?', font, listDecisiones, 2, itemPodaAplicar),
                     _pregunta('¿En qué parte vamos a aplicar las podas? ', font, listDecisiones, 3, itemDondeAplicar),
@@ -111,7 +111,7 @@ class PdfApi {
         
         );
 
-        return saveDocument(name: 'Reporte.pdf', pdf: pdf);
+        return saveDocument(name: 'Reporte ${finca!.nombreFinca} ${testplaga.fechaTest}.pdf', pdf: pdf);
     }
 
     static Future<File> saveDocument({
@@ -140,7 +140,7 @@ class PdfApi {
             children: [
                 pw.Text(
                     titulo as String,
-                    style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 16, font: fuente)
+                    style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 14, font: fuente)
                 ),
                 pw.Divider(color: PdfColors.black),
             
@@ -151,7 +151,7 @@ class PdfApi {
 
     static pw.Widget _textoBody(String? contenido, pw.Font fuente){
         return pw.Container(
-            padding: pw.EdgeInsets.symmetric(vertical: 5),
+            padding: pw.EdgeInsets.symmetric(vertical: 3),
             child: pw.Text(contenido as String,style: pw.TextStyle(fontSize: 12, font: fuente))
         );
 
@@ -187,7 +187,7 @@ class PdfApi {
                                         ),
                                         width: 10,
                                         height: 10,
-                                        padding: pw.EdgeInsets.all(3),
+                                        padding: pw.EdgeInsets.all(2),
                                         
                                     )
                                 ]
