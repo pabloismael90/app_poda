@@ -138,13 +138,7 @@ class _PlantaPageState extends State<PlantaPage> {
                         return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                                Container(
-                                    child: Text('Plantas: $value / 10',
-                                        style: Theme.of(context).textTheme
-                                                .headline6!
-                                                .copyWith(fontWeight: FontWeight.w600)
-                                    ),
-                                ),
+                                textoBottom('Plantas: $value / 10',  kTextColor),
                                 ButtonMainStyle(
                                     title: 'Lista de sitios',
                                     icon: Icons.chevron_left,
