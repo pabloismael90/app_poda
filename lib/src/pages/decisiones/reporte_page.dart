@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:app_poda/src/models/decisiones_model.dart';
 import 'package:app_poda/src/models/testpoda_model.dart';
-import 'package:app_poda/src/pages/testPoda/pdf/pdf_api.dart';
+import 'package:app_poda/src/pdf/pdf_api.dart';
 import 'package:app_poda/src/providers/db_provider.dart';
 import 'package:app_poda/src/models/selectValue.dart' as selectMap;
 import 'package:app_poda/src/utils/constants.dart';

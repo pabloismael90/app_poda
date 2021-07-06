@@ -74,8 +74,8 @@ class _PlantaPageState extends State<PlantaPage> {
                                             spacing: 15,
                                             children: [
                                                 textoCardBody('Alto: ${planta[index].altura}'),
-                                                textoCardBody('Alto: ${planta[index].ancho}'),
-                                                textoCardBody('Alto: ${planta[index].largo}'),
+                                                textoCardBody('Ancho: ${planta[index].ancho}'),
+                                                textoCardBody('Largo: ${planta[index].largo}'),
                                             ],
                                         )
                                     ],
