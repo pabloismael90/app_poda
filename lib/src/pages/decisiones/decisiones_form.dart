@@ -1047,9 +1047,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                             child: Text(
                                 "¿Ha Terminado todos los formularios de toma de desición?",
                                 textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme
-                                    .headline5!
-                                    .copyWith(fontWeight: FontWeight.w600)
+                                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18)
                             ),
                         ),
                         Padding(
