@@ -44,7 +44,7 @@ class DesicionesList extends StatelessWidget {
                                 ?
                                 textoListaVacio('Complete toma de Decisiones')
                                 :
-                                SingleChildScrollView(child: _listaDePlagas(snapshot.data, context))
+                                SingleChildScrollView(child: _repoortesPoda(snapshot.data, context))
                             ),
                         ],
                     );
@@ -55,7 +55,7 @@ class DesicionesList extends StatelessWidget {
         );
     }
 
-    Widget  _listaDePlagas(List acciones, BuildContext context){
+    Widget  _repoortesPoda(List acciones, BuildContext context){
         return ListView.builder(
             itemBuilder: (context, index) {
                 return FutureBuilder(
