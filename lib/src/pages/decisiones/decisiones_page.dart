@@ -84,20 +84,16 @@ class DesicionesList extends StatelessWidget {
 
     }
 
-    Widget _cardDesiciones(TestPoda textPlaga, Finca finca, Parcela parcela, BuildContext context){
+    Widget _cardDesiciones(TestPoda textPoda, Finca finca, Parcela parcela, BuildContext context){
         return cardDefault(
-            
             Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                     encabezadoCard('${finca.nombreFinca}','${parcela.nombreLote}', 'assets/icons/report.svg'),
-                    textoCardBody('Fecha: ${textPlaga.fechaTest}'),
+                    textoCardBody('Fecha: ${textPoda.fechaTest}'),
                     iconTap(' Toca para ver reporte')
                 ],
             )
-                    
-                    
-                  
         );
     }
    
