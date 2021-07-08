@@ -604,8 +604,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                     Container(
-                        child: Text('Producción', textAlign: TextAlign.start, style: Theme.of(context).textTheme.headline6!
-                                .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                        child: Text('Producción', textAlign: TextAlign.start, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                     )
                 ],
             )
@@ -694,9 +693,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                             child: Text(
                                 "Problemas de poda",
                                 textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme
-                                    .headline5!
-                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 18)
+                                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)
                             ),
                         )
                     ),
@@ -711,9 +708,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
             listPrincipales.add(
 
                 CheckboxListTile(
-                    title: Text('$labelpoda',
-                        style: Theme.of(context).textTheme.headline6!.copyWith(fontSize: 16),
-                    ),
+                    title: textoCardBody('$labelpoda'),
                     value: checksProblemas[itemPodaProblema[i]['value']], 
                     onChanged: (value) {
                         setState(() {
@@ -758,9 +753,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                             child: Text(
                                 "¿Qué tipo de poda debemos aplicar?",
                                 textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme
-                                    .headline5!
-                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 18)
+                                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)
                             ),
                         )
                     ),
@@ -777,7 +770,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
 
                 Container(
                     child: CheckboxListTile(
-                        title: Text('$labelProblemaSuelo'),
+                        title: textoCardBody('$labelProblemaSuelo'),
                         value: checksPodaAplicar[itemPodaAplicar[i]['value']], 
                         onChanged: (value) {
                             setState(() {
@@ -800,9 +793,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                             child: Text(
                                 "¿En qué parte vamos a aplicar las podas?",
                                 textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme
-                                    .headline5!
-                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 18)
+                                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)
                             ),
                         )
                     ),
@@ -820,7 +811,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
 
                 Container(
                     child: CheckboxListTile(
-                        title: Text('$labelProblemaSombra'),
+                        title: textoCardBody('$labelProblemaSombra'),
                         value: checksDondeAplicar[itemDondeAplicar[i]['value']], 
                         onChanged: (value) {
                             setState(() {
@@ -870,9 +861,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                             child: Text(
                                 "¿Las plantas tiene suficiente vigor?",
                                 textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme
-                                    .headline5!
-                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 18)
+                                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)
                             ),
                         )
                     ),
@@ -891,7 +880,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
 
                 Container(
                     child: CheckboxListTile(
-                        title: Text('$labelProblemaManejo'),
+                        title: textoCardBody('$labelProblemaManejo'),
                         value: checksVigorPlanta[itemVigorPlanta[i]['value']], 
                         onChanged: (value) {
                             setState(() {
@@ -916,9 +905,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                             child: Text(
                                 "¿Cómo podemos mejorar la entrada de luz?",
                                 textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme
-                                    .headline5!
-                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 18)
+                                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)
                             ),
                         )
                     ),
@@ -937,7 +924,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
 
                 Container(
                     child: CheckboxListTile(
-                        title: Text('$labelEntradaLuz'),
+                        title: textoCardBody('$labelEntradaLuz'),
                         value: checksEntraLuz[itemEntraLuz[i]['value']], 
                         onChanged: (value) {
                             setState(() {
@@ -984,9 +971,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                             child: Text(
                                 "¿Cúando vamos a realizar las podas?",
                                 textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme
-                                    .headline5!
-                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 18)
+                                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)
                             ),
                         )
                     ),
@@ -1002,7 +987,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
             listaAcciones.add(
                 Container(
                     child: CheckboxListTile(
-                        title: Text('$labelmeses'),
+                        title: textoCardBody('$labelmeses'),
                         value: checksMesPoda[itemMeses[i]['value']], 
                         onChanged: (value) {
                             setState(() {
@@ -1047,7 +1032,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                             child: Text(
                                 "¿Ha Terminado todos los formularios de toma de desición?",
                                 textAlign: TextAlign.center,
-                                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18)
+                                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)
                             ),
                         ),
                         Padding(

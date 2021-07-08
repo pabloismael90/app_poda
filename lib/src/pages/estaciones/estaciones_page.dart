@@ -215,7 +215,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
                             child: ButtonMainStyle(
                                     title: 'Consultar decisiones',
                                     icon: Icons.receipt_rounded,
-                                    press: () => Navigator.pushNamed(context, 'reporte', arguments: poda.id),
+                                    press: () => Navigator.pushNamed(context, 'reporte', arguments: poda),
                                 
                             
                             ),

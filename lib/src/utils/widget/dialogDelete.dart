@@ -34,7 +34,7 @@ Widget backgroundTrash(BuildContext context){
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                     Icon(Icons.delete, color: Colors.white),
-                    Text('Eliminar', style:Theme.of(context).textTheme.headline6!.copyWith(color: Colors.white)),
+                    Text('Eliminar', style:TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                 ],
             ),
         )

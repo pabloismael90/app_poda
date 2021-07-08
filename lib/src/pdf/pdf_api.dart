@@ -16,7 +16,7 @@ class PdfApi {
     
 
     static Future<File> generateCenteredText(
-        String idTest,
+        TestPoda? testPoda,
         List<double?> altura,
         List<double?> ancho,
         List<double?> largo,
@@ -27,10 +27,9 @@ class PdfApi {
         final pdf = pw.Document();
         final font = pw.Font.ttf(await rootBundle.load('assets/fonts/Museo/Museo300.ttf'));
         
-        TestPoda? testplaga = await (DBProvider.db.getTestId(idTest));
-        Finca? finca = await DBProvider.db.getFincaId(testplaga!.idFinca);
-        Parcela? parcela = await DBProvider.db.getParcelaId(testplaga.idLote);
-        List<Decisiones> listDecisiones = await DBProvider.db.getDecisionesIdTest(testplaga.id);
+        Finca? finca = await DBProvider.db.getFincaId(testPoda!.idFinca);
+        Parcela? parcela = await DBProvider.db.getParcelaId(testPoda.idLote);
+        List<Decisiones> listDecisiones = await DBProvider.db.getDecisionesIdTest(testPoda.id);
 
         String? labelMedidaFinca = selectMap.dimenciones().firstWhere((e) => e['value'] == '${finca!.tipoMedida}')['label'];
         String? labelvariedad = selectMap.variedadCacao().firstWhere((e) => e['value'] == '${parcela!.variedadCacao}')['label'];
@@ -78,7 +77,7 @@ class PdfApi {
                                         _textoBody('Área Finca: ${finca.areaFinca} ($labelMedidaFinca)', font),
                                         _textoBody('Área Parcela: ${parcela.areaLote} ($labelMedidaFinca)', font),
                                         _textoBody('N de plantas: ${parcela.numeroPlanta}', font),                    
-                                        _textoBody('Fecha: ${testplaga.fechaTest}', font),                    
+                                        _textoBody('Fecha: ${testPoda.fechaTest}', font),                    
                                     ]
                                 ),
                             )
@@ -116,7 +115,7 @@ class PdfApi {
         
         );
 
-        return saveDocument(name: 'Reporte ${finca!.nombreFinca} ${testplaga.fechaTest}.pdf', pdf: pdf);
+        return saveDocument(name: 'Reporte ${finca!.nombreFinca} ${testPoda.fechaTest}.pdf', pdf: pdf);
     }
 
     static Future<File> saveDocument({

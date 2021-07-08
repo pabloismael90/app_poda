@@ -40,7 +40,7 @@ class CategoryCard extends StatelessWidget {
                                 title!,
                                 textAlign: TextAlign.center,
                                 textScaleFactor: 1.0,
-                                style: Theme.of(context).textTheme.headline6!.copyWith(fontWeight: FontWeight.w600, fontSize: 16, )
+                               style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15)
                             ),
                             Spacer(),
                         ],

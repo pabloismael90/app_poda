@@ -101,7 +101,6 @@ class _ReportePageState extends State<ReportePage> {
                 title: Text('Reporte de Decisiones'),
                 actions: [
                     TextButton(
-                        
                         onPressed: () => _crearPdf(testPoda), 
                         child: Row(
                             children: [
@@ -213,16 +212,30 @@ class _ReportePageState extends State<ReportePage> {
                                 child: Column(
                                     children: [
                                         Container(
-                                            child: Padding(
-                                                padding: EdgeInsets.only(top: 20, bottom: 10),
-                                                child: Text(
-                                                    "Datos consolidados",
-                                                    textAlign: TextAlign.center,
-                                                    style: Theme.of(context).textTheme
-                                                        .headline5!
-                                                        .copyWith(fontWeight: FontWeight.w600, fontSize: 18)
+                                            padding: EdgeInsets.symmetric(vertical: 3),
+                                            child: InkWell(
+                                                child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                        Container(                                                                    
+                                                            child: Text(
+                                                                "Datos consolidados",
+                                                                textAlign: TextAlign.center,
+                                                                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)
+                                                            ),
+                                                        ),
+                                                        Container(
+                                                            padding: EdgeInsets.only(left: 10),
+                                                            child: Icon(
+                                                                Icons.info_outline_rounded,
+                                                                color: Colors.green,
+                                                                size: 20,
+                                                            ),
+                                                        ),
+                                                    ],
                                                 ),
-                                            )
+                                                onTap: () => _dialogText(context),
+                                            ),
                                         ),
                                         Divider(),
                                         Column(
@@ -592,8 +605,7 @@ class _ReportePageState extends State<ReportePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                     Container(
-                        child: Text('Producción', textAlign: TextAlign.start, style: Theme.of(context).textTheme.headline6!
-                                .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
+                        child: Text('Producción', textAlign: TextAlign.start, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                     )
                 ],
             )
@@ -682,9 +694,7 @@ class _ReportePageState extends State<ReportePage> {
                             child: Text(
                                 titulo as String,
                                 textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme
-                                    .headline5!
-                                    .copyWith(fontWeight: FontWeight.w600, fontSize: 16)
+                                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)
                             ),
                         )
                     ),
@@ -771,9 +781,37 @@ class _ReportePageState extends State<ReportePage> {
         }      
 
         
-        final pdfFile = await PdfApi.generateCenteredText('${testPoda.id}', altura, ancho, largo, porcentajePoda, produccion);
+        final pdfFile = await PdfApi.generateCenteredText(testPoda, altura, ancho, largo, porcentajePoda, produccion);
         
         PdfApi.openFile(pdfFile);
     }
 
+}
+
+
+Future<void> _dialogText(BuildContext context) async {
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+            return AlertDialog(
+                title: Text('Titulo'),
+                content: SingleChildScrollView(
+                    child: ListBody(
+                        children: <Widget>[
+                        Text('Texto para breve explicacion'),
+                        ],
+                    ),
+                ),
+                actions: <Widget>[
+                    TextButton(
+                        child: Text('Cerrar'),
+                        onPressed: () {
+                        Navigator.of(context).pop();
+                        },
+                    ),
+                ],
+            );
+        },
+    );
 }

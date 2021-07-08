@@ -64,12 +64,12 @@ class DesicionesList extends StatelessWidget {
                         if (!snapshot.hasData) {
                             return CircularProgressIndicator();
                         }
-                        TestPoda testplagadata = snapshot.data[0];
+                        TestPoda? testplagadata = snapshot.data[0];
                         Finca fincadata = snapshot.data[1];
                         Parcela parceladata = snapshot.data[2];
 
                         return GestureDetector(
-                            child: _cardDesiciones(testplagadata,fincadata,parceladata, context),
+                            child: _cardDesiciones(testplagadata!,fincadata,parceladata, context),
                             onTap: () => Navigator.pushNamed(context, 'reporte', arguments: testplagadata),
                         );
                     },
