@@ -33,8 +33,7 @@ class _ViewImageState extends State<ViewImage> {
         int index = dataRoute[1];
         List<String> listname = dataRoute[2];
         Size size = MediaQuery.of(context).size;
-        
-        //print(index);
+    
         return Scaffold(
             appBar: AppBar(),
             
@@ -44,7 +43,7 @@ class _ViewImageState extends State<ViewImage> {
                         children: [
                             Expanded(
                                 child: Hero(
-                                    tag: index,
+                                    tag: 'hero$index',
                                     child: PhotoView(
                                         imageProvider: AssetImage(listimg[index]),
                                         

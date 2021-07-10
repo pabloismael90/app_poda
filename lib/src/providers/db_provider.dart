@@ -292,7 +292,6 @@ class DBProvider {
         List<ExistePoda> list = res.isNotEmpty 
                     ? res.map( (c) => ExistePoda.fromJson(c) ).toList() 
                     : [];
-        //print(list);
         return list;
     }
 
@@ -302,7 +301,6 @@ class DBProvider {
         String query = "SELECT existe FROM ExistePoda WHERE idPlanta = '$idPlanta' AND idPlaga = '$idplaga'";
         final  res = await db!.rawQuery(query);
         int? value = (res.isNotEmpty ? res[0]['existe'] : -1) as int?;
-        //print(value);
 
         return value;
     }
@@ -327,8 +325,6 @@ class DBProvider {
             "SELECT id AS value, nombreFinca AS label FROM Finca"
         );
         List<Map<String, dynamic>> list = res.isNotEmpty ? res : [];
-
-        //print(list);
 
         return list; 
     }

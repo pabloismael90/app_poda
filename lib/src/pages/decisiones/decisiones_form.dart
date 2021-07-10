@@ -206,7 +206,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                         color: Colors.white,
                                         child: Column(
                                             children: [
-                                                Padding(
+                                                Container(
                                                     padding: EdgeInsets.symmetric(vertical: 10),
                                                     child: InkWell(
                                                         child: Row(
@@ -229,7 +229,7 @@ class _DesicionesPageState extends State<DesicionesPage> {
                                                                 ),
                                                             ],
                                                         ),
-                                                        onTap: () => _dialogText(context),
+                                                        onTap: () => _explicacion(context),
                                                     ),
                                                 ),
                                                 Divider(),
@@ -680,7 +680,6 @@ class _DesicionesPageState extends State<DesicionesPage> {
         return Column(children:lisProd,);
     }
 
-
     Widget _podaProblemas(){
         List<Widget> listPrincipales = [];
 
@@ -1086,31 +1085,22 @@ class _DesicionesPageState extends State<DesicionesPage> {
         Navigator.pop(context, 'estaciones');
     }
 
+
+    Future<void> _explicacion(BuildContext context){
+
+        return dialogText(
+            context,
+            Column(
+                children: [
+                    textoCardBody('•	Primero se presentan promedio de Altura, Ancho y Largo de madera productiva de las 10 plantas de cada uno de los tres sitios (marcado 1, 2 y 3) y de total.'),
+                    textoCardBody('•	Luego se presentan porcentaje de plantas con Buena Arquitectura, Plantas con Ramas en Contacto, Plantas con Ramas entrecruzadas, Plantas con Ramas cercanas al suelo, Plantas con Chupones, Plantas con entrada de Luz. Los datos se presentan para cada uno de los sitios (marcado 1, 2 y 3) y de total'),
+                    textoCardBody('•	Al final se presentan el porcentaje de plantas con alta, media y baja producción para cada uno de los sitios (marcado 1, 2 y 3) y de total.'),
+                    textoCardBody('•	Estos datos deben servir de guía para la toma de decisión para realizar el tipo de poda y evaluar los resultados de las actividades de poda que se están realizando.'),
+                ],
+            ),
+            'Explicación de la tabla de datos'
+        );
+    }
+
 }
 
-Future<void> _dialogText(BuildContext context) async {
-    return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-            return AlertDialog(
-                title: Text('Titulo'),
-                content: SingleChildScrollView(
-                    child: ListBody(
-                        children: <Widget>[
-                        Text('Texto para breve explicacion'),
-                        ],
-                    ),
-                ),
-                actions: <Widget>[
-                    TextButton(
-                        child: Text('Cerrar'),
-                        onPressed: () {
-                        Navigator.of(context).pop();
-                        },
-                    ),
-                ],
-            );
-        },
-    );
-}
