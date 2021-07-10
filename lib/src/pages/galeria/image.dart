@@ -56,7 +56,7 @@ class _ViewImageState extends State<ViewImage> {
                             Container(
                                 color: Colors.white,
                                 child: Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                                     child: Container(
                                         height: size.height * 0.09,
                                         
