@@ -228,10 +228,10 @@ class PdfApi {
                     border: TableBorder.all(),
                     defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                     children: [
-                        _crearFila(tituloTable, 'Sitios', font),
-                        _crearFila(altura, 'Altura mt', font),
-                        _crearFila(ancho, 'Ancho mt', font),
-                        _crearFila(largo, 'Largo mt', font),
+                        _crearFila(tituloTable, 'Sitios', font, 'mt'),
+                        _crearFila(altura, 'Altura mt', font, 'mt'),
+                        _crearFila(ancho, 'Ancho mt', font, 'mt'),
+                        _crearFila(largo, 'Largo mt', font, 'mt'),
                     ]
                 ),
                 pw.Table(
@@ -270,10 +270,10 @@ class PdfApi {
                     ),
                     defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                     children: [
-                        _crearFila([], 'Produccion', font),
-                        _crearFila(produccion[1] as List<dynamic>, '%Alta', font),
-                        _crearFila(produccion[2] as List<dynamic>, '%Media', font),
-                        _crearFila(produccion[3] as List<dynamic>, '%Baja', font),
+                        _crearFila([], 'Produccion', font, ''),
+                        _crearFila(produccion[1] as List<dynamic>, '%Alta', font, '%'),
+                        _crearFila(produccion[2] as List<dynamic>, '%Media', font, '%'),
+                        _crearFila(produccion[3] as List<dynamic>, '%Baja', font, '%'),
                     ]
                 ),
                 
@@ -282,13 +282,13 @@ class PdfApi {
 
     }
 
-    static pw.TableRow _crearFila(List itemList, String titulo, Font font){
+    static pw.TableRow _crearFila(List itemList, String titulo, Font font, String simbolo){
         List<Widget> celdas = [];
         
         celdas.add(_cellText('$titulo', font));
         
         itemList.forEach((item) { 
-            celdas.add(_cellText(item.runtimeType == double ? '${item.toStringAsFixed(2)} %' : item, font)); 
+            celdas.add(_cellText(item.runtimeType == double ? '${item.toStringAsFixed(2)} $simbolo'  : item, font)); 
         });
         return pw.TableRow(children: celdas);
 
@@ -299,7 +299,7 @@ class PdfApi {
 
         porcentajePoda.forEach((key, value) {
             String nameItem = itemPoda.firstWhere((e) => e['value'] == '$key', orElse: () => {"value": "1","label": "No data"})['label'];
-            filas.add(_crearFila(value, '$nameItem', font));
+            filas.add(_crearFila(value, '$nameItem', font, '%'));
             
         });
         return filas;
