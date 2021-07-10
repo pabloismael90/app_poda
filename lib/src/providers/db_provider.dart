@@ -415,6 +415,7 @@ class DBProvider {
         if (value == null) {
             return 0;
         }
+        print(value);
         return value/10;
 
     }

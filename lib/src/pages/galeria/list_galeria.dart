@@ -21,11 +21,14 @@ Future _initImages(BuildContext context) async {
     
     List imagePaths = manifestMap.keys
         .where((String? key) => key!.contains('assets/galeria/'))
-        .where((String? key) => key!.contains('.jpg'))
+        .where((String? key) => key!.contains('.JPG'))
         .toList();
 
     for (var i = 0; i < imagePaths.length; i++) {
        imagePaths[i] = imagePaths[i].replaceAll("%20", " ");
+       imagePaths[i] = imagePaths[i].replaceAll("%C3%A1", "á");
+       imagePaths[i] = imagePaths[i].replaceAll("%C3%A9", "é");
+       imagePaths[i] = imagePaths[i].replaceAll("%C3%B3", "ó");
     }
     
     return imagePaths;
@@ -52,6 +55,7 @@ class _GaleriaImagenesState extends State<GaleriaImagenes> {
                         nameList.add(name);
                     }
                     
+                   
 
                     return Container(
                         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -68,7 +72,7 @@ class _GaleriaImagenesState extends State<GaleriaImagenes> {
                                         itemBuilder: (BuildContext context, int index) {
                                             return GestureDetector(
                                                 child: Hero(
-                                                    tag: index,
+                                                    tag: 'hero$index',
                                                     child: Container(
                                                         decoration: BoxDecoration(
                                                             borderRadius: BorderRadius.circular(5),
@@ -80,7 +84,6 @@ class _GaleriaImagenesState extends State<GaleriaImagenes> {
                                                     ),
                                                 ),
                                                 onTap: (){
-                                                    
                                                     Navigator.pushNamed(context, 'viewImg', arguments: [someImages, index, nameList] );
                                                 },
                                             );

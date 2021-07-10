@@ -7,7 +7,6 @@ import 'package:app_poda/src/models/testpoda_model.dart';
 import 'package:app_poda/src/providers/db_provider.dart';
 import 'package:app_poda/src/utils/constants.dart';
 import 'package:app_poda/src/utils/widget/button.dart';
-import 'package:app_poda/src/utils/widget/titulos.dart';
 import 'package:app_poda/src/utils/widget/varios_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -67,7 +66,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
                     body: Column(
                         children: [
                             escabezadoEstacion( context, poda ),
-                            TitulosPages(titulo: 'Lista de sitios'),
+                            _textoExplicacion('Lista de sitios'),
                             Expanded(
                                 child: SingleChildScrollView(
                                     child: _listaDeEstaciones( context, poda, countEstaciones ),
@@ -117,8 +116,50 @@ class _EstacionesPageState extends State<EstacionesPage> {
         );        
     }
 
-  
-
+    Widget _textoExplicacion(String? titulo){
+        return Container(
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            child: InkWell(
+                child: Column(
+                    children: [
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                                Container(                                                                    
+                                    child: Text(
+                                        titulo!,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18)
+                                    ),
+                                ),
+                                Container(
+                                    padding: EdgeInsets.only(left: 10),
+                                    child: Icon(
+                                        Icons.info_outline_rounded,
+                                        color: Colors.green,
+                                        size: 20,
+                                    ),
+                                ),
+                            ],
+                        ),
+                        SizedBox(height: 5,),
+                        Row(
+                            children: List.generate(
+                                150~/2, (index) => Expanded(
+                                    child: Container(
+                                        color: index%2==0?Colors.transparent
+                                        :kShadowColor2,
+                                        height: 2,
+                                    ),
+                                )
+                            ),
+                        ),
+                    ],
+                ),
+                onTap: () => _explicacion(context),
+            ),
+        );
+    }
 
     Widget  _listaDeEstaciones( BuildContext context, TestPoda poda, List countEstaciones){
         return ListView.builder(
@@ -177,7 +218,6 @@ class _EstacionesPageState extends State<EstacionesPage> {
                 
         );
     }
-   
 
     Widget  _tomarDecisiones(List countEstaciones, TestPoda poda){
         
@@ -215,7 +255,7 @@ class _EstacionesPageState extends State<EstacionesPage> {
                             child: ButtonMainStyle(
                                     title: 'Consultar decisiones',
                                     icon: Icons.receipt_rounded,
-                                    press: () => Navigator.pushNamed(context, 'reporte', arguments: poda.id),
+                                    press: () => Navigator.pushNamed(context, 'reporte', arguments: poda),
                                 
                             
                             ),
@@ -239,4 +279,25 @@ class _EstacionesPageState extends State<EstacionesPage> {
             ),
         );
     }
+
+    
+
+    Future<void> _explicacion(BuildContext context){
+
+        return dialogText(
+            context,
+            Column(
+                children: [
+                    textoCardBody('•	Realizar un recorrido de la parcela SAF cacao para identificar los 3 sitios.'),
+                    textoCardBody('•	En cada uno de los sitios, realizar las observaciones sobre la poda en 10 plantas, 5 plantas seguidas sin escoger en un surco y 5 plantas seguidas en el surco vecino y registrar los datos en la aplicación'),
+                    textoCardBody('•	Una vez completado la toma de datos de tres sitios la aplicación genera el resumen de los datos con promedios y porcentajes y dirigir al usuario a la sección de toma de decisión.'),
+                    textoCardBody('•	Los datos registrados y decisiones tomadas se guardan en el teléfono y se puede generar un informe en formato PDF para compartir con otros.'),
+                ],
+            ),
+            'Pasos para uso de la aplicación de poda'
+        );
+    }
+
+
+
 }
