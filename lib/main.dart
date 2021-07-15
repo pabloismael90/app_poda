@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
                 const Locale('es', 'ES'),
                 // const Locale('en', 'US'),
             ],
-            title: 'Material App',
+            title: 'Herramienta Cacao Poda',
             initialRoute:'home',
             routes: {
                 'home' : ( BuildContext context ) => HomePage(),
