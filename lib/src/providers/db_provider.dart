@@ -36,8 +36,6 @@ class DBProvider {
 
         final path = join( documentsDirectory.path, 'poda.db' );
 
-        print(path);
-
         return await openDatabase(
             path,
             version: 1,
