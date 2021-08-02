@@ -1,4 +1,4 @@
-import 'package:app_poda/src/pages/PDFView.dart';
+import 'package:app_poda/src/pdf/PDFView.dart';
 import 'package:app_poda/src/pages/decisiones/decisiones_form.dart';
 import 'package:app_poda/src/pages/decisiones/decisiones_page.dart';
 import 'package:app_poda/src/pages/decisiones/reporte_page.dart';
@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
                 const Locale('es', 'ES'),
                 // const Locale('en', 'US'),
             ],
-            title: 'Herramienta Cacao Poda',
+            title: 'Cacao Poda',
             initialRoute:'home',
             routes: {
                 'home' : ( BuildContext context ) => HomePage(),
