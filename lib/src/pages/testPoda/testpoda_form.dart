@@ -84,7 +84,7 @@ class _AgregarTestState extends State<AgregarTest> {
                                                     child: Container(
                                                         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                                                         child:Text(
-                                                            '3 Estaciones',
+                                                            '3 Sitios',
                                                             style: TextStyle(fontWeight: FontWeight.bold),
                                                         ),
                                                     ),
@@ -93,7 +93,7 @@ class _AgregarTestState extends State<AgregarTest> {
                                                     child: Padding(
                                                         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                                                         child:Text(
-                                                            '10 Plantas por estaciones',
+                                                            '10 Plantas por sitios',
                                                             style: TextStyle(fontWeight: FontWeight.bold),
                                                         ),
                                                     ),
